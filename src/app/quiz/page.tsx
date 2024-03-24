@@ -2,7 +2,7 @@ import React from "react";
 import { QuizTypeButtons } from "./quiz-type-buttons";
 import { StudyModeSwitch } from "./study-mode-switch";
 
-export default function Home() {
+export default function Page() {
   return (
     <main className="flex flex-col py-8 items-center">
       <div className="max-w-7xl">
