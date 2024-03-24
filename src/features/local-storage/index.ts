@@ -1,9 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
-type UseLocalStorageOption<T> = {
+type LocalStorageCodec<T> = {
   encode: (value: T) => string;
   decode: (value: string) => T;
 };
+
+type UseLocalStorageOption<T> = LocalStorageCodec<T>;
 
 export const useLocalStorage = <T>(key: string, { encode, decode }: UseLocalStorageOption<T>) => {
   const [value, setValue] = useState<T>();
@@ -34,7 +36,12 @@ export const useLocalStorage = <T>(key: string, { encode, decode }: UseLocalStor
   } as const;
 };
 
-export const jsonCodec = {
+export const booleanCodec: LocalStorageCodec<boolean> = {
+  encode: String,
+  decode: (v) => (v === "false" ? false : Boolean(v)),
+};
+
+export const jsonCodec: LocalStorageCodec<object> = {
   encode: JSON.stringify,
   decode: JSON.parse,
 };
