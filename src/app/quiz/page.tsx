@@ -1,6 +1,5 @@
 import React from "react";
-import { QuizTypeButtons } from "./quiz-type-buttons";
-import { StudyModeSwitch } from "./study-mode-switch";
+import { QuizContainer } from "./quiz-container";
 
 export default function Page() {
   return (
@@ -8,9 +7,8 @@ export default function Page() {
       <div className="max-w-7xl">
         <h1 className="text-2xl mb-8">クイズ</h1>
         <div className="mb-4">
-          <StudyModeSwitch />
+          <QuizContainer />
         </div>
-        <QuizTypeButtons />
       </div>
     </main>
   );

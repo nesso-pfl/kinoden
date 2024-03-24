@@ -11,6 +11,7 @@ type Props = {
 };
 
 export const QuizTypeButtons: React.FC<Props> = ({ studyMode }) => {
+  console.log(studyMode);
   return (
     <div className="grid grid-cols-2 items-center gap-4">
       <Button asChild>

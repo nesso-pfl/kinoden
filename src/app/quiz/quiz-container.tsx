@@ -1,3 +1,5 @@
+"use client";
+
 import React from "react";
 import { StudyModeSwitch } from "./study-mode-switch";
 import { QuizTypeButtons } from "./quiz-type-buttons";
