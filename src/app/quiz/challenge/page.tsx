@@ -3,6 +3,7 @@ import { QuizType } from "@/features/quiz";
 
 export type Query = {
   quizType: QuizType;
+  studyMode: boolean;
 };
 
 export default function Page() {

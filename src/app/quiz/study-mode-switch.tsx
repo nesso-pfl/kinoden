@@ -5,11 +5,12 @@ import { Switch } from "@/components/ui/switch";
 import { HelpTooltip } from "./help-tooltip";
 import { useStudyMode } from "@/features/quiz";
 
-type Props = {};
+type Props = {
+  value: boolean;
+  onToggle: () => void;
+};
 
-export const StudyModeSwitch: React.FC<Props> = () => {
-  const { studyMode, setStudyMode } = useStudyMode();
-
+export const StudyModeSwitch: React.FC<Props> = ({ value, onToggle }) => {
   return (
     <div className="flex items-center gap-4">
       <div className="flex items-center gap-2 ">
@@ -20,7 +21,7 @@ export const StudyModeSwitch: React.FC<Props> = () => {
           単語カードのように使えて便利です。
         </HelpTooltip>
       </div>
-      <Switch checked={studyMode} onCheckedChange={() => setStudyMode(!studyMode)} />
+      <Switch checked={value} onCheckedChange={onToggle} />
     </div>
   );
 };
