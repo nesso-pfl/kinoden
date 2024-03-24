@@ -2,7 +2,6 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { QuizType } from "./quiz-type";
 import { HelpTooltip } from "./help-tooltip";
 import Link from "next/link";
 
