@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
+import { cn } from "@/lib/utils";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,9 +19,11 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={cn(inter.className, "h-screen flex flex-col")}>
         <Header />
-        {children}
+        <main className="flex flex-col py-8 items-center flex-1">
+          <div className="max-w-7xl">{children}</div>
+        </main>
         <Footer />
       </body>
     </html>
