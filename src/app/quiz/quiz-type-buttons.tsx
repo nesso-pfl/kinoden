@@ -12,7 +12,7 @@ type Props = {
 
 export const QuizTypeButtons: React.FC<Props> = ({ studyMode }) => {
   return (
-    <div className="grid grid-cols-2 items-center gap-4">
+    <div className="grid grid-cols-[1fr_auto] items-center gap-4">
       <Button asChild>
         <Link href={pagesPath.quiz.challenge.$url({ query: { quizType: "normal", studyMode } })}>Normal</Link>
       </Button>
