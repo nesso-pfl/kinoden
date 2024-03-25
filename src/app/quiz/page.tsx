@@ -8,7 +8,7 @@ export default function Page() {
     <div>
       <h1 className="text-2xl mb-8">クイズ</h1>
       <div className="flex flex-col items-center w-full mb-8">
-        <div className="w-80">
+        <div className="w-full max-w-96">
           <div className="mb-8">
             <QuizContainer />
           </div>

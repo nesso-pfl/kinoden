@@ -22,7 +22,7 @@ export default function RootLayout({
       <body className={cn(inter.className, "h-screen flex flex-col")}>
         <Header />
         <main className="flex justify-center py-8 flex-1">
-          <div className="w-full max-w-7xl">{children}</div>
+          <div className="w-full max-w-7xl px-4">{children}</div>
         </main>
         <Footer />
       </body>

@@ -5,7 +5,7 @@ import React from "react";
 export const Header: React.FC = () => {
   return (
     <header className="flex justify-center bg-primary">
-      <div className="flex items-center w-full max-w-7xl text-white">
+      <div className="flex items-center w-full max-w-7xl text-white px-4">
         <div className="text-xl">Kinoden Pfl</div>
         <nav className="ml-8">
           <ul className="flex gap-4">
