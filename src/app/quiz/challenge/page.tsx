@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Query as Query_ } from "./query";
 import { QuizContainer } from "./quiz-container";
 
@@ -8,7 +8,9 @@ export default function Page() {
   return (
     <div>
       <h1 className="text-2xl mb-8">クイズ</h1>
-      <QuizContainer />
+      <Suspense>
+        <QuizContainer />
+      </Suspense>
     </div>
   );
 }

@@ -26,7 +26,7 @@ type Quiz = {
   question: string;
   query: string;
   answers: string[];
-  checked: boolean;
+  checked: boolean | undefined;
 };
 
 type Props = {
