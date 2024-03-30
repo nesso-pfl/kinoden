@@ -48,10 +48,8 @@ export const QuizContainer: React.FC<Props> = () => {
   }, [studyMode, showAnswers, currentQuizIndex, quizType, quizzes]);
 
   const handleClickAnswer = useCallback(() => {
-    if (currentQuiz?.answers.includes(answer)) {
-    }
     setShowAnswers(true);
-  }, [answer, currentQuiz]);
+  }, []);
 
   return (
     !isLoading && (
