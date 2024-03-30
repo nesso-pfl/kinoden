@@ -5,6 +5,8 @@ import { useQuizzes } from "@/features/quiz";
 import { useQuery } from "./query";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import { CheckIcon, XIcon } from "lucide-react";
 
 function shuffle<T>(array: T[]) {
   for (let i = array.length - 1; i > 0; i--) {
@@ -25,6 +27,7 @@ export const QuizContainer: React.FC<Props> = () => {
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [isLoading, setIsLoading] = useState(true);
+  const clickable = useMemo(() => studyMode || showAnswers, [studyMode, showAnswers]);
   useEffect(() => {
     setCurrentQuizIndex(quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : 0);
     setQuizzes(shuffle(allQuizzes));
@@ -50,7 +53,11 @@ export const QuizContainer: React.FC<Props> = () => {
 
   return (
     !isLoading && (
-      <div role="button" className="select-none" onClick={handleClickDisplay}>
+      <div
+        role={clickable ? "button" : undefined}
+        className={cn("select-none w-full h-full")}
+        onClick={handleClickDisplay}
+      >
         <div>{currentQuiz.question}</div>
         {!studyMode && (
           <form className="flex gap-4 mt-8">
@@ -61,9 +68,13 @@ export const QuizContainer: React.FC<Props> = () => {
           </form>
         )}
         {showAnswers && (
-          <div>
-            {currentQuiz.answers[0]}
-            {currentQuiz.answers.length > 1 && <>（{currentQuiz.answers.slice(1).join("、")}）</>}
+          <div className="flex gap-4">
+            <div>答え：</div>
+            <div>
+              {currentQuiz.answers[0]}
+              {currentQuiz.answers.length > 1 && <>（{currentQuiz.answers.slice(1).join("、")}）</>}
+            </div>
+            <div>{currentQuiz.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
           </div>
         )}
       </div>

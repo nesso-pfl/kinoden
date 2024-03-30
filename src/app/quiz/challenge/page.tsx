@@ -6,7 +6,7 @@ export type Query = Query_;
 
 export default function Page() {
   return (
-    <div>
+    <div className="w-full h-full">
       <h1 className="text-2xl mb-8">クイズ</h1>
       <Suspense>
         <QuizContainer />
