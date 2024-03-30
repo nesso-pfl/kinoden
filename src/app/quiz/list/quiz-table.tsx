@@ -3,6 +3,7 @@
 import { Checkbox } from "@/components/ui/checkbox";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuizzes } from "@/features/quiz";
+import { cn } from "@/lib/utils";
 import { ColumnDef, flexRender, getCoreRowModel, useReactTable } from "@tanstack/react-table";
 import React, { useCallback } from "react";
 
@@ -55,7 +56,7 @@ export const QuizTable: React.FC<Props> = () => {
           <TableRow key={headerGroup.id}>
             {headerGroup.headers.map((header) => {
               return (
-                <TableHead key={header.id}>
+                <TableHead key={header.id} className={cn(header.column.id === "checked" && "px-1 w-[30px] md:w-auto")}>
                   {header.isPlaceholder ? null : flexRender(header.column.columnDef.header, header.getContext())}
                 </TableHead>
               );
@@ -68,13 +69,23 @@ export const QuizTable: React.FC<Props> = () => {
           table.getRowModel().rows.map((row) => (
             <TableRow
               key={row.id}
-              className="cursor-pointer select-none"
+              className="cursor-pointer select-none hover:bg-transparent md:hover:bg-muted/50"
               data-state={row.getIsSelected() && "selected"}
               onClick={handleChangeChecked(row.original.question)}
             >
-              {row.getVisibleCells().map((cell) => (
-                <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
-              ))}
+              {row.getVisibleCells().map((cell) => {
+                return (
+                  <TableCell
+                    key={cell.id}
+                    className={cn(
+                      "h-auto p-2 md:h-[40px] md:px-4",
+                      cell.column.id === "checked" && "w-[40px] md:w-auto",
+                    )}
+                  >
+                    {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                  </TableCell>
+                );
+              })}
             </TableRow>
           ))
         ) : (
