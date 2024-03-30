@@ -3,7 +3,6 @@
 import React from "react";
 import { Switch } from "@/components/ui/switch";
 import { HelpTooltip } from "./help-tooltip";
-import { useStudyMode } from "@/features/quiz";
 
 type Props = {
   value: boolean;

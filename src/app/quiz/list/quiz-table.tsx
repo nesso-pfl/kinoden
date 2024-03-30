@@ -2,10 +2,13 @@
 
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useQuizzes } from "@/features/quiz";
 import { cn } from "@/lib/utils";
 import {
+  Cell,
   ColumnDef,
   ColumnFiltersState,
   flexRender,
@@ -13,7 +16,8 @@ import {
   getFilteredRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React, { useCallback } from "react";
+import React, { useCallback, useState } from "react";
+import { HelpTooltip } from "../help-tooltip";
 
 const columns: ColumnDef<Quiz>[] = [
   {
@@ -47,14 +51,9 @@ type Props = {
 
 export const QuizTable: React.FC<Props> = () => {
   const { quizzes, toggleQuizChecked } = useQuizzes();
-  const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-  const handleChangeChecked = useCallback(
-    (question: string) => () => {
-      toggleQuizChecked(question);
-    },
-    [toggleQuizChecked],
-  );
-
+  const [hideAnswers, setHideAnswers] = useState(false);
+  const [hiddenAnswers, setHiddenAnswers] = useState<string[]>(quizzes.map((quiz) => quiz.question));
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const table = useReactTable({
     data: quizzes,
     columns,
@@ -67,14 +66,45 @@ export const QuizTable: React.FC<Props> = () => {
     },
   });
 
+  const handleClickCell = useCallback(
+    (cell: Cell<Quiz, unknown>) => () => {
+      if (cell.column.id === "checked") {
+        toggleQuizChecked(cell.row.original.question);
+      } else if (cell.column.id === "answers" && hideAnswers) {
+        setHiddenAnswers((prevHiddenAnswers) => {
+          return prevHiddenAnswers.includes(cell.row.original.question)
+            ? prevHiddenAnswers.filter((answer) => answer !== cell.row.original.question)
+            : [...prevHiddenAnswers, cell.row.original.question];
+        });
+      }
+    },
+    [toggleQuizChecked, hideAnswers],
+  );
+
   return (
     <div>
-      <Input
-        placeholder="アカトマトガエル"
-        value={(table.getColumn("query")?.getFilterValue() as string) ?? ""}
-        onChange={(event) => table.getColumn("query")?.setFilterValue(event.target.value)}
-        className="max-w-sm"
-      />
+      <div className="flex gap-8 items-center">
+        <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
+          <Label>問題絞り込み</Label>
+          <Input
+            placeholder="アカトマトガエル"
+            value={(table.getColumn("query")?.getFilterValue() as string) ?? ""}
+            onChange={(event) => table.getColumn("query")?.setFilterValue(event.target.value)}
+            className="max-w-sm"
+          />
+        </div>
+        <div className="flex gap-4">
+          <div className="flex items-center gap-2 ">
+            <div>答え非表示</div>
+            <HelpTooltip>
+              答えを非表示にできます。
+              <br />
+              答えが表示されるはずの部分をクリックして、答えを表示できます。
+            </HelpTooltip>
+          </div>
+          <Switch checked={hideAnswers} onCheckedChange={setHideAnswers} />
+        </div>
+      </div>
       <Table>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
@@ -99,7 +129,6 @@ export const QuizTable: React.FC<Props> = () => {
                 key={row.id}
                 className="cursor-pointer select-none hover:bg-transparent md:hover:bg-muted/50"
                 data-state={row.getIsSelected() && "selected"}
-                onClick={handleChangeChecked(row.original.question)}
               >
                 {row.getVisibleCells().map((cell) => {
                   return (
@@ -107,8 +136,13 @@ export const QuizTable: React.FC<Props> = () => {
                       key={cell.id}
                       className={cn(
                         "h-auto p-2 md:h-[40px] md:px-4",
+                        hideAnswers &&
+                          hiddenAnswers.includes(cell.row.original.question) &&
+                          cell.column.id === "answers" &&
+                          "text-transparent",
                         cell.column.id === "checked" && "w-[40px] md:w-auto",
                       )}
+                      onClick={handleClickCell(cell)}
                     >
                       {flexRender(cell.column.columnDef.cell, cell.getContext())}
                     </TableCell>
