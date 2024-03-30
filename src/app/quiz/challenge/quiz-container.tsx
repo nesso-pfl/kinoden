@@ -11,6 +11,7 @@ import { CheckIcon, XIcon } from "lucide-react";
 function shuffle<T>(array: T[]) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
+    // @ts-ignore
     [array[i], array[j]] = [array[j], array[i]];
   }
 
@@ -21,8 +22,9 @@ type Props = {};
 
 export const QuizContainer: React.FC<Props> = () => {
   const { quizType, studyMode } = useQuery();
-  const { quizzes: allQuizzes, toggleQuizChecked } = useQuizzes();
+  const { quizzes: allQuizzes, toggleQuizChecked } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
+  console.log({ quizzes, allQuizzes });
   const [showAnswers, setShowAnswers] = useState(false);
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
@@ -46,7 +48,7 @@ export const QuizContainer: React.FC<Props> = () => {
   }, [studyMode, showAnswers, currentQuizIndex, quizType, quizzes]);
 
   const handleClickAnswer = useCallback(() => {
-    if (currentQuiz.answers.includes(answer)) {
+    if (currentQuiz?.answers.includes(answer)) {
     }
     setShowAnswers(true);
   }, [answer, currentQuiz]);
@@ -58,7 +60,12 @@ export const QuizContainer: React.FC<Props> = () => {
         className={cn("select-none w-full h-full")}
         onClick={handleClickDisplay}
       >
-        <div>{currentQuiz.question}</div>
+        {quizType !== "endless" && (
+          <div className="mb-2">
+            {currentQuizIndex + 1}/{quizzes.length}
+          </div>
+        )}
+        <div className="text-xl">問題：{currentQuiz?.question}</div>
         {!studyMode && (
           <form className="flex gap-4 mt-8">
             <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
@@ -68,13 +75,13 @@ export const QuizContainer: React.FC<Props> = () => {
           </form>
         )}
         {showAnswers && (
-          <div className="flex gap-4">
+          <div className="flex gap-4 text-xl mt-8">
             <div>答え：</div>
             <div>
-              {currentQuiz.answers[0]}
-              {currentQuiz.answers.length > 1 && <>（{currentQuiz.answers.slice(1).join("、")}）</>}
+              {currentQuiz?.answers[0]}
+              {currentQuiz && currentQuiz.answers.length > 1 && <>（{currentQuiz?.answers.slice(1).join("、")}）</>}
             </div>
-            <div>{currentQuiz.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
+            <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
           </div>
         )}
       </div>

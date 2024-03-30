@@ -1,22 +1,22 @@
-import { z } from "zod";
 import answerJson from "@/answer.json";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useMemo } from "react";
 import { useLocalStorage } from "../local-storage";
 
 const localStorageKey = "kinoden-pfl:checkedQuizzes";
 
-export const useQuizzes = () => {
+export const useQuizzes = (opts = { checkedOnly: false }) => {
   const {
     value: checkedQuizzes,
     setValue: setCheckedQuizzes,
     isLoading,
   } = useLocalStorage<string[]>(localStorageKey, { encode: JSON.stringify, decode: JSON.parse });
   const quizzes = useMemo(() => {
-    return answerJson.quizzes.map((quiz) => ({
+    const allQuizzes = answerJson.quizzes.map((quiz) => ({
       ...quiz,
       checked: checkedQuizzes?.includes(quiz.question),
     }));
-  }, [checkedQuizzes]);
+    return opts.checkedOnly ? allQuizzes.filter((quiz) => quiz.checked) : allQuizzes;
+  }, [checkedQuizzes, opts.checkedOnly]);
 
   const toggleQuizChecked = useCallback(
     (question: string) => {
