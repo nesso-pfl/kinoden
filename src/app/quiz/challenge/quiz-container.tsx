@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon, XIcon } from "lucide-react";
 
+const steps = ["loading", "quiz", "finish"] as const;
+type Step = (typeof steps)[number];
+
 function shuffle<T>(array: T[]) {
   for (let i = array.length - 1; i > 0; i--) {
     let j = Math.floor(Math.random() * (i + 1));
     // @ts-ignore
     [array[i], array[j]] = [array[j], array[i]];
   }
-
   return array;
 }
 
@@ -28,12 +30,12 @@ export const QuizContainer: React.FC<Props> = () => {
   const [showAnswers, setShowAnswers] = useState(false);
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
-  const [isLoading, setIsLoading] = useState(true);
+  const [step, setStep] = useState<Step>("loading");
   const clickable = useMemo(() => studyMode || showAnswers, [studyMode, showAnswers]);
   useEffect(() => {
     setCurrentQuizIndex(quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : 0);
     setQuizzes(shuffle(allQuizzes));
-    setIsLoading(false);
+    setStep("quiz");
   }, [allQuizzes, quizType, quizzes]);
   const currentQuiz = useMemo(() => quizzes[currentQuizIndex], [quizzes, currentQuizIndex]);
 
@@ -42,6 +44,9 @@ export const QuizContainer: React.FC<Props> = () => {
     if (showAnswers) {
       const newCurrentQuizIndex =
         quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : currentQuizIndex + 1;
+      if (newCurrentQuizIndex + 1 >= quizzes.length) {
+        setStep("finish");
+      }
       setCurrentQuizIndex(newCurrentQuizIndex);
       setAnswer("");
     }
@@ -52,7 +57,7 @@ export const QuizContainer: React.FC<Props> = () => {
   }, []);
 
   return (
-    !isLoading && (
+    step !== "loading" && (
       <div
         role={clickable ? "button" : undefined}
         className={cn("select-none w-full h-full")}
