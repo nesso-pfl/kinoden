@@ -18,7 +18,11 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableItem } from "@/features/guid-battle/sortable-item";
 
-export const GuildBattleLane = () => {
+type Props = {
+  playerType: PlayerType;
+};
+
+export const GuildBattleLane: React.FC<Props> = ({ playerType }) => {
   const [items, setItems] = useState<GuildBattlePlayer[]>([
     { id: "0", name: "あも", strength: "24242.2k" },
     { id: "1", name: "さいたま", strength: "54242.2k" },
@@ -50,9 +54,11 @@ export const GuildBattleLane = () => {
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        {items.map((item) => (
-          <SortableItem key={item.id} {...item} />
-        ))}
+        <div className="flex flex-col gap-1">
+          {items.map((item) => (
+            <SortableItem key={item.id} {...item} playerType={playerType} />
+          ))}
+        </div>
       </SortableContext>
     </DndContext>
   );

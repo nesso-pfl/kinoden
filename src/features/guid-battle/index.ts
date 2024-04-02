@@ -1,6 +1,9 @@
 const results = ["win", "lose"] as const;
 type Result = (typeof results)[number];
 
+const playerTypes = ["ally", "enemy"] as const;
+type PlayerType = (typeof playerTypes)[number];
+
 type GuildBattleSummary = {
   id: string;
   enemy: string;
