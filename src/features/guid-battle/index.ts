@@ -1,26 +1,26 @@
-const results = ["win", "lose"] as const;
-type Result = (typeof results)[number];
+export const guildBattleResults = ["win", "lose"] as const;
+export type GuildBattleResult = (typeof guildBattleResults)[number];
 
-const playerTypes = ["ally", "enemy"] as const;
-type PlayerType = (typeof playerTypes)[number];
+export const playerTypes = ["ally", "enemy"] as const;
+export type PlayerType = (typeof playerTypes)[number];
 
-type GuildBattleSummary = {
+export type GuildBattleSummary = {
   id: string;
   enemy: string;
-  result?: Result;
+  result?: GuildBattleResult;
   topLane: GuildBattleLane;
   middleLane: GuildBattleLane;
   bottomLane: GuildBattleLane;
   battleAt: Date;
 };
 
-type GuildBattleLane = {
+export type GuildBattleLane = {
   id: string;
   guildBattleId: string;
   players: GuildBattlePlayer[];
 };
 
-type GuildBattlePlayer = {
+export type GuildBattlePlayer = {
   id: string;
   name: string;
   strength: string;
