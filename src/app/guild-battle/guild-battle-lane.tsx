@@ -17,6 +17,7 @@ import {
   verticalListSortingStrategy,
 } from "@dnd-kit/sortable";
 import { SortableItem } from "@/features/guid-battle/sortable-item";
+import { cn } from "@/lib/utils";
 
 type Props = {
   playerType: PlayerType;
@@ -54,7 +55,7 @@ export const GuildBattleLane: React.FC<Props> = ({ playerType }) => {
   return (
     <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
       <SortableContext items={items} strategy={verticalListSortingStrategy}>
-        <div className="flex flex-col gap-1">
+        <div className={cn("flex flex-col gap-1 p-2 rounded-md", playerType === "ally" ? "bg-blue-400" : "bg-red-400")}>
           {items.map((item) => (
             <SortableItem key={item.id} {...item} playerType={playerType} />
           ))}
