@@ -18,6 +18,7 @@ import {
 } from "@dnd-kit/sortable";
 import { SortableItem } from "@/features/guid-battle/sortable-item";
 import { cn } from "@/lib/utils";
+import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
 
 type Props = {
   playerType: PlayerType;
