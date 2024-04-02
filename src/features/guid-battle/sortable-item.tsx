@@ -21,7 +21,7 @@ export const SortableItem: React.FC<Props> = ({ id, name, strength, playerType }
   return (
     <div
       className={cn(
-        "flex justify-between items-end gap-4 py-1 px-2 rounded-sm bg-white border-2",
+        "py-1 px-2 rounded-sm bg-white border-2",
         playerType === "ally" ? "border-blue-400" : "border-red-400",
       )}
       ref={setNodeRef}
@@ -29,8 +29,8 @@ export const SortableItem: React.FC<Props> = ({ id, name, strength, playerType }
       {...attributes}
       {...listeners}
     >
-      <div className={cn("text-sm", playerType === "enemy" && "order-2")}>{name}</div>
-      <div className={cn("text-xl", playerType === "enemy" && "order-1")}>{strength}</div>
+      <div className={cn("text-xs")}>{name}</div>
+      <div className={cn()}>{strength}</div>
     </div>
   );
 };
