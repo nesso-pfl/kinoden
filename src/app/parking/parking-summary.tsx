@@ -4,16 +4,7 @@ import { useParking } from "@/features/parking";
 import React from "react";
 import { ParkingSummaryItem } from "./parking-summary-item";
 
-type Parking = {
-  id: string;
-  number: number;
-  owner: string;
-  openAt: Date;
-};
-
-type Props = {
-  parkings: Parking[];
-};
+type Props = {};
 
 export const ParkingSummary: React.FC<Props> = () => {
   const { parkings, parkingServers } = useParking();
