@@ -98,8 +98,8 @@ type Form = z.infer<typeof formSchema>;
 export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers }) => {
   const { control, watch } = useForm<Form>({
     defaultValues: {
-      battleFilter: "both",
-      openWithinHour: [4],
+      battleFilter: "attack-only",
+      openWithinHour: [2],
     },
   });
   const battleFilter = watch("battleFilter");
