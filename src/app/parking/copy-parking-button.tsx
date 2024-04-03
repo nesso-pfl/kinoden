@@ -8,6 +8,7 @@ import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { Slider } from "@/components/ui/slider";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type Props = {
   parkings: Parking[];
@@ -79,19 +80,22 @@ const radioOptions = [
 const formSchema = z.object({
   battleFilter: z.enum(battleFilters),
   openWithinHour: z.number().array(),
+  onelineResult: z.boolean(),
 });
 
 type Form = z.infer<typeof formSchema>;
 
 export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers }) => {
-  const { control, watch } = useForm<Form>({
+  const { control, watch, getValues } = useForm<Form>({
     defaultValues: {
       battleFilter: "attack-only",
       openWithinHour: [1],
+      onelineResult: false,
     },
   });
   const battleFilter = watch("battleFilter");
   const openWithinHour = watch("openWithinHour");
+  const onelineResult = watch("onelineResult");
 
   const parkingTexts = useMemo(
     () => formatParkings(parkings, parkingServers, { battleFilter, openWithinHour }),
@@ -112,7 +116,11 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
           control={control}
           name="battleFilter"
           render={({ field }) => (
-            <RadioGroup className="flex gap-4 mb-4" defaultValue="attack-only" onValueChange={field.onChange}>
+            <RadioGroup
+              className="flex gap-4 mb-4"
+              defaultValue={getValues("battleFilter")}
+              onValueChange={field.onChange}
+            >
               {radioOptions.map((option) => (
                 <div key={option.value} className="flex items-center space-x-2">
                   <RadioGroupItem value={option.value} id={option.value} />
@@ -126,18 +134,34 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
           control={control}
           name="openWithinHour"
           render={({ field }) => (
-            <div className="mb-8 select-none">
+            <div className="mb-4 select-none">
               <Slider className="mb-2" min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} />
               <div className="text-sm">{openWithinHour}&ensp;時間以内に停戦終了のみ</div>
             </div>
           )}
         />
+        <div className="mb-8">
+          <Label className="flex items-center gap-2">
+            <Controller
+              control={control}
+              name="onelineResult"
+              render={({ field }) => <Checkbox checked={field.value} onCheckedChange={field.onChange} />}
+            />
+            <span>結果をまとめる</span>
+          </Label>
+        </div>
         <div className="flex flex-col gap-4">
-          {parkingTexts.map((text) => (
-            <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
-              {text}
+          {onelineResult ? (
+            <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
+              {parkingTexts.join("、")}
             </pre>
-          ))}
+          ) : (
+            parkingTexts.map((text) => (
+              <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
+                {text}
+              </pre>
+            ))
+          )}
           <div>
             <div className="text-xs text-gray-400">※50文字の制限を超える場合、自動的に分割されることがあります</div>
             <div className="text-xs text-gray-400">
