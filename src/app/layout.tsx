@@ -19,6 +19,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <link rel="icon" href="/favicon.ico" sizes="any" />
+      </head>
       <body className={cn(inter.className, "h-screen flex flex-col")}>
         <Header />
         <main className="flex justify-center py-8 flex-1">
