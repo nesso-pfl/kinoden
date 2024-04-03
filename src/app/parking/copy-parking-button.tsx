@@ -64,10 +64,20 @@ const formatParkings = (
           );
         })
         .map((parking) => `${showNumberMap[parking.number]}${dayjs(parking.open_at).format("HH:mm")}`)
-        .join(" ");
+        .join("");
 
-      return parkingTexts ? `【${parkingServer.self ? "🛡️" : ""}${parkingServer.name}】${parkingTexts}` : "";
-    });
+      return parkingTexts ? `${parkingServer.name}${parkingServer.self ? "🛡️" : "⚔"}${parkingTexts}` : "";
+    })
+    .filter(Boolean)
+    .reduce<string[]>((acc, cur) => {
+      if (acc.length === 0) {
+        return [cur];
+      } else if ((acc[acc.length - 1]?.length ?? 0) + cur.length <= 50) {
+        return [...acc.slice(0, -1), `${acc[acc.length - 1]}、${cur}`];
+      } else {
+        return [...acc, cur];
+      }
+    }, []);
 };
 
 const battleFilters = ["both", "attack-only", "defence-only"] as const;
@@ -134,9 +144,14 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             </div>
           )}
         />
-        <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
-          {text}
-        </pre>
+        <div className="flex flex-col gap-4">
+          {text.map((x) => (
+            <pre key={x} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
+              {x}
+            </pre>
+          ))}
+          <div className="text-xs text-gray-400">50文字の制限を超える場合、自動的に分割されることがあります</div>
+        </div>
       </DialogContent>
     </Dialog>
   );
