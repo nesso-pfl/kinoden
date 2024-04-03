@@ -15,11 +15,11 @@ export const ParkingSummary: React.FC<Props> = () => {
       <CopyParkingButton parkings={parkings} parkingServers={parkingServers} />
       <div className="grid grid-cols-[32px_24px_5fr_5fr_5fr]">
         <div className="grid items-center gap-2 col-span-5 grid-cols-subgrid p-2 border-b border-b-gray-400 last:border-0">
-          <div></div>
-          <div>No</div>
-          <div>所有サーバー</div>
-          <div>停戦終了日</div>
-          <div>停戦終了時刻</div>
+          <div />
+          <div className="text-xs md:text-base">No</div>
+          <div className="text-xs md:text-base">所有サーバー</div>
+          <div className="text-xs md:text-base">停戦終了日</div>
+          <div className="text-xs md:text-base">停戦終了時刻</div>
         </div>
         {parkings.map((parking) => (
           <ParkingSummaryItem key={parking.id} {...parking} parkingServers={parkingServers} />

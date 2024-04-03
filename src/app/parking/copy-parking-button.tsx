@@ -128,14 +128,15 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
           control={control}
           name="openWithinHour"
           render={({ field }) => (
-            <div>
+            <div className="mb-8 select-none">
               <Slider min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} /> {openWithinHour}{" "}
               時間以内に停戦終了のみ
             </div>
           )}
         />
-
-        <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">{text}</pre>
+        <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
+          {text}
+        </pre>
       </DialogContent>
     </Dialog>
   );
