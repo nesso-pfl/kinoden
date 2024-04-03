@@ -59,15 +59,24 @@ export const useParking = () => {
     getParkings(setParkings);
     getParkingServers(setParkingServers);
     const sub = channel
-      .on("postgres_changes", { event: "*", schema: "public", table: "parkings" }, (payload) => {
-        console.log(payload);
-      })
+      .on<Omit<Parking, "owner"> & { owner: string }>(
+        "postgres_changes",
+        { event: "UPDATE", schema: "public", table: "parkings" },
+        (payload) => {
+          setParkings((prev) => {
+            const index = prev.findIndex((p) => p.id === payload.new.id);
+            const newOwner = parkingServers.find((parkingServer) => parkingServer.id === payload.new.owner);
+            if (!newOwner) throw new Error("Owner not found");
+            return [...prev.slice(0, index), { ...payload.new, owner: newOwner }, ...prev.slice(index + 1)];
+          });
+        },
+      )
       .subscribe();
 
     return () => {
       sub.unsubscribe();
     };
-  }, []);
+  }, [parkingServers]);
 
   return { parkings, parkingServers };
 };
