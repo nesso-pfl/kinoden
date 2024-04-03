@@ -6,6 +6,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "クイズ一覧 | Kinoden Pfl",
+  description: "クイズが一覧できます。検索やチェックを入れて復習ができます。",
 };
 
 const quizzes = answerJson.quizzes;

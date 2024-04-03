@@ -4,6 +4,7 @@ import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "超域駐騎場 | Kinoden Pfl",
+  description: "超域駐騎場のスケジュール管理ができます。",
 };
 
 export default function Page() {
