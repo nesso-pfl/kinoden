@@ -41,6 +41,14 @@ const getParkings = async (callback: (parkings: Parking[]) => unknown) => {
     });
 };
 
+export const updateParkingOwner = async (id: string, owner: string) => {
+  await supabase.from("parkings").update({ owner }).match({ id });
+};
+
+export const updateParkingOpenAt = async (id: string, open_at: Date) => {
+  await supabase.from("parkings").update({ open_at: open_at.toISOString() }).match({ id });
+};
+
 export const useParking = () => {
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);

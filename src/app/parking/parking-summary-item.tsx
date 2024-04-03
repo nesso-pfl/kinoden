@@ -1,7 +1,7 @@
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Parking, ParkingServer } from "@/features/parking";
+import { Parking, ParkingServer, updateParkingOpenAt, updateParkingOwner } from "@/features/parking";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { ShieldIcon, SwordsIcon } from "lucide-react";
@@ -21,7 +21,7 @@ type Props = Parking & { parkingServers: ParkingServer[] };
 
 export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at, parkingServers }) => {
   const [opened, setOpened] = useState(dayjs(open_at).isBefore(dayjs()));
-  const { control, handleSubmit } = useForm<Form>({
+  const { control, getValues } = useForm<Form>({
     defaultValues: {
       owner: owner.id,
       openDate: new Date(open_at),
@@ -39,19 +39,35 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
     };
   }, [open_at]);
 
-  const handleChangeOwner = useCallback((ownerId: string) => {
-    if (ownerId) {
-      console.log(ownerId);
-    }
-  }, []);
+  const handleChangeOwner = useCallback(
+    async (ownerId: string) => {
+      await updateParkingOwner(id, ownerId);
+    },
+    [id],
+  );
 
-  const handleChangeDate = useCallback((date: Date | undefined) => {}, []);
+  const handleChangeDate = useCallback(
+    async (date: Date | undefined) => {
+      if (!date) return;
+      const [hour, min] = getValues("openTime").split(":").map(Number);
+      if (!hour || !min) return;
 
-  const handleChangeTime = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    if (event.target.value) {
-      console.log(event.target.value);
-    }
-  }, []);
+      await updateParkingOpenAt(id, dayjs(date).hour(hour).minute(min).toDate());
+    },
+    [id, getValues],
+  );
+
+  const handleChangeTime = useCallback(
+    async (event: React.ChangeEvent<HTMLInputElement>) => {
+      if (!event.target.value) return;
+
+      const [hour, min] = event.target.value.split(":").map(Number);
+      if (!hour || !min) return;
+
+      await updateParkingOpenAt(id, dayjs(getValues("openDate")).hour(hour).minute(min).toDate());
+    },
+    [id, getValues],
+  );
 
   return (
     <div className="grid items-center gap-2 col-span-5 grid-cols-subgrid p-2 border-b border-b-gray-400 last:border-0">
@@ -64,7 +80,6 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       </div>
       <div>{number}</div>
       <div>
-        <Input className="hidden md:block" value={owner.name} onChange={() => {}} />
         <Controller
           control={control}
           name="owner"
@@ -76,7 +91,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
                 handleChangeOwner(value);
               }}
             >
-              <SelectTrigger className="md:hidden">
+              <SelectTrigger>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
