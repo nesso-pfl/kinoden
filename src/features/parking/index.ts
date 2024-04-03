@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
 
 export type ParkingServer = {
@@ -52,12 +52,16 @@ export const updateParkingOpenAt = async (id: string, open_at: Date) => {
 export const useParking = () => {
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);
+  const inited = useRef(false);
 
   useEffect(() => {
     const channel = supabase.channel("supabase_realtime");
 
-    getParkings(setParkings);
-    getParkingServers(setParkingServers);
+    if (!inited.current) {
+      getParkings(setParkings);
+      getParkingServers(setParkingServers);
+      inited.current = true;
+    }
     const sub = channel
       .on<Omit<Parking, "owner"> & { owner: string }>(
         "postgres_changes",

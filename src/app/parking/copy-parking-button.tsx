@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import {
   Dialog,
   DialogContent,
@@ -56,11 +56,13 @@ const formatParkings = (
     .filter((server) => (battleFilter === "both" ? true : battleFilter === "attack-only" ? !server.self : server.self))
     .map((parkingServer) => {
       const parkingTexts = parkings
-        .filter(
-          (parking) =>
+        .filter((parking) => {
+          return (
             parking.owner.id === parkingServer.id &&
-            dayjs().isBefore(dayjs(parking.open_at).add(openWithinHour, "hour")),
-        )
+            dayjs().isBefore(dayjs(parking.open_at)) &&
+            dayjs().add(openWithinHour[0]!, "hour").isAfter(dayjs(parking.open_at))
+          );
+        })
         .map((parking) => `${showNumberMap[parking.number]}${dayjs(parking.open_at).format("HH:mm")}`)
         .join(" ");
 
@@ -69,7 +71,6 @@ const formatParkings = (
 };
 
 const battleFilters = ["both", "attack-only", "defence-only"] as const;
-type BattleFilter = (typeof battleFilters)[number];
 
 const radioOptions = [
   { value: "both", label: "両方" },
@@ -93,6 +94,11 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   });
   const battleFilter = watch("battleFilter");
   const openWithinHour = watch("openWithinHour");
+
+  const text = useMemo(
+    () => formatParkings(parkings, parkingServers, { battleFilter, openWithinHour }),
+    [parkings, parkingServers, battleFilter, openWithinHour],
+  );
 
   return (
     <Dialog>
@@ -123,15 +129,13 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
           name="openWithinHour"
           render={({ field }) => (
             <div>
-              <Slider min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} /> {field.value}{" "}
+              <Slider min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} /> {openWithinHour}{" "}
               時間以内に停戦終了のみ
             </div>
           )}
         />
 
-        <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">
-          {formatParkings(parkings, parkingServers, { battleFilter, openWithinHour })}
-        </pre>
+        <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">{text}</pre>
       </DialogContent>
     </Dialog>
   );
