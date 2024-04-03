@@ -99,7 +99,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   const { control, watch } = useForm<Form>({
     defaultValues: {
       battleFilter: "attack-only",
-      openWithinHour: [2],
+      openWithinHour: [1],
     },
   });
   const battleFilter = watch("battleFilter");
