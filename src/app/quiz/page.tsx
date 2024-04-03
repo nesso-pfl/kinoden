@@ -2,6 +2,11 @@ import React from "react";
 import { QuizContainer } from "./quiz-container";
 import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "クイズ | Kinoden Pfl",
+};
 
 export default function Page() {
   return (

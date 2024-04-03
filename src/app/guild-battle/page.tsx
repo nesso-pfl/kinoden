@@ -1,5 +1,10 @@
 import React from "react";
 import { GuildBattleLane } from "./guild-battle-lane";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "菌族乱闘 | Kinoden Pfl",
+};
 
 export default function Page() {
   return (

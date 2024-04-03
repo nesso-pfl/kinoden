@@ -2,6 +2,11 @@ import Image from "next/image";
 import answerJson from "@/answer.json";
 import React from "react";
 import { QuizTable } from "./quiz-table";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "クイズ一覧 | Kinoden Pfl",
+};
 
 const quizzes = answerJson.quizzes;
 

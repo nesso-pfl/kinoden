@@ -1,5 +1,10 @@
 import React from "react";
 import { ParkingSummary } from "./parking-summary";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "超域駐騎場 | Kinoden Pfl",
+};
 
 export default function Page() {
   return (

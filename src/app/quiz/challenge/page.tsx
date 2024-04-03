@@ -1,6 +1,11 @@
 import React, { Suspense } from "react";
 import { Query as Query_ } from "./query";
 import { QuizContainer } from "./quiz-container";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "クイズ | Kinoden Pfl",
+};
 
 export type Query = Query_;
 
