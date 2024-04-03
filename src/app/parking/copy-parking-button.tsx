@@ -105,7 +105,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   const battleFilter = watch("battleFilter");
   const openWithinHour = watch("openWithinHour");
 
-  const text = useMemo(
+  const parkingTexts = useMemo(
     () => formatParkings(parkings, parkingServers, { battleFilter, openWithinHour }),
     [parkings, parkingServers, battleFilter, openWithinHour],
   );
@@ -145,9 +145,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
           )}
         />
         <div className="flex flex-col gap-4">
-          {text.map((x) => (
-            <pre key={x} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
-              {x}
+          {parkingTexts.map((text) => (
+            <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
+              {text}
             </pre>
           ))}
           <div className="text-xs text-gray-400">50文字の制限を超える場合、自動的に分割されることがあります</div>
