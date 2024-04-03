@@ -1,10 +1,11 @@
+import { Button } from "@/components/ui/button";
 import { DatePicker } from "@/components/ui/date-picker";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Parking, ParkingServer, updateParkingOpenAt, updateParkingOwner } from "@/features/parking";
 import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
-import { ShieldIcon, SwordsIcon } from "lucide-react";
+import { PlusIcon, ShieldIcon, SwordsIcon } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useFormContext, Controller } from "react-hook-form";
 import { z } from "zod";
@@ -25,7 +26,7 @@ type Props = Parking & { parkingServers: ParkingServer[] };
 
 export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at, parkingServers }) => {
   const [opened, setOpened] = useState(dayjs(open_at).isBefore(dayjs()));
-  const { control, getValues } = useFormContext<Form>();
+  const { control, getValues, setValue } = useFormContext<Form>();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -75,8 +76,24 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
     [id, getValues, number],
   );
 
+  const handleClickPlusButton = useCallback(async () => {
+    const [hour, min] = getValues(`parkings.${number - 1}.openTime`)
+      .split(":")
+      .map(Number);
+    if (!hour || !min) return;
+
+    const newDate = dayjs(getValues(`parkings.${number - 1}.openDate`))
+      .hour(hour)
+      .minute(min)
+      .add(1, "day")
+      .toDate();
+
+    setValue(`parkings.${number - 1}.openDate`, newDate);
+    await updateParkingOpenAt(id, newDate);
+  }, [id, number, getValues, setValue]);
+
   return (
-    <div className="grid items-center gap-2 col-span-5 grid-cols-subgrid p-2 border-b border-b-gray-400 last:border-0">
+    <div className="grid items-center gap-2 col-span-5 grid-cols-subgrid py-2 md:px-2 border-b border-b-gray-400 last:border-0">
       <div>
         {owner.self ? (
           <ShieldIcon className={cn(opened && "text-red-500")} />
@@ -85,7 +102,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
         )}
       </div>
       <div>{number}</div>
-      <div>
+      <div className="flex gap-1">
         <Controller
           control={control}
           name={`parkings.${number - 1}.owner`}
@@ -111,7 +128,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
           )}
         />
       </div>
-      <div>
+      <div className="flex gap-1">
         <Controller
           control={control}
           name={`parkings.${number - 1}.openDate`}
@@ -125,6 +142,9 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
             />
           )}
         />
+        <Button className="shrink-0" variant="outline" size="icon" onClick={handleClickPlusButton}>
+          <PlusIcon />
+        </Button>
       </div>
       <Controller
         control={control}

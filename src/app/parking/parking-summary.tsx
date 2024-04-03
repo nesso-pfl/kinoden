@@ -47,7 +47,7 @@ export const ParkingSummary: React.FC<Props> = () => {
         <CopyParkingButton parkings={parkings} parkingServers={parkingServers} />
       </div>
       <FormProvider {...form}>
-        <div className="grid grid-cols-[32px_24px_5fr_5fr_5fr]">
+        <div className="grid grid-cols-[32px_24px_4fr_7fr_4fr]">
           <div className="grid items-center gap-2 col-span-5 grid-cols-subgrid p-2 border-b border-b-gray-400 last:border-0">
             <div />
             <div className="text-xs md:text-base">No</div>
