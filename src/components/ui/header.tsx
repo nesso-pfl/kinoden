@@ -10,6 +10,12 @@ export const Header: React.FC = () => {
         <nav className="ml-8">
           <ul className="flex gap-4">
             <li>
+              <Link className="block p-2" href={pagesPath.parking.$url()}>
+                超域駐騎場
+              </Link>
+            </li>
+            {/*
+            <li>
               <Link className="block p-2" href={pagesPath.$url()}>
                 Home
               </Link>
@@ -19,6 +25,7 @@ export const Header: React.FC = () => {
                 Quiz
               </Link>
             </li>
+ */}
           </ul>
         </nav>
       </div>
