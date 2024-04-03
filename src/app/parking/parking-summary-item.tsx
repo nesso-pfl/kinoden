@@ -51,7 +51,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       const [hour, min] = getValues(`parkings.${number - 1}.openTime`)
         .split(":")
         .map(Number);
-      if (!hour || !min) return;
+      if (hour == null || min == null) return;
 
       await updateParkingOpenAt(id, dayjs(date).hour(hour).minute(min).toDate());
     },
@@ -63,7 +63,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       if (!event.target.value) return;
 
       const [hour, min] = event.target.value.split(":").map(Number);
-      if (!hour || !min) return;
+      if (hour == null || min == null) return;
 
       await updateParkingOpenAt(
         id,
@@ -80,7 +80,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
     const [hour, min] = getValues(`parkings.${number - 1}.openTime`)
       .split(":")
       .map(Number);
-    if (!hour || !min) return;
+    if (hour == null || min == null) return;
 
     const newDate = dayjs(getValues(`parkings.${number - 1}.openDate`))
       .hour(hour)
