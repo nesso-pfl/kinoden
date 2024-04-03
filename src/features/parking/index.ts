@@ -49,7 +49,11 @@ export const updateParkingOpenAt = async (id: string, open_at: Date) => {
   await supabase.from("parkings").update({ open_at: open_at.toISOString() }).match({ id });
 };
 
-export const useParking = () => {
+type UseParkingParams = {
+  onInitParkings: (parkings: Parking[]) => unknown;
+  onUpdateParking: (newParking: Parking) => unknown;
+};
+export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams) => {
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);
   const inited = useRef(false);
@@ -58,7 +62,10 @@ export const useParking = () => {
     const channel = supabase.channel("supabase_realtime");
 
     if (!inited.current) {
-      getParkings(setParkings);
+      getParkings((parking) => {
+        setParkings(parking);
+        onInitParkings(parking);
+      });
       getParkingServers(setParkingServers);
       inited.current = true;
     }
@@ -73,6 +80,7 @@ export const useParking = () => {
             if (!newOwner) throw new Error("Owner not found");
             return [...prev.slice(0, index), { ...payload.new, owner: newOwner }, ...prev.slice(index + 1)];
           });
+          onUpdateParking({ ...payload.new, owner: parkingServers.find((server) => server.id === payload.new.owner)! });
         },
       )
       .subscribe();
@@ -80,7 +88,7 @@ export const useParking = () => {
     return () => {
       sub.unsubscribe();
     };
-  }, [parkingServers]);
+  }, [parkingServers, onInitParkings, onUpdateParking]);
 
   return { parkings, parkingServers };
 };

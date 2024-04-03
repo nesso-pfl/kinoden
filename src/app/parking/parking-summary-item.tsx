@@ -6,13 +6,17 @@ import { cn } from "@/lib/utils";
 import dayjs from "dayjs";
 import { ShieldIcon, SwordsIcon } from "lucide-react";
 import React, { useCallback, useEffect, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useFormContext, Controller } from "react-hook-form";
 import { z } from "zod";
 
 const formSchema = z.object({
-  owner: z.string(),
-  openDate: z.date(),
-  openTime: z.string(),
+  parkings: z
+    .object({
+      owner: z.string(),
+      openDate: z.date(),
+      openTime: z.string(),
+    })
+    .array(),
 });
 
 type Form = z.infer<typeof formSchema>;
@@ -21,13 +25,7 @@ type Props = Parking & { parkingServers: ParkingServer[] };
 
 export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at, parkingServers }) => {
   const [opened, setOpened] = useState(dayjs(open_at).isBefore(dayjs()));
-  const { control, getValues } = useForm<Form>({
-    defaultValues: {
-      owner: owner.id,
-      openDate: new Date(open_at),
-      openTime: dayjs(open_at).format("HH:mm"),
-    },
-  });
+  const { control, getValues } = useFormContext<Form>();
 
   useEffect(() => {
     const intervalId = setInterval(() => {
@@ -49,12 +47,14 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
   const handleChangeDate = useCallback(
     async (date: Date | undefined) => {
       if (!date) return;
-      const [hour, min] = getValues("openTime").split(":").map(Number);
+      const [hour, min] = getValues(`parkings.${number - 1}.openTime`)
+        .split(":")
+        .map(Number);
       if (!hour || !min) return;
 
       await updateParkingOpenAt(id, dayjs(date).hour(hour).minute(min).toDate());
     },
-    [id, getValues],
+    [id, getValues, number],
   );
 
   const handleChangeTime = useCallback(
@@ -64,9 +64,15 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       const [hour, min] = event.target.value.split(":").map(Number);
       if (!hour || !min) return;
 
-      await updateParkingOpenAt(id, dayjs(getValues("openDate")).hour(hour).minute(min).toDate());
+      await updateParkingOpenAt(
+        id,
+        dayjs(getValues(`parkings.${number - 1}.openDate`))
+          .hour(hour)
+          .minute(min)
+          .toDate(),
+      );
     },
-    [id, getValues],
+    [id, getValues, number],
   );
 
   return (
@@ -82,7 +88,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       <div>
         <Controller
           control={control}
-          name="owner"
+          name={`parkings.${number - 1}.owner`}
           render={({ field }) => (
             <Select
               value={field.value}
@@ -108,7 +114,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       <div>
         <Controller
           control={control}
-          name="openDate"
+          name={`parkings.${number - 1}.openDate`}
           render={({ field }) => (
             <DatePicker
               value={field.value}
@@ -122,7 +128,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
       </div>
       <Controller
         control={control}
-        name="openTime"
+        name={`parkings.${number - 1}.openTime`}
         render={({ field }) => (
           <Input
             type="time"
