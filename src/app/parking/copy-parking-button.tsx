@@ -138,7 +138,12 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
               {text}
             </pre>
           ))}
-          <div className="text-xs text-gray-400">50文字の制限を超える場合、自動的に分割されることがあります</div>
+          <div>
+            <div className="text-xs text-gray-400">※50文字の制限を超える場合、自動的に分割されることがあります</div>
+            <div className="text-xs text-gray-400">
+              ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
+            </div>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
