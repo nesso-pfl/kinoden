@@ -144,7 +144,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <div className="text-xs md:text-sm">{openWithinHour}&ensp;時間以内に停戦終了のみ</div>
+            <div className="text-xs md:text-sm">
+              <span className="inline-block w-2">{openWithinHour}</span>&ensp;時間以内に停戦終了のみ
+            </div>
             <Controller
               control={control}
               name="openWithinHour"
@@ -203,18 +205,23 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             </div>
           </div>
         </div>
-        <div className="flex flex-col gap-4">
-          {parkingTexts.length === 0 ? null : onelineResult ? (
-            <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
-              {parkingTexts.join("、")}
-            </pre>
-          ) : (
-            parkingTexts.map((text) => (
-              <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
-                {text}
+        <div>
+          <div className="flex flex-col gap-4 min-h-[182px] mb-4">
+            {parkingTexts.length === 0 ? null : onelineResult ? (
+              <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
+                {parkingTexts.join("、")}
               </pre>
-            ))
-          )}
+            ) : (
+              parkingTexts.map((text) => (
+                <pre
+                  key={text}
+                  className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all"
+                >
+                  {text}
+                </pre>
+              ))
+            )}
+          </div>
           <div className="text-xs text-gray-400">
             ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
           </div>
