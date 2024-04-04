@@ -123,7 +123,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
         </DialogHeader>
         <div className="flex flex-col gap-6 mb-4">
           <div className="flex items-center justify-between gap-4">
-            <div className="text-xs md:text-sm">奪取/防衛</div>
+            <div className="text-sm">奪取/防衛</div>
             <Controller
               control={control}
               name="battleFilter"
@@ -144,8 +144,8 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             />
           </div>
           <div className="flex items-center justify-between gap-4">
-            <div className="text-xs md:text-sm">
-              <span className="inline-block w-2">{openWithinHour}</span>&ensp;時間以内に停戦終了のみ
+            <div className="text-sm">
+              <span className="inline-block w-1">{openWithinHour}</span>&ensp;時間以内に停戦終了のみ
             </div>
             <Controller
               control={control}
@@ -164,7 +164,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
                 name="onelineResult"
                 render={({ field }) => <Checkbox checked={field.value} onCheckedChange={field.onChange} />}
               />
-              <span className="text-xs">結果をまとめる</span>
+              <span className="text-sm">結果をまとめる</span>
             </Label>
             <HelpTooltip>
               <span className="block mb-4">
@@ -179,7 +179,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             </HelpTooltip>
           </div>
           <div className="flex gap-4">
-            <span className="text-xs">サーバー</span>
+            <span className="text-sm">サーバー</span>
             <div className="flex gap-4">
               {parkingServers.map((parkingServer) => (
                 <Label key={parkingServer.id} className="flex items-center gap-2">
@@ -199,7 +199,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
                       />
                     )}
                   />
-                  <span className="text-xs">{parkingServer.name}</span>
+                  <span className="text-sm">{parkingServer.name}</span>
                 </Label>
               ))}
             </div>
