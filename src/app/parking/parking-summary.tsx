@@ -38,7 +38,7 @@ export const ParkingSummary: React.FC<Props> = () => {
   const form = useForm<Form>({
     defaultValues: { parkings: [] },
   });
-  const { parkings, parkingServers, channelState, channelError } = useParking({
+  const { parkings, parkingServers } = useParking({
     onInitParkings: (parkings) => form.reset({ parkings: parkings.map(toForm) }),
     onUpdateParking: (newParking) => {
       form.resetField(`parkings.${newParking.number - 1}`, { defaultValue: toForm(newParking) });
@@ -47,12 +47,6 @@ export const ParkingSummary: React.FC<Props> = () => {
 
   return (
     <div>
-      {query.debug === "on" && (
-        <div>
-          ChannelState: {channelState}
-          ChannelError: {channelError?.name} {channelError?.message}
-        </div>
-      )}
       <div className="mb-4">
         <CopyParkingButton parkings={parkings} parkingServers={parkingServers} />
       </div>
