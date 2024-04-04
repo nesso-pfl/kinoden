@@ -178,8 +178,8 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
               このオプションを有効にすると、複数のテキストが一つにまとめられます。
             </HelpTooltip>
           </div>
-          <div className="flex gap-4">
-            <span className="text-sm whitespace-nowrap">サーバー</span>
+          <div className="flex justify-between">
+            <span className="text-sm">サーバー</span>
             <div className="flex gap-4">
               {parkingServers.map((parkingServer) => (
                 <Label key={parkingServer.id} className="flex items-center gap-2">
