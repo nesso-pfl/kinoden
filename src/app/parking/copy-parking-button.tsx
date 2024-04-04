@@ -208,15 +208,12 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
         <div>
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
             {parkingTexts.length === 0 ? null : onelineResult ? (
-              <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
+              <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all min-h-24">
                 {parkingTexts.join("、")}
               </pre>
             ) : (
               parkingTexts.map((text) => (
-                <pre
-                  key={text}
-                  className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all"
-                >
+                <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">
                   {text}
                 </pre>
               ))
