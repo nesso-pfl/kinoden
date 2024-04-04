@@ -83,6 +83,7 @@ const formSchema = z.object({
   battleFilter: z.enum(battleFilters),
   openWithinHour: z.number().array(),
   onelineResult: z.boolean(),
+  servers: z.array(z.string()),
 });
 
 type Form = z.infer<typeof formSchema>;
@@ -93,15 +94,22 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
       battleFilter: "attack-only",
       openWithinHour: [1],
       onelineResult: false,
+      servers: parkingServers.map((server) => server.id),
     },
   });
   const battleFilter = watch("battleFilter");
   const openWithinHour = watch("openWithinHour");
   const onelineResult = watch("onelineResult");
+  const servers = watch("servers");
 
   const parkingTexts = useMemo(
-    () => formatParkings(parkings, parkingServers, { battleFilter, openWithinHour }),
-    [parkings, parkingServers, battleFilter, openWithinHour],
+    () =>
+      formatParkings(
+        parkings,
+        parkingServers.filter((parkingServer) => servers.includes(parkingServer.id)),
+        { battleFilter, openWithinHour },
+      ),
+    [parkings, parkingServers, servers, battleFilter, openWithinHour],
   );
 
   return (
@@ -167,6 +175,32 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
               </span>
               このオプションを有効にすると、複数のテキストが一つにまとめられます。
             </HelpTooltip>
+          </div>
+          <div className="flex gap-4">
+            <span className="text-xs">サーバー</span>
+            <div className="flex gap-4">
+              {parkingServers.map((parkingServer) => (
+                <Label key={parkingServer.id} className="flex items-center gap-2">
+                  <Controller
+                    control={control}
+                    name="servers"
+                    render={({ field }) => (
+                      <Checkbox
+                        checked={field.value.some((server) => server === parkingServer.id)}
+                        onCheckedChange={(checked) => {
+                          if (checked) {
+                            field.onChange([...field.value, parkingServer.id]);
+                          } else {
+                            field.onChange(field.value.filter((server) => server !== parkingServer.id));
+                          }
+                        }}
+                      />
+                    )}
+                  />
+                  <span className="text-xs">{parkingServer.name}</span>
+                </Label>
+              ))}
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4">

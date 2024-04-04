@@ -48,7 +48,11 @@ export const ParkingSummary: React.FC<Props> = () => {
   return (
     <div>
       <div className="mb-4">
-        <CopyParkingButton parkings={parkings} parkingServers={parkingServers} />
+        <CopyParkingButton
+          key={parkingServers.map((s) => s.id).join("")}
+          parkings={parkings}
+          parkingServers={parkingServers}
+        />
       </div>
       <FormProvider {...form}>
         <div className="grid grid-cols-[32px_24px_4fr_7fr_4fr]">
