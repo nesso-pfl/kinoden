@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
 import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
 import { setErrorMap } from "zod";
@@ -58,33 +58,41 @@ type UseParkingParams = {
 export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams) => {
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);
+  const [loading, setLoading] = useState(true);
   const inited = useRef(false);
-
-  useEffect(() => {
-    const initParkings = () => {
+  const initParkings = useCallback(async () => {
+    setLoading(true);
+    await Promise.all([
       getParkings((parking) => {
         setParkings(parking);
         onInitParkings(parking);
-      });
-      getParkingServers(setParkingServers);
-    };
+      }),
+      getParkingServers(setParkingServers),
+    ]);
+    setLoading(false);
+  }, [onInitParkings]);
 
+  useEffect(() => {
+    window.addEventListener("online", initParkings);
+
+    return () => {
+      window.removeEventListener("online", initParkings);
+    };
+  }, [initParkings]);
+
+  useEffect(() => {
     document.addEventListener("visibilitychange", initParkings);
 
     return () => {
       document.removeEventListener("visibilitychange", initParkings);
     };
-  }, [onInitParkings]);
+  }, [initParkings]);
 
   useEffect(() => {
     const channel = supabase.channel("supabase_realtime");
 
     if (!inited.current) {
-      getParkings((parking) => {
-        setParkings(parking);
-        onInitParkings(parking);
-      });
-      getParkingServers(setParkingServers);
+      initParkings();
       inited.current = true;
     }
     const sub = channel
@@ -106,7 +114,7 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
     return () => {
       sub.unsubscribe();
     };
-  }, [parkingServers, onInitParkings, onUpdateParking]);
+  }, [parkingServers, onInitParkings, initParkings, onUpdateParking]);
 
-  return { parkings, parkingServers };
+  return { parkings, parkingServers, loading };
 };

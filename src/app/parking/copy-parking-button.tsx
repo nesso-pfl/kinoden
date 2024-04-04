@@ -16,6 +16,7 @@ import { CheckIcon, CopyIcon } from "lucide-react";
 type Props = {
   parkings: Parking[];
   parkingServers: ParkingServer[];
+  loading: boolean;
 };
 
 const showNumberMap: Record<number, string> = {
@@ -90,7 +91,7 @@ const formSchema = z.object({
 
 type Form = z.infer<typeof formSchema>;
 
-export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers }) => {
+export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, loading }) => {
   const [open, setOpen] = useState(false);
   const { control, watch, getValues } = useForm<Form>({
     defaultValues: {
@@ -133,7 +134,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
 
   return (
     <>
-      <Button onClick={() => setOpen(true)}>スケジュールをコピー</Button>
+      <Button disabled={loading} onClick={() => setOpen(true)}>
+        スケジュールをコピー
+      </Button>
       <Dialog open={open} onClose={() => setOpen(false)}>
         <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">
           スケジュールをコピー

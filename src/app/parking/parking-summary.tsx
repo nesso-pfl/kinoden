@@ -7,6 +7,7 @@ import { CopyParkingButton } from "./copy-parking-button";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import dayjs from "dayjs";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const formSchema = z.object({
   parkings: z
@@ -34,7 +35,7 @@ export const ParkingSummary: React.FC<Props> = () => {
   const form = useForm<Form>({
     defaultValues: { parkings: [] },
   });
-  const { parkings, parkingServers } = useParking({
+  const { parkings, parkingServers, loading } = useParking({
     onInitParkings: (parkings) => form.reset({ parkings: parkings.map(toForm) }),
     onUpdateParking: (newParking) => {
       form.resetField(`parkings.${newParking.number - 1}`, { defaultValue: toForm(newParking) });
@@ -46,6 +47,7 @@ export const ParkingSummary: React.FC<Props> = () => {
       <div className="mb-4">
         <CopyParkingButton
           key={parkingServers.map((s) => s.id).join("")}
+          loading={loading}
           parkings={parkings}
           parkingServers={parkingServers}
         />
@@ -59,9 +61,24 @@ export const ParkingSummary: React.FC<Props> = () => {
             <div className="text-xs md:text-base">停戦終了日</div>
             <div className="text-xs md:text-base">停戦終了時刻</div>
           </div>
-          {parkings.map((parking) => (
-            <ParkingSummaryItem key={parking.id} {...parking} parkingServers={parkingServers} />
-          ))}
+          {loading
+            ? [
+                Array.from({ length: 12 }).map((_, index) => (
+                  <div
+                    key={index}
+                    className="grid items-center gap-2 col-span-5 grid-cols-subgrid py-2 md:px-2 border-b border-b-gray-400 last:border-0"
+                  >
+                    <Skeleton className="h-[24px] w-[24px]" />
+                    <Skeleton className="h-[24px] w-[16px]" />
+                    <Skeleton className="h-[40px] w-full" />
+                    <Skeleton className="h-[40px] w-full" />
+                    <Skeleton className="h-[40px] w-full" />
+                  </div>
+                )),
+              ]
+            : parkings.map((parking) => (
+                <ParkingSummaryItem key={parking.id} {...parking} parkingServers={parkingServers} />
+              ))}
         </div>
       </FormProvider>
     </div>
