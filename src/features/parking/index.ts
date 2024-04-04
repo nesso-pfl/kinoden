@@ -61,6 +61,22 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
   const inited = useRef(false);
 
   useEffect(() => {
+    const initParkings = () => {
+      getParkings((parking) => {
+        setParkings(parking);
+        onInitParkings(parking);
+      });
+      getParkingServers(setParkingServers);
+    };
+
+    document.addEventListener("visibilitychange", initParkings);
+
+    return () => {
+      document.removeEventListener("visibilitychange", initParkings);
+    };
+  }, [onInitParkings]);
+
+  useEffect(() => {
     const channel = supabase.channel("supabase_realtime");
 
     if (!inited.current) {
