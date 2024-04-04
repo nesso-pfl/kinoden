@@ -20,7 +20,7 @@ export const HelpTooltip: React.FC<HelpTooltipProps> = ({ children }) => {
         >
           <HelpCircleIcon />
         </TooltipTrigger>
-        <TooltipContent>
+        <TooltipContent className="max-w-sm md:max-w-none">
           <p>{children}</p>
         </TooltipContent>
       </Tooltip>

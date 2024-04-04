@@ -9,6 +9,7 @@ import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
+import { HelpTooltip } from "@/components/ui/help-tooltip";
 
 type Props = {
   parkings: Parking[];
@@ -52,6 +53,7 @@ const formatParkings = (
             dayjs().add(openWithinHour[0]!, "hour").isAfter(dayjs(parking.open_at))
           );
         })
+        .toSorted((parking1, parking2) => (dayjs(parking1.open_at).isAfter(dayjs(parking2.open_at)) ? 1 : -1))
         .map((parking) => `${showNumberMap[parking.number]}${dayjs(parking.open_at).format("HH:mm")}`)
         .join("");
 
@@ -111,62 +113,70 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
         <DialogHeader>
           <DialogTitle>スケジュールをコピー</DialogTitle>
         </DialogHeader>
-        <div className="text-lg text-start">フィルタ</div>
-        <Controller
-          control={control}
-          name="battleFilter"
-          render={({ field }) => (
-            <RadioGroup
-              className="flex gap-4 mb-4"
-              defaultValue={getValues("battleFilter")}
-              onValueChange={field.onChange}
-            >
-              {radioOptions.map((option) => (
-                <div key={option.value} className="flex items-center space-x-2">
-                  <RadioGroupItem value={option.value} id={option.value} />
-                  <Label htmlFor={option.value}>{option.label}</Label>
-                </div>
-              ))}
-            </RadioGroup>
-          )}
-        />
-        <Controller
-          control={control}
-          name="openWithinHour"
-          render={({ field }) => (
-            <div className="mb-4 select-none">
-              <Slider className="mb-2" min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} />
-              <div className="text-sm">{openWithinHour}&ensp;時間以内に停戦終了のみ</div>
-            </div>
-          )}
-        />
-        <div className="mb-8">
-          <Label className="flex items-center gap-2">
+        <div className="flex flex-col gap-6 mb-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-xs md:text-sm">奪取/防衛</div>
             <Controller
               control={control}
-              name="onelineResult"
-              render={({ field }) => <Checkbox checked={field.value} onCheckedChange={field.onChange} />}
+              name="battleFilter"
+              render={({ field }) => (
+                <RadioGroup
+                  className="flex items-center gap-4"
+                  defaultValue={getValues("battleFilter")}
+                  onValueChange={field.onChange}
+                >
+                  {radioOptions.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={option.value} id={option.value} />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
             />
-            <span>結果をまとめる</span>
-          </Label>
+          </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-xs md:text-sm">{openWithinHour}&ensp;時間以内に停戦終了のみ</div>
+            <Controller
+              control={control}
+              name="openWithinHour"
+              render={({ field }) => (
+                <div className="flex-1">
+                  <Slider className="" min={1} max={4} step={1} value={field.value} onValueChange={field.onChange} />
+                </div>
+              )}
+            />
+          </div>
+          <div className="flex gap-4">
+            <Label className="flex items-center gap-2">
+              <Controller
+                control={control}
+                name="onelineResult"
+                render={({ field }) => <Checkbox checked={field.value} onCheckedChange={field.onChange} />}
+              />
+              <span className="text-xs">結果をまとめる</span>
+            </Label>
+            <HelpTooltip>
+              キノコ伝説チャットの最大文字数の50文字を超えないように、デフォルトでテキストは分割されます。
+              <br />
+              このオプションを有効にすると、結果が一つのテキストにまとめられます。
+            </HelpTooltip>
+          </div>
         </div>
         <div className="flex flex-col gap-4">
-          {onelineResult ? (
-            <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all min-h-24">
+          {parkingTexts.length === 0 ? null : onelineResult ? (
+            <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all min-h-24">
               {parkingTexts.join("、")}
             </pre>
           ) : (
             parkingTexts.map((text) => (
-              <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all select-all">
+              <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">
                 {text}
               </pre>
             ))
           )}
-          <div>
-            <div className="text-xs text-gray-400">※50文字の制限を超える場合、自動的に分割されることがあります</div>
-            <div className="text-xs text-gray-400">
-              ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
-            </div>
+          <div className="text-xs text-gray-400">
+            ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
           </div>
         </div>
       </DialogContent>
