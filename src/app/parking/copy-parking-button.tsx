@@ -73,7 +73,7 @@ const formatParkings = (
 
 const battleFilters = ["both", "attack-only", "defence-only"] as const;
 
-const radioOptions = [
+const battleFilterOptions = [
   { value: "both", label: "両方" },
   { value: "attack-only", label: "奪取" },
   { value: "defence-only", label: "防衛" },
@@ -133,7 +133,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
                   defaultValue={getValues("battleFilter")}
                   onValueChange={field.onChange}
                 >
-                  {radioOptions.map((option) => (
+                  {battleFilterOptions.map((option) => (
                     <div key={option.value} className="flex items-center space-x-2">
                       <RadioGroupItem value={option.value} id={option.value} />
                       <Label htmlFor={option.value}>{option.label}</Label>
