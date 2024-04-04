@@ -1,5 +1,5 @@
-import React, { useMemo } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import React, { useMemo, useState } from "react";
+import { DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Parking, ParkingServer } from "@/features/parking";
 import dayjs from "dayjs";
@@ -10,6 +10,7 @@ import { useForm, Controller } from "react-hook-form";
 import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HelpTooltip } from "@/components/ui/help-tooltip";
+import { Dialog } from "@/components/ui/custom-dialog";
 
 type Props = {
   parkings: Parking[];
@@ -89,6 +90,7 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>;
 
 export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers }) => {
+  const [open, setOpen] = useState(false);
   const { control, watch, getValues } = useForm<Form>({
     defaultValues: {
       battleFilter: "attack-only",
@@ -113,14 +115,12 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   );
 
   return (
-    <Dialog>
-      <Button asChild>
-        <DialogTrigger>スケジュールをコピー</DialogTrigger>
-      </Button>
-      <DialogContent>
-        <DialogHeader>
-          <DialogTitle>スケジュールをコピー</DialogTitle>
-        </DialogHeader>
+    <>
+      <Button onClick={() => setOpen(true)}>スケジュールをコピー</Button>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">
+          スケジュールをコピー
+        </h2>
         <div className="flex flex-col gap-6 mb-4">
           <div className="flex items-center justify-between gap-4">
             <div className="text-sm">奪取/防衛</div>
@@ -226,7 +226,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
           </div>
         </div>
-      </DialogContent>
-    </Dialog>
+      </Dialog>
+    </>
   );
 };
