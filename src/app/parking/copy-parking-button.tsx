@@ -165,7 +165,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
                 その場合は、停戦終了のフィルタをかけて調節してください。
                 <br />
               </span>
-              このオプションを有効にすると、結果が一つのテキストにまとめられます。
+              このオプションを有効にすると、複数のテキストが一つにまとめられます。
             </HelpTooltip>
           </div>
         </div>
