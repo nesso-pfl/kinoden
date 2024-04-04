@@ -11,7 +11,7 @@ export const Header: React.FC = () => {
           <ul className="flex gap-4">
             <li>
               <Link className="block p-2" href={pagesPath.parking.$url()}>
-                超域駐騎場
+                越域駐騎場
               </Link>
             </li>
             {/*
