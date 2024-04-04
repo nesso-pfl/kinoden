@@ -1,5 +1,4 @@
-import React, { useMemo, useState } from "react";
-import { DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Parking, ParkingServer } from "@/features/parking";
 import dayjs from "dayjs";
@@ -11,6 +10,8 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HelpTooltip } from "@/components/ui/help-tooltip";
 import { Dialog } from "@/components/ui/custom-dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { CopyIcon } from "lucide-react";
 
 type Props = {
   parkings: Parking[];
@@ -103,6 +104,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   const openWithinHour = watch("openWithinHour");
   const onelineResult = watch("onelineResult");
   const servers = watch("servers");
+  const { toast: copyToast } = useToast();
 
   const parkingTexts = useMemo(
     () =>
@@ -112,6 +114,14 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
         { battleFilter, openWithinHour },
       ),
     [parkings, parkingServers, servers, battleFilter, openWithinHour],
+  );
+
+  const handleClickCopy = useCallback(
+    (parkingText: string) => () => {
+      window.navigator.clipboard.writeText(parkingText);
+      copyToast({ description: "コピーしました" });
+    },
+    [copyToast],
   );
 
   return (
@@ -208,12 +218,28 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
         <div>
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
             {parkingTexts.length === 0 ? null : onelineResult ? (
-              <pre className="border border-gray-400 rounded-md p-2 whitespace-normal break-all min-h-24">
+              <pre className="relative border border-gray-400 rounded-md p-2 whitespace-normal break-all min-h-24">
+                <Button
+                  className="absolute top-1 right-1 opacity-60 w-8 h-8"
+                  size="icon"
+                  variant="outline"
+                  onClick={handleClickCopy(parkingTexts.join("、"))}
+                >
+                  <CopyIcon />
+                </Button>
                 {parkingTexts.join("、")}
               </pre>
             ) : (
               parkingTexts.map((text) => (
-                <pre key={text} className="border border-gray-400 rounded-md p-2 whitespace-normal break-all">
+                <pre key={text} className="relative border border-gray-400 rounded-md p-2 whitespace-normal break-all">
+                  <Button
+                    className="absolute top-1 right-1 opacity-60 w-8 h-8"
+                    size="icon"
+                    variant="outline"
+                    onClick={handleClickCopy(text)}
+                  >
+                    <CopyIcon />
+                  </Button>
                   {text}
                 </pre>
               ))
