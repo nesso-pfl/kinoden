@@ -1,5 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
+import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
+import { setErrorMap } from "zod";
 
 export type ParkingServer = {
   id: string;
@@ -57,6 +59,8 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);
   const inited = useRef(false);
+  const [channelState, setChannelState] = useState<`${REALTIME_SUBSCRIBE_STATES}`>("CLOSED");
+  const [channelError, setChannelError] = useState<Error>();
 
   useEffect(() => {
     const channel = supabase.channel("supabase_realtime");
@@ -83,12 +87,15 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
           onUpdateParking({ ...payload.new, owner: parkingServers.find((server) => server.id === payload.new.owner)! });
         },
       )
-      .subscribe();
+      .subscribe((state, error) => {
+        setChannelState(state);
+        setChannelError(error);
+      });
 
     return () => {
       sub.unsubscribe();
     };
   }, [parkingServers, onInitParkings, onUpdateParking]);
 
-  return { parkings, parkingServers };
+  return { parkings, parkingServers, channelState, channelError };
 };

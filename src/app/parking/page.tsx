@@ -1,6 +1,9 @@
 import React from "react";
 import { ParkingSummary } from "./parking-summary";
 import { Metadata } from "next";
+import { Query } from "./query";
+
+export type OptionalQuery = Query;
 
 export const metadata: Metadata = {
   title: "越域駐騎場 | Kinoden Pfl",

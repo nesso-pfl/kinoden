@@ -1,12 +1,14 @@
 "use client";
 
 import { Parking, useParking } from "@/features/parking";
-import React from "react";
+import React, { useMemo } from "react";
 import { ParkingSummaryItem } from "./parking-summary-item";
 import { CopyParkingButton } from "./copy-parking-button";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import dayjs from "dayjs";
+import { useSearchParams } from "next/navigation";
+import { querySchema } from "./query";
 
 const formSchema = z.object({
   parkings: z
@@ -31,10 +33,12 @@ const toForm = (parking: Parking) => {
 type Props = {};
 
 export const ParkingSummary: React.FC<Props> = () => {
+  const searchParams = useSearchParams();
+  const query = useMemo(() => querySchema.parse(Object.fromEntries(searchParams.entries())), [searchParams]);
   const form = useForm<Form>({
     defaultValues: { parkings: [] },
   });
-  const { parkings, parkingServers } = useParking({
+  const { parkings, parkingServers, channelState, channelError } = useParking({
     onInitParkings: (parkings) => form.reset({ parkings: parkings.map(toForm) }),
     onUpdateParking: (newParking) => {
       form.resetField(`parkings.${newParking.number - 1}`, { defaultValue: toForm(newParking) });
@@ -43,6 +47,12 @@ export const ParkingSummary: React.FC<Props> = () => {
 
   return (
     <div>
+      {query.debug === "on" && (
+        <div>
+          ChannelState: {channelState}
+          ChannelError: {channelError?.name} {channelError?.message}
+        </div>
+      )}
       <div className="mb-4">
         <CopyParkingButton parkings={parkings} parkingServers={parkingServers} />
       </div>
