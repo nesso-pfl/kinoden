@@ -11,7 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { HelpTooltip } from "@/components/ui/help-tooltip";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useToast } from "@/components/ui/use-toast";
-import { CopyIcon } from "lucide-react";
+import { CheckIcon, CopyIcon } from "lucide-react";
 
 type Props = {
   parkings: Parking[];
@@ -119,7 +119,14 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
   const handleClickCopy = useCallback(
     (parkingText: string) => () => {
       window.navigator.clipboard.writeText(parkingText);
-      copyToast({ description: "コピーしました" });
+      copyToast({
+        description: (
+          <div className="flex gap-2">
+            <CheckIcon className="text-green-400" /> コピーしました
+          </div>
+        ),
+        duration: 1000,
+      });
     },
     [copyToast],
   );
@@ -244,9 +251,6 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
                 </pre>
               ))
             )}
-          </div>
-          <div className="text-xs text-gray-400">
-            ※スマートフォンの場合コピー範囲がわかりづらいことがあります。何度かテキストをタップすると「コピー」メニューが出ます。
           </div>
         </div>
       </Dialog>
