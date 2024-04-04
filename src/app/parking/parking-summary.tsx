@@ -1,14 +1,12 @@
 "use client";
 
 import { Parking, useParking } from "@/features/parking";
-import React, { useMemo } from "react";
+import React from "react";
 import { ParkingSummaryItem } from "./parking-summary-item";
 import { CopyParkingButton } from "./copy-parking-button";
 import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import dayjs from "dayjs";
-import { useSearchParams } from "next/navigation";
-import { querySchema } from "./query";
 
 const formSchema = z.object({
   parkings: z
@@ -33,8 +31,6 @@ const toForm = (parking: Parking) => {
 type Props = {};
 
 export const ParkingSummary: React.FC<Props> = () => {
-  const searchParams = useSearchParams();
-  const query = useMemo(() => querySchema.parse(Object.fromEntries(searchParams.entries())), [searchParams]);
   const form = useForm<Form>({
     defaultValues: { parkings: [] },
   });
