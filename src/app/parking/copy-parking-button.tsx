@@ -157,8 +157,14 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
               <span className="text-xs">結果をまとめる</span>
             </Label>
             <HelpTooltip>
-              キノコ伝説チャットの最大文字数の50文字を超えないように、デフォルトでテキストは分割されます。
-              <br />
+              <span className="block mb-4">
+                キノコ伝説チャットの最大文字数の50文字を超えないように、デフォルトでテキストは分割されます。
+                <br />
+                ただし、１サーバーが8つ以上の駐騎場を持つ場合、分割されず文字数が50を超えるのでチャットに貼れません。
+                <br />
+                その場合は、停戦終了のフィルタをかけて調節してください。
+                <br />
+              </span>
               このオプションを有効にすると、結果が一つのテキストにまとめられます。
             </HelpTooltip>
           </div>
