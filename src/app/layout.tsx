@@ -4,6 +4,7 @@ import "./globals.css";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/toaster";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -28,6 +29,7 @@ export default function RootLayout({
           <div className="w-full max-w-7xl px-4">{children}</div>
         </main>
         <Footer />
+        <Toaster />
       </body>
     </html>
   );
