@@ -179,7 +179,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers })
             </HelpTooltip>
           </div>
           <div className="flex gap-4">
-            <span className="text-sm">サーバー</span>
+            <span className="text-sm whitespace-nowrap">サーバー</span>
             <div className="flex gap-4">
               {parkingServers.map((parkingServer) => (
                 <Label key={parkingServer.id} className="flex items-center gap-2">
