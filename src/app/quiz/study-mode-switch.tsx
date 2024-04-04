@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Switch } from "@/components/ui/switch";
-import { HelpTooltip } from "./help-tooltip";
+import { HelpTooltip } from "../../components/ui/help-tooltip";
 
 type Props = {
   value: boolean;
