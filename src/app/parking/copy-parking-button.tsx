@@ -40,12 +40,14 @@ const formatParkings = (
   {
     battleFilter,
     openWithinHour,
+    format,
   }: {
     battleFilter: "both" | "attack-only" | "defence-only";
     openWithinHour: number[];
+    format: "default" | "oneline" | "server";
   },
-) => {
-  return parkingServers
+): string[] => {
+  const texts = parkingServers
     .filter((server) => (battleFilter === "both" ? true : battleFilter === "attack-only" ? !server.self : server.self))
     .map((parkingServer) => {
       const parkingTexts = parkings
@@ -62,16 +64,20 @@ const formatParkings = (
 
       return parkingTexts ? `${parkingServer.name}${parkingServer.self ? "🛡️" : "⚔"}${parkingTexts}` : "";
     })
-    .filter(Boolean)
-    .reduce<string[]>((acc, cur) => {
-      if (acc.length === 0) {
-        return [cur];
-      } else if ((acc[acc.length - 1]?.length ?? 0) + cur.length <= 50) {
-        return [...acc.slice(0, -1), `${acc[acc.length - 1]}、${cur}`];
-      } else {
-        return [...acc, cur];
-      }
-    }, []);
+    .filter(Boolean);
+  return format === "server"
+    ? texts
+    : format === "oneline"
+      ? [texts.join("、")]
+      : texts.reduce<string[]>((acc, cur) => {
+          if (acc.length === 0) {
+            return [cur];
+          } else if ((acc[acc.length - 1]?.length ?? 0) + cur.length <= 50) {
+            return [...acc.slice(0, -1), `${acc[acc.length - 1]}、${cur}`];
+          } else {
+            return [...acc, cur];
+          }
+        }, []);
 };
 
 const battleFilters = ["both", "attack-only", "defence-only"] as const;
@@ -82,10 +88,18 @@ const battleFilterOptions = [
   { value: "defence-only", label: "防衛" },
 ];
 
+const formats = ["default", "oneline", "server"] as const;
+
+const formatOptions = [
+  { value: "default", label: "デフォルト" },
+  { value: "server", label: "サーバー毎" },
+  { value: "oneline", label: "一纏め" },
+];
+
 const formSchema = z.object({
   battleFilter: z.enum(battleFilters),
   openWithinHour: z.number().array(),
-  onelineResult: z.boolean(),
+  format: z.enum(formats),
   servers: z.array(z.string()),
 });
 
@@ -97,13 +111,13 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
     defaultValues: {
       battleFilter: "attack-only",
       openWithinHour: [1],
-      onelineResult: false,
+      format: "default",
       servers: parkingServers.map((server) => server.id),
     },
   });
   const battleFilter = watch("battleFilter");
   const openWithinHour = watch("openWithinHour");
-  const onelineResult = watch("onelineResult");
+  const format = watch("format");
   const servers = watch("servers");
   const { toast: copyToast } = useToast();
 
@@ -112,9 +126,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
       formatParkings(
         parkings,
         parkingServers.filter((parkingServer) => servers.includes(parkingServer.id)),
-        { battleFilter, openWithinHour },
+        { battleFilter, openWithinHour, format },
       ),
-    [parkings, parkingServers, servers, battleFilter, openWithinHour],
+    [parkings, parkingServers, servers, battleFilter, openWithinHour, format],
   );
 
   const handleClickCopy = useCallback(
@@ -177,27 +191,6 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
               )}
             />
           </div>
-          <div className="flex gap-4">
-            <Label className="flex items-center gap-2">
-              <Controller
-                control={control}
-                name="onelineResult"
-                render={({ field }) => <Checkbox checked={field.value} onCheckedChange={field.onChange} />}
-              />
-              <span className="text-sm">結果をまとめる</span>
-            </Label>
-            <HelpTooltip>
-              <span className="block mb-4">
-                キノコ伝説チャットの最大文字数の50文字を超えないように、デフォルトでテキストは分割されます。
-                <br />
-                ただし、１サーバーが8つ以上の駐騎場を所有する場合、分割されず文字数が50を超えるのでチャットに貼れません。
-                <br />
-                その場合は、停戦終了のフィルタをかけて調節してください。
-                <br />
-              </span>
-              このオプションを有効にすると、複数のテキストが一つにまとめられます。
-            </HelpTooltip>
-          </div>
           <div className="flex justify-between">
             <span className="text-sm">サーバー</span>
             <div className="flex gap-4">
@@ -224,22 +217,48 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
               ))}
             </div>
           </div>
+          <div className="flex items-center justify-between gap-4">
+            <div className="flex items-center gap-2">
+              <span className="text-sm">出力</span>
+              <HelpTooltip>
+                <span className="grid grid-cols-[auto_1fr] mb-4">
+                  <span className="font-bold text-right">デフォルト:&ensp;</span>
+                  <span>キノコ伝説チャットの最大文字数である50文字を超えないようにテキストを分割します。</span>
+                  <span className="font-bold text-right">サーバー毎:&ensp;</span>
+                  <span>サーバー毎にテキストを分割します。</span>
+                  <span className="font-bold text-right">一纏め:&ensp;</span>
+                  <span>テキストを分割しません。</span>
+                </span>
+                <span className="text-xs text-gray-700">
+                  ※1つのサーバーが8つ以上の駐騎場を所有する場合、テキストは分割されず文字数が50を超えるのでチャットに貼れません。
+                  <br />
+                  その場合は、停戦終了のフィルタをかけて調節してください。
+                </span>
+              </HelpTooltip>
+            </div>
+            <Controller
+              control={control}
+              name="format"
+              render={({ field }) => (
+                <RadioGroup
+                  className="flex flex-wrap items-center gap-4"
+                  defaultValue={getValues("format")}
+                  onValueChange={field.onChange}
+                >
+                  {formatOptions.map((option) => (
+                    <div key={option.value} className="flex items-center space-x-2">
+                      <RadioGroupItem value={option.value} id={option.value} />
+                      <Label htmlFor={option.value}>{option.label}</Label>
+                    </div>
+                  ))}
+                </RadioGroup>
+              )}
+            />
+          </div>
         </div>
         <div>
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
-            {parkingTexts.length === 0 ? null : onelineResult ? (
-              <pre className="relative border border-gray-400 rounded-md p-2 whitespace-normal break-all min-h-24">
-                <Button
-                  className="absolute top-1 right-1 opacity-60 w-8 h-8"
-                  size="icon"
-                  variant="outline"
-                  onClick={handleClickCopy(parkingTexts.join("、"))}
-                >
-                  <CopyIcon />
-                </Button>
-                {parkingTexts.join("、")}
-              </pre>
-            ) : (
+            {parkingTexts.length > 0 &&
               parkingTexts.map((text) => (
                 <pre key={text} className="relative border border-gray-400 rounded-md p-2 whitespace-normal break-all">
                   <Button
@@ -252,8 +271,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                   </Button>
                   {text}
                 </pre>
-              ))
-            )}
+              ))}
           </div>
         </div>
       </Dialog>
