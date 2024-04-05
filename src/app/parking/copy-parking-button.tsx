@@ -155,7 +155,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
         <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">
           スケジュールをコピー
         </h2>
-        <div className="flex flex-col gap-6 mb-4">
+        <div className="flex flex-col gap-6 my-4">
           <div className="flex items-center justify-between gap-4">
             <div className="text-sm">奪取/防衛</div>
             <Controller
@@ -217,9 +217,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
               ))}
             </div>
           </div>
-          <div className="flex items-center justify-between gap-4">
+          <div className="flex items-start justify-between gap-4">
             <div className="flex items-center gap-2">
-              <span className="text-sm">出力</span>
+              <span className="text-sm whitespace-nowrap">出力</span>
               <HelpTooltip>
                 <span className="grid grid-cols-[auto_1fr] mb-4">
                   <span className="font-bold text-right">デフォルト:&ensp;</span>
@@ -241,12 +241,12 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
               name="format"
               render={({ field }) => (
                 <RadioGroup
-                  className="flex flex-wrap items-center gap-4"
+                  className="flex flex-wrap items-center justify-end gap-x-4"
                   defaultValue={getValues("format")}
                   onValueChange={field.onChange}
                 >
                   {formatOptions.map((option) => (
-                    <div key={option.value} className="flex items-center space-x-2">
+                    <div key={option.value} className="flex items-center space-x-2 my-1">
                       <RadioGroupItem value={option.value} id={option.value} />
                       <Label htmlFor={option.value}>{option.label}</Label>
                     </div>
