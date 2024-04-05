@@ -105,7 +105,9 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
                   <SelectContent>
                     {parkings.map((parking) => (
                       <SelectItem key={parking.id} value={parking.id}>
-                        {showNumberMap[parking.number]}({parking.owner.name})
+                        {parking.owner.name}
+                        {showNumberMap[parking.number]}
+                        {dayjs(parking.open_at).format("HH:mm")}
                       </SelectItem>
                     ))}
                   </SelectContent>
