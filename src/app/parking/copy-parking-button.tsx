@@ -92,8 +92,8 @@ const formats = ["default", "oneline", "server"] as const;
 
 const formatOptions = [
   { value: "default", label: "デフォルト" },
-  { value: "server", label: "サーバー毎" },
-  { value: "oneline", label: "一纏め" },
+  { value: "server", label: "サーバーごと" },
+  { value: "oneline", label: "ひとまとめ" },
 ];
 
 const formSchema = z.object({
@@ -224,9 +224,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                 <span className="grid grid-cols-[auto_1fr] mb-4">
                   <span className="font-bold text-right">デフォルト:&ensp;</span>
                   <span>キノコ伝説チャットの最大文字数である50文字を超えないようにテキストを分割します。</span>
-                  <span className="font-bold text-right">サーバー毎:&ensp;</span>
-                  <span>サーバー毎にテキストを分割します。</span>
-                  <span className="font-bold text-right">一纏め:&ensp;</span>
+                  <span className="font-bold text-right">サーバーごと:&ensp;</span>
+                  <span>サーバーごとにテキストを分割します。</span>
+                  <span className="font-bold text-right">ひとまとめ:&ensp;</span>
                   <span>テキストを分割しません。</span>
                 </span>
                 <span className="text-xs text-gray-700">
@@ -260,16 +260,14 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
             {parkingTexts.length > 0 &&
               parkingTexts.map((text) => (
-                <pre key={text} className="relative border border-gray-400 rounded-md p-2 whitespace-normal break-all">
-                  <Button
-                    className="absolute top-1 right-1 opacity-60 w-8 h-8"
-                    size="icon"
-                    variant="outline"
-                    onClick={handleClickCopy(text)}
-                  >
+                <pre
+                  key={text}
+                  className="flex justify-between gap-1 border border-gray-400 rounded-md p-2 whitespace-normal break-all"
+                >
+                  {text}
+                  <Button className="min-w-8 w-8 h-8" size="icon" variant="outline" onClick={handleClickCopy(text)}>
                     <CopyIcon />
                   </Button>
-                  {text}
                 </pre>
               ))}
           </div>
