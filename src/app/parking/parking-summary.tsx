@@ -8,6 +8,7 @@ import { useForm, FormProvider } from "react-hook-form";
 import { z } from "zod";
 import dayjs from "dayjs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { ChatTemplateButton } from "./chat-template-button";
 
 const formSchema = z.object({
   parkings: z
@@ -44,12 +45,17 @@ export const ParkingSummary: React.FC<Props> = () => {
 
   return (
     <div>
-      <div className="mb-4">
+      <div className="flex flex-wrap gap-4 mb-4">
         <CopyParkingButton
           key={parkingServers.map((s) => s.id).join("")}
           loading={loading}
           parkings={parkings}
           parkingServers={parkingServers}
+        />
+        <ChatTemplateButton
+          key={`parkings:${parkings.map((p) => p.id).join("")}`}
+          parkings={parkings}
+          loading={loading}
         />
       </div>
       <FormProvider {...form}>
