@@ -102,7 +102,7 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
                   <SelectTrigger className="w-40">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent position="item-aligned">
                     {parkings.map((parking) => (
                       <SelectItem key={parking.id} value={parking.id}>
                         {parking.owner.name}
