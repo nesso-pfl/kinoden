@@ -30,46 +30,148 @@ export type Database = {
         }
         Relationships: []
       }
+      build_fellows: {
+        Row: {
+          build: string
+          created_at: string
+          fellow: string
+          id: string
+        }
+        Insert: {
+          build: string
+          created_at?: string
+          fellow: string
+          id?: string
+        }
+        Update: {
+          build?: string
+          created_at?: string
+          fellow?: string
+          id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_build_fellows_build_fkey"
+            columns: ["build"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_build_fellows_fellow_fkey"
+            columns: ["fellow"]
+            isOneToOne: false
+            referencedRelation: "fellows"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      build_labels: {
+        Row: {
+          build: string
+          created_at: string
+          id: string
+          label: string
+        }
+        Insert: {
+          build: string
+          created_at?: string
+          id?: string
+          label: string
+        }
+        Update: {
+          build?: string
+          created_at?: string
+          id?: string
+          label?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_build_labels_build_fkey"
+            columns: ["build"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_build_labels_label_fkey"
+            columns: ["label"]
+            isOneToOne: false
+            referencedRelation: "labels"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      build_skills: {
+        Row: {
+          build: string
+          created_at: string
+          delay: number
+          id: string
+          skill: string
+        }
+        Insert: {
+          build: string
+          created_at?: string
+          delay: number
+          id?: string
+          skill: string
+        }
+        Update: {
+          build?: string
+          created_at?: string
+          delay?: number
+          id?: string
+          skill?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_skill_builds_build_fkey"
+            columns: ["build"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_skill_builds_skill_id_fkey"
+            columns: ["skill"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       builds: {
         Row: {
           book_relic: string
           created_at: string
-          fellows: string[]
           fossil_relic: string
           id: string
-          labels: string[]
           mask_relic: string
           necklace_relic: string
           owner: string
-          skill_builds: string[]
           statue_relic: string
           tresure_relic: string
         }
         Insert: {
           book_relic: string
           created_at?: string
-          fellows: string[]
           fossil_relic: string
           id?: string
-          labels: string[]
           mask_relic: string
           necklace_relic: string
           owner: string
-          skill_builds: string[]
           statue_relic: string
           tresure_relic: string
         }
         Update: {
           book_relic?: string
           created_at?: string
-          fellows?: string[]
           fossil_relic?: string
           id?: string
-          labels?: string[]
           mask_relic?: string
           necklace_relic?: string
           owner?: string
-          skill_builds?: string[]
           statue_relic?: string
           tresure_relic?: string
         }
@@ -163,17 +265,17 @@ export type Database = {
       labels: {
         Row: {
           created_at: string
-          id: number
+          id: string
           name: string
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           name: string
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           name?: string
         }
         Relationships: []
@@ -293,45 +395,6 @@ export type Database = {
           name?: string
         }
         Relationships: []
-      }
-      skill_builds: {
-        Row: {
-          build: string
-          created_at: string
-          delay: number
-          id: string
-          skill: string
-        }
-        Insert: {
-          build: string
-          created_at?: string
-          delay: number
-          id?: string
-          skill: string
-        }
-        Update: {
-          build?: string
-          created_at?: string
-          delay?: number
-          id?: string
-          skill?: string
-        }
-        Relationships: [
-          {
-            foreignKeyName: "public_skill_builds_build_fkey"
-            columns: ["build"]
-            isOneToOne: false
-            referencedRelation: "builds"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_skill_builds_skill_id_fkey"
-            columns: ["skill"]
-            isOneToOne: false
-            referencedRelation: "skills"
-            referencedColumns: ["id"]
-          },
-        ]
       }
       skills: {
         Row: {
