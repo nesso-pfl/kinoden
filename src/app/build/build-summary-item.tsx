@@ -35,12 +35,15 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
   return (
     <div className="flex gap-2">
       <div className="flex-1">
-        <div className="flex flex-wrap gap-2 mb-2">
-          {build.labels.map((label) => (
-            <Badge key={label.id} variant="outline">
-              {label.name}
-            </Badge>
-          ))}
+        <div className="flex items-center gap-2 mb-2">
+          <div className="whitespace-nowrap">{build.owner}</div>
+          <div className="flex items-center flex-wrap gap-2">
+            {build.labels.map((label) => (
+              <Badge key={label.id} variant="outline">
+                {label.name}
+              </Badge>
+            ))}
+          </div>
         </div>
         <div className="flex gap-2">
           {build.skills.map((skill) => (

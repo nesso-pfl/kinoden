@@ -104,6 +104,9 @@ const a: Build = {
     { id: "1", name: "弓", created_at: new Date() },
     { id: "2", name: "S1", created_at: new Date() },
     { id: "3", name: "S2", created_at: new Date() },
+    { id: "4", name: "弓", created_at: new Date() },
+    { id: "5", name: "S1", created_at: new Date() },
+    { id: "6", name: "S2", created_at: new Date() },
   ],
   created_at: new Date(),
 };
