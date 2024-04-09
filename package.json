@@ -12,7 +12,7 @@
     "start": "next start",
     "format": "prettier --write \"**/*.{js,ts,tsx,json}\"",
     "lint": "next lint",
-    "pathpida": "pathpida --ignorePath .gitignore --output ./src/features/path"
+    "pathpida": "pathpida --ignorePath .gitignore --output ./src/features/path --enableStatic"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.1.0",
