@@ -36,7 +36,7 @@ export type Database = {
           created_at: string
           fellows: string[]
           fossil_relic: string
-          id: number
+          id: string
           labels: string[]
           mask_relic: string
           necklace_relic: string
@@ -50,7 +50,7 @@ export type Database = {
           created_at?: string
           fellows: string[]
           fossil_relic: string
-          id?: number
+          id?: string
           labels: string[]
           mask_relic: string
           necklace_relic: string
@@ -64,7 +64,7 @@ export type Database = {
           created_at?: string
           fellows?: string[]
           fossil_relic?: string
-          id?: number
+          id?: string
           labels?: string[]
           mask_relic?: string
           necklace_relic?: string
@@ -73,7 +73,50 @@ export type Database = {
           statue_relic?: string
           tresure_relic?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_builds_book_relic_fkey"
+            columns: ["book_relic"]
+            isOneToOne: false
+            referencedRelation: "book_relics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_builds_fossil_relic_fkey"
+            columns: ["fossil_relic"]
+            isOneToOne: false
+            referencedRelation: "fossil_relics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_builds_mask_relic_fkey"
+            columns: ["mask_relic"]
+            isOneToOne: false
+            referencedRelation: "mask_relics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_builds_necklace_relic_fkey"
+            columns: ["necklace_relic"]
+            isOneToOne: false
+            referencedRelation: "necklace_relics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_builds_statue_relic_fkey"
+            columns: ["statue_relic"]
+            isOneToOne: false
+            referencedRelation: "statue_relics"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_builds_tresure_relic_fkey"
+            columns: ["tresure_relic"]
+            isOneToOne: false
+            referencedRelation: "tresure_relics"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       fellows: {
         Row: {
@@ -253,24 +296,42 @@ export type Database = {
       }
       skill_builds: {
         Row: {
+          build: string
           created_at: string
           delay: number
           id: string
-          skill_id: string
+          skill: string
         }
         Insert: {
+          build: string
           created_at?: string
           delay: number
           id?: string
-          skill_id?: string
+          skill: string
         }
         Update: {
+          build?: string
           created_at?: string
           delay?: number
           id?: string
-          skill_id?: string
+          skill?: string
         }
-        Relationships: []
+        Relationships: [
+          {
+            foreignKeyName: "public_skill_builds_build_fkey"
+            columns: ["build"]
+            isOneToOne: false
+            referencedRelation: "builds"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_skill_builds_skill_id_fkey"
+            columns: ["skill"]
+            isOneToOne: false
+            referencedRelation: "skills"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       skills: {
         Row: {
