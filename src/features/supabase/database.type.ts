@@ -36,18 +36,21 @@ export type Database = {
           created_at: string
           fellow: string
           id: string
+          order: number
         }
         Insert: {
           build: string
           created_at?: string
           fellow: string
           id?: string
+          order: number
         }
         Update: {
           build?: string
           created_at?: string
           fellow?: string
           id?: string
+          order?: number
         }
         Relationships: [
           {
@@ -108,6 +111,7 @@ export type Database = {
           created_at: string
           delay: number
           id: string
+          order: number
           skill: string
         }
         Insert: {
@@ -115,6 +119,7 @@ export type Database = {
           created_at?: string
           delay: number
           id?: string
+          order: number
           skill: string
         }
         Update: {
@@ -122,6 +127,7 @@ export type Database = {
           created_at?: string
           delay?: number
           id?: string
+          order?: number
           skill?: string
         }
         Relationships: [
@@ -267,16 +273,19 @@ export type Database = {
           created_at: string
           id: string
           name: string
+          order: number
         }
         Insert: {
           created_at?: string
           id?: string
           name: string
+          order: number
         }
         Update: {
           created_at?: string
           id?: string
           name?: string
+          order?: number
         }
         Relationships: []
       }
@@ -374,27 +383,6 @@ export type Database = {
             referencedColumns: ["id"]
           },
         ]
-      }
-      relics: {
-        Row: {
-          created_at: string
-          id: string
-          image_url: string
-          name: string
-        }
-        Insert: {
-          created_at?: string
-          id?: string
-          image_url: string
-          name: string
-        }
-        Update: {
-          created_at?: string
-          id?: string
-          image_url?: string
-          name?: string
-        }
-        Relationships: []
       }
       skills: {
         Row: {
