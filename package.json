@@ -6,6 +6,7 @@
     "dev": "run-p dev:*",
     "dev:server": "next dev",
     "dev:pathpida": "bun run pathpida --watch",
+    "bundle-analyze": "ANALYZE=true bun run build:server",
     "build": "run-s build:*",
     "build:pathpida": "bun run pathpida",
     "build:server": "next build",
