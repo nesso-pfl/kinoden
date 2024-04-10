@@ -1,6 +1,7 @@
 export * from "./build-form";
 export * from "./create-build";
 export * from "./types";
+export * from "./update-build";
 export * from "./use-build";
 export * from "./use-builds";
 export * from "./use-get-fellows";

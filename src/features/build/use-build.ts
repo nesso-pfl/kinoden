@@ -26,6 +26,7 @@ export const getBuild = async (id: string): Promise<Build> => {
   return {
     ...build,
     fellows: build.build_fellows
+      .toSorted((f1, f2) => f1.fellow_order - f2.fellow_order)
       .map((build_fellow) => build_fellow.fellows)
       .filter((fellow): fellow is Exclude<typeof fellow, null> => !!fellow),
     labels: build.build_labels
@@ -37,6 +38,7 @@ export const getBuild = async (id: string): Promise<Build> => {
         ...build_skill,
         skill: build_skill.skills,
       }))
+      .toSorted((s1, s2) => s1.skill_order - s2.skill_order)
       .filter((skill): skill is typeof skill & { skill: Exclude<typeof skill.skill, null> } => !!skill.skill),
     mask_relic: build.mask_relics!,
     fossil_relic: build.fossil_relics!,
@@ -47,6 +49,6 @@ export const getBuild = async (id: string): Promise<Build> => {
   };
 };
 
-export const useBuild = () => {
-  return useSWR("build", getBuild);
+export const useBuild = (id: string | null) => {
+  return useSWR(id && `build/${id}`, () => (id ? getBuild(id) : undefined));
 };

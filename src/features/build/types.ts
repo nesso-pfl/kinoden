@@ -27,6 +27,7 @@ export type BuildSkill = {
 };
 
 type CreateBuildSkill = Omit<BuildSkill, "id" | "created_at">;
+type UpdateBuildSkill = Omit<BuildSkill, "id" | "created_at">;
 
 export type Label = {
   id: string;
@@ -50,4 +51,4 @@ export type Build = {
 };
 
 export type CreateBuild = Omit<Build, "id" | "created_at" | "skills"> & { skills: CreateBuildSkill[] };
-export type UpdateBuild = Omit<Build, "id" | "created_at" | "skills"> & { skills: CreateBuildSkill[] };
+export type UpdateBuild = Omit<Build, "created_at" | "skills"> & { skills: UpdateBuildSkill[] };
