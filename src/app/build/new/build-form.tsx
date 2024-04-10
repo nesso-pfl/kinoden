@@ -45,13 +45,16 @@ export const BuildForm: React.FC<Props> = () => {
   const {
     handleSubmit,
     control,
+    watch,
     formState: { errors },
   } = useForm<Form>({
     defaultValues: {
+      owner: "あも",
       skills: new Array(5).fill({ delay: 0 }),
     },
     resolver: zodResolver(formSchema),
   });
+  const owner = watch("owner");
   const skillsErrorMessage = useMemo(
     () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message,
     [errors],
@@ -73,11 +76,11 @@ export const BuildForm: React.FC<Props> = () => {
   }, []);
 
   return (
-    <form onSubmit={handleSubmit(onSubmit, console.log)}>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex flex-col gap-4 mb-12">
         <div>
           <div className="text-xs font-bold mb-2">作成者</div>
-          <div>あも</div>
+          <div>{owner}</div>
         </div>
         <div>
           <div className="text-xs font-bold mb-2">ラベル</div>
@@ -105,7 +108,7 @@ export const BuildForm: React.FC<Props> = () => {
                       selectedSkills={[]}
                       value={field.value.skill}
                       delayValue={field.value.delay}
-                      onChange={(value) => field.onChange({ skil: value, delay: field.value.delay })}
+                      onChange={(value) => field.onChange({ skill: value, delay: field.value.delay })}
                       onChangeDelayValue={(delay) => field.onChange({ ...field.value, delay })}
                     />
                   )}

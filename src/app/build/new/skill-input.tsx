@@ -58,7 +58,6 @@ export const SkillInput: React.FC<Props> = ({
   const handleChangeDelay = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
       const targetValue = +event.target.value;
-      console.log(targetValue);
       onChangeDelayValue(targetValue >= 10 ? 10 : targetValue < 0 ? 0 : targetValue);
     },
     [onChangeDelayValue],
