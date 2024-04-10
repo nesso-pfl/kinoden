@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
 import {
   DndContext,
@@ -38,15 +38,19 @@ export const BuildForm: React.FC<Props> = () => {
   const { data: skills, isLoading: loadingSkills } = useGetSkills();
   const { data: fellows, isLoading: loadingFellows } = useGetFellows();
   const { data: relics, isLoading: loadingRelics } = useGetRelics();
-  const { register, control } = useForm<Form>({
+  const { handleSubmit, control } = useForm<Form>({
     defaultValues: {
       skills: new Array(5).fill({ delay: 0 }),
     },
     resolver: zodResolver(formSchema),
   });
 
+  const onSubmit = useCallback((formValues: Form) => {
+    console.log(formValues);
+  }, []);
+
   return (
-    <form>
+    <form onSubmit={handleSubmit(onSubmit)}>
       <div className="flex justify-between">
         <div className="flex gap-4">
           {[...Array(5).keys()].map((index) => (
@@ -60,7 +64,7 @@ export const BuildForm: React.FC<Props> = () => {
                   selectedSkills={[]}
                   value={field.value.skill}
                   delayValue={field.value.delay}
-                  onChange={(value) => field.onChange({ skill: value, delay: field.value.delay })}
+                  onChange={(value) => field.onChange({ skil: value, delay: field.value.delay })}
                   onChangeDelayValue={(delay) => field.onChange({ ...field.value, delay })}
                 />
               )}
@@ -108,6 +112,11 @@ export const BuildForm: React.FC<Props> = () => {
             )}
           />
         ))}
+      </div>
+      <div className="flex justify-center">
+        <Button type="submit" className="w-1/2 max-w-lg">
+          作成
+        </Button>
       </div>
     </form>
   );
