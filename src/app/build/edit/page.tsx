@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import { Metadata } from "next";
 import { UpdateBuildForm } from "./update-build-form";
 
@@ -14,7 +14,9 @@ export default function Page() {
   return (
     <div className="flex flex-col w-full h-full">
       <h1 className="text-2xl mb-8">ビルド編集</h1>
-      <UpdateBuildForm />
+      <Suspense>
+        <UpdateBuildForm />
+      </Suspense>
     </div>
   );
 }
