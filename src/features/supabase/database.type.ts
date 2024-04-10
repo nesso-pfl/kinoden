@@ -35,22 +35,22 @@ export type Database = {
           build: string
           created_at: string
           fellow: string
+          fellow_order: number
           id: string
-          order: number
         }
         Insert: {
           build: string
           created_at?: string
           fellow: string
+          fellow_order: number
           id?: string
-          order: number
         }
         Update: {
           build?: string
           created_at?: string
           fellow?: string
+          fellow_order?: number
           id?: string
-          order?: number
         }
         Relationships: [
           {
@@ -111,24 +111,24 @@ export type Database = {
           created_at: string
           delay: number
           id: string
-          order: number
           skill: string
+          skill_order: number
         }
         Insert: {
           build: string
           created_at?: string
           delay: number
           id?: string
-          order: number
           skill: string
+          skill_order: number
         }
         Update: {
           build?: string
           created_at?: string
           delay?: number
           id?: string
-          order?: number
           skill?: string
+          skill_order?: number
         }
         Relationships: [
           {
@@ -452,7 +452,20 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      update_build: {
+        Args: Record<PropertyKey, never>
+        Returns: {
+          book_relic: string
+          created_at: string
+          fossil_relic: string
+          id: string
+          mask_relic: string
+          necklace_relic: string
+          owner: string
+          statue_relic: string
+          tresure_relic: string
+        }[]
+      }
     }
     Enums: {
       [_ in never]: never
