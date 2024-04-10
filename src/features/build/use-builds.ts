@@ -17,7 +17,7 @@ export const getBuilds = async (): Promise<
     response.data?.map((build) => ({
       ...build,
       fellows: build.build_fellows.map((build_fellow) => build_fellow.fellows!),
-      labels: build.build_labels.map((build_label) => build_label.labels!),
+      labels: build.build_labels.map((build_label) => build_label.labels!).toSorted((l1, l2) => l1.order - l2.order),
       skills: build.build_skills.map((build_skill) => ({
         ...build_skill,
         skill: build_skill.skills!,
