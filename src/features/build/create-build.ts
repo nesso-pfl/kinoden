@@ -31,14 +31,14 @@ export const createBuild = async (build: CreateBuild) => {
         build: newBuild.id,
         skill: skill.skill.id,
         delay: skill.delay,
-        order: index + 1,
+        skill_order: index + 1,
       })),
     ),
     await supabase.from("build_fellows").insert(
       build.fellows.map((fellow, index) => ({
         build: newBuild.id,
         fellow: fellow.id,
-        order: index + 1,
+        fellow_order: index + 1,
       })),
     ),
   ]);
