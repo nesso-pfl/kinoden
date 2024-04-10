@@ -1,6 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
-import { BuildForm } from "./build-form";
+import { BuildForm } from "@/features/build";
 
 export const metadata: Metadata = {
   title: "ビルド作成 | Kinoden Pfl",
