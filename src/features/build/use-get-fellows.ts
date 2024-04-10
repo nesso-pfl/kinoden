@@ -2,7 +2,8 @@ import { supabase } from "../supabase";
 import useSWRImmutable from "swr/immutable";
 
 export const getFellows = async () => {
-  return await supabase.from("fellows").select("*");
+  const response = await supabase.from("fellows").select("*");
+  return response.data;
 };
 
 export const useGetFellows = () => {

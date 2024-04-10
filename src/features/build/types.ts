@@ -2,34 +2,34 @@ export type Skill = {
   id: string;
   name: string;
   image_url: string;
-  created_at: Date;
+  created_at: string;
 };
 
 export type Fellow = {
   id: string;
   name: string;
   image_url: string;
-  created_at: Date;
+  created_at: string;
 };
 
 export type Relic = {
   id: string;
   name: string;
   image_url: string;
-  created_at: Date;
+  created_at: string;
 };
 
 export type BuildSkill = {
   id: string;
   skill: Skill;
   delay: number;
-  created_at: Date;
+  created_at: string;
 };
 
 export type Label = {
   id: string;
   name: string;
-  created_at: Date;
+  created_at: string;
 };
 
 export type Build = {
@@ -44,5 +44,5 @@ export type Build = {
   statue_relic: Relic;
   necklace_relic: Relic;
   labels: Label[];
-  created_at: Date;
+  created_at: string;
 };

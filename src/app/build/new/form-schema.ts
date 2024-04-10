@@ -1,5 +1,12 @@
 import { z } from "zod";
 
+const relicFormSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  image_url: z.string(),
+  created_at: z.string().datetime(),
+});
+
 export const formSchema = z.object({
   owner: z.string(),
   labels: z.object({
@@ -8,41 +15,29 @@ export const formSchema = z.object({
   }),
   skills: z
     .object({
-      id: z.string(),
-      image_url: z.string(),
+      skill: z.object({
+        id: z.string(),
+        name: z.string(),
+        image_url: z.string(),
+        created_at: z.string().datetime(),
+      }),
       delay: z.number(),
     })
     .array(),
   fellows: z
     .object({
       id: z.string(),
+      name: z.string(),
       image_url: z.string(),
+      created_at: z.string().datetime(),
     })
     .array(),
-  maskRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
-  fossilRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
-  treasureRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
-  bookRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
-  statueRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
-  necklaceRelic: z.object({
-    id: z.string(),
-    image_url: z.string(),
-  }),
+  maskRelic: relicFormSchema,
+  fossilRelic: relicFormSchema,
+  treasureRelic: relicFormSchema,
+  bookRelic: relicFormSchema,
+  statueRelic: relicFormSchema,
+  necklaceRelic: relicFormSchema,
 });
 
 export type Form = z.infer<typeof formSchema>;
