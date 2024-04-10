@@ -38,11 +38,12 @@ import { useRouter } from "next/navigation";
 import { pagesPath } from "@/features/path/$path";
 import { useToast } from "@/components/ui/use-toast";
 
-type Props = {};
+type Props = {
+  defaultValues?: Form;
+  onSubmit: (formValues: Form) => Promise<void>;
+};
 
-export const BuildForm: React.FC<Props> = () => {
-  const router = useRouter();
-  const { toast } = useToast();
+export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
   const { data: labels, isLoading: loadingLabels } = useGetLabels();
   const { data: skills, isLoading: loadingSkills } = useGetSkills();
   const { data: fellows, isLoading: loadingFellows } = useGetFellows();
@@ -56,6 +57,7 @@ export const BuildForm: React.FC<Props> = () => {
     defaultValues: {
       owner: "あも",
       skills: new Array(5).fill({ delay: 0 }),
+      ...defaultValues,
     },
     resolver: zodResolver(formSchema),
   });
@@ -74,26 +76,6 @@ export const BuildForm: React.FC<Props> = () => {
       errors.statueRelic?.message ||
       errors.necklaceRelic?.message,
     [errors],
-  );
-
-  const onSubmit = useCallback(
-    async (formValues: Form) => {
-      await createBuild({
-        owner: formValues.owner,
-        labels: formValues.labels,
-        skills: formValues.skills,
-        fellows: formValues.fellows,
-        mask_relic: formValues.maskRelic,
-        fossil_relic: formValues.fossilRelic,
-        treasure_relic: formValues.treasureRelic,
-        book_relic: formValues.bookRelic,
-        statue_relic: formValues.statueRelic,
-        necklace_relic: formValues.necklaceRelic,
-      });
-      toast({ description: "ビルドを作成しました", duration: 2000 });
-      router.push(pagesPath.build.$url().pathname);
-    },
-    [toast, router],
   );
 
   return (
