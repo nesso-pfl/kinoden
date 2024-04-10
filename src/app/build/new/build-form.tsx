@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useMemo, useState } from "react";
-import { useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
+import { createBuild, useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
 import {
   DndContext,
   closestCenter,
@@ -34,10 +34,15 @@ import { RelicInput } from "./relic-input";
 import { LabelInput } from "./label-input";
 import { useGetLabels } from "@/features/build/use-get-labels";
 import { ErrorMessage } from "@/components/ui/error-message";
+import { useRouter } from "next/navigation";
+import { pagesPath } from "@/features/path/$path";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {};
 
 export const BuildForm: React.FC<Props> = () => {
+  const router = useRouter();
+  const { toast } = useToast();
   const { data: labels, isLoading: loadingLabels } = useGetLabels();
   const { data: skills, isLoading: loadingSkills } = useGetSkills();
   const { data: fellows, isLoading: loadingFellows } = useGetFellows();
@@ -71,9 +76,25 @@ export const BuildForm: React.FC<Props> = () => {
     [errors],
   );
 
-  const onSubmit = useCallback((formValues: Form) => {
-    console.log(formValues);
-  }, []);
+  const onSubmit = useCallback(
+    async (formValues: Form) => {
+      await createBuild({
+        owner: formValues.owner,
+        labels: formValues.labels,
+        skills: formValues.skills,
+        fellows: formValues.fellows,
+        mask_relic: formValues.maskRelic,
+        fossil_relic: formValues.fossilRelic,
+        treasure_relic: formValues.treasureRelic,
+        book_relic: formValues.bookRelic,
+        statue_relic: formValues.statueRelic,
+        necklace_relic: formValues.necklaceRelic,
+      });
+      toast({ description: "ビルドを作成しました", duration: 2000 });
+      router.push(pagesPath.build.$url().pathname);
+    },
+    [toast, router],
+  );
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>

@@ -26,6 +26,8 @@ export type BuildSkill = {
   created_at: string;
 };
 
+type CreateBuildSkill = Omit<BuildSkill, "id" | "created_at">;
+
 export type Label = {
   id: string;
   name: string;
@@ -35,7 +37,7 @@ export type Label = {
 export type Build = {
   id: string;
   owner: string;
-  skills: BuildSkill[];
+  skills: CreateBuildSkill[];
   fellows: Fellow[];
   mask_relic: Relic;
   fossil_relic: Relic;
@@ -46,3 +48,6 @@ export type Build = {
   labels: Label[];
   created_at: string;
 };
+
+export type CreateBuild = Omit<Build, "id" | "created_at">;
+export type UpdateBuild = Omit<Build, "id" | "created_at">;
