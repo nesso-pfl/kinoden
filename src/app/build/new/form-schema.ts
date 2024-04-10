@@ -13,11 +13,14 @@ const relicFormSchema = z.object(
 export const formSchema = z.object({
   owner: z.string().min(1, "あもﾁｬﾏに「オーナーエラーが出た」と問い合わせてください"),
   labels: z
-    .object({
-      id: z.string(),
-      name: z.string(),
-      created_at: z.string(),
-    })
+    .object(
+      {
+        id: z.string(),
+        name: z.string(),
+        created_at: z.string(),
+      },
+      { required_error: "ラベルを1つ以上選択してください" },
+    )
     .array()
     .min(1, "ラベルを1つ以上選択してください"),
   skills: z

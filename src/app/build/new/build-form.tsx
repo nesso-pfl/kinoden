@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
 import {
   DndContext,
@@ -33,6 +33,7 @@ import { ArrowLeftRightIcon } from "lucide-react";
 import { RelicInput } from "./relic-input";
 import { LabelInput } from "./label-input";
 import { useGetLabels } from "@/features/build/use-get-labels";
+import { ErrorMessage } from "@/components/ui/error-message";
 
 type Props = {};
 
@@ -51,6 +52,21 @@ export const BuildForm: React.FC<Props> = () => {
     },
     resolver: zodResolver(formSchema),
   });
+  const skillsErrorMessage = useMemo(
+    () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message,
+    [errors],
+  );
+  const fellowsErrorMessage = useMemo(() => errors.fellows?.find?.((fellow) => fellow?.message)?.message, [errors]);
+  const relicsErrorMessage = useMemo(
+    () =>
+      errors.maskRelic?.message ||
+      errors.fossilRelic?.message ||
+      errors.treasureRelic?.message ||
+      errors.bookRelic?.message ||
+      errors.statueRelic?.message ||
+      errors.necklaceRelic?.message,
+    [errors],
+  );
 
   const onSubmit = useCallback((formValues: Form) => {
     console.log(formValues);
@@ -72,6 +88,7 @@ export const BuildForm: React.FC<Props> = () => {
               <LabelInput allLabels={labels ?? []} value={field.value} onChange={field.onChange} />
             )}
           />
+          <ErrorMessage>{errors.labels?.message}</ErrorMessage>
         </div>
         <div>
           <div className="text-xs font-bold mb-2">技能</div>
@@ -99,6 +116,7 @@ export const BuildForm: React.FC<Props> = () => {
               <ArrowLeftRightIcon />
             </Button>
           </div>
+          <ErrorMessage>{skillsErrorMessage}</ErrorMessage>
         </div>
         <div>
           <div className="text-xs font-bold mb-2">仲間</div>
@@ -124,6 +142,7 @@ export const BuildForm: React.FC<Props> = () => {
               <ArrowLeftRightIcon />
             </Button>
           </div>
+          <ErrorMessage>{fellowsErrorMessage}</ErrorMessage>
         </div>
         <div>
           <div className="text-xs font-bold mb-2">遺物</div>
@@ -143,6 +162,7 @@ export const BuildForm: React.FC<Props> = () => {
               />
             ))}
           </div>
+          <ErrorMessage>{relicsErrorMessage}</ErrorMessage>
         </div>
       </div>
       <div className="flex justify-center">
