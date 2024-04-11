@@ -7,3 +7,4 @@ export * from "./use-builds";
 export * from "./use-get-fellows";
 export * from "./use-get-relics";
 export * from "./use-get-skills";
+export * from "./use-username-store";
