@@ -11,7 +11,6 @@ const relicFormSchema = z.object(
 );
 
 export const formSchema = z.object({
-  owner: z.string().min(1, "あもﾁｬﾏに「オーナーエラーが出た」と問い合わせてください"),
   labels: z
     .object(
       {

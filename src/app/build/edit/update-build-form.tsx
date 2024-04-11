@@ -1,7 +1,7 @@
 "use client";
 
 import { useToast } from "@/components/ui/use-toast";
-import { BuildForm, updateBuild, useBuild } from "@/features/build";
+import { BuildForm, updateBuild, useBuild, useUsernameStore } from "@/features/build";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter, useSearchParams } from "next/navigation";
 import React from "react";
@@ -17,7 +17,6 @@ export const UpdateBuildForm: React.FC<Props> = () => {
     build && (
       <BuildForm
         defaultValues={{
-          owner: build.owner,
           labels: build.labels,
           skills: build.skills,
           fellows: build.fellows,

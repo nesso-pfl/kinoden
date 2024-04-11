@@ -1,7 +1,7 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
-import { createBuild, useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { createBuild, useGetFellows, useGetRelics, useGetSkills, useUsernameStore } from "@/features/build";
 import {
   DndContext,
   closestCenter,
@@ -40,7 +40,7 @@ import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   defaultValues?: Form;
-  onSubmit: (formValues: Form) => Promise<void>;
+  onSubmit: (formValues: Form & { owner: string }) => Promise<void>;
 };
 
 export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
@@ -48,6 +48,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
   const { data: skills, isLoading: loadingSkills } = useGetSkills();
   const { data: fellows, isLoading: loadingFellows } = useGetFellows();
   const { data: relics, isLoading: loadingRelics } = useGetRelics();
+  const { username, createUsername } = useUsernameStore();
   const {
     handleSubmit,
     control,
@@ -55,13 +56,11 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
     formState: { errors },
   } = useForm<Form>({
     defaultValues: {
-      owner: "あも",
       skills: new Array(5).fill({ delay: 0 }),
       ...defaultValues,
     },
     resolver: zodResolver(formSchema),
   });
-  const owner = watch("owner");
   const skillsErrorMessage = useMemo(
     () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message,
     [errors],
@@ -78,12 +77,20 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
     [errors],
   );
 
+  const onSubmit_ = useCallback(
+    (formValues: Form) => {
+      if (!username) return;
+      onSubmit({ ...formValues, owner: username });
+    },
+    [username, onSubmit],
+  );
+
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={handleSubmit(onSubmit_)}>
       <div className="flex flex-col gap-4 mb-12">
         <div>
           <div className="text-xs font-bold mb-2">作成者</div>
-          <div>{owner}</div>
+          <div className="min-h-6">{username}</div>
         </div>
         <div>
           <div className="text-xs font-bold mb-2">ラベル</div>
