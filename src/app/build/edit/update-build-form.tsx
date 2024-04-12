@@ -16,6 +16,7 @@ export const UpdateBuildForm: React.FC<Props> = () => {
   return (
     build && (
       <BuildForm
+        mode="edit"
         defaultValues={{
           labels: build.labels,
           skills: build.skills,
@@ -26,26 +27,6 @@ export const UpdateBuildForm: React.FC<Props> = () => {
           bookRelic: build.book_relic,
           statueRelic: build.statue_relic,
           necklaceRelic: build.necklace_relic,
-        }}
-        onSubmit={async (formValues) => {
-          const id = params.get("id");
-          if (!id) return;
-
-          await updateBuild({
-            id,
-            owner: formValues.owner,
-            labels: formValues.labels,
-            skills: formValues.skills,
-            fellows: formValues.fellows,
-            mask_relic: formValues.maskRelic,
-            fossil_relic: formValues.fossilRelic,
-            treasure_relic: formValues.treasureRelic,
-            book_relic: formValues.bookRelic,
-            statue_relic: formValues.statueRelic,
-            necklace_relic: formValues.necklaceRelic,
-          });
-          toast({ description: "ビルドを編集しました", duration: 2000 });
-          router.push(pagesPath.build.$url().pathname);
         }}
       />
     )

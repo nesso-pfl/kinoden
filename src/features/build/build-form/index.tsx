@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   CreateUsernameDialog,
   createBuild,
+  updateBuild,
   useGetFellows,
   useGetRelics,
   useGetSkills,
@@ -41,23 +42,26 @@ import { RelicInput } from "./relic-input";
 import { LabelInput } from "./label-input";
 import { useGetLabels } from "@/features/build/use-get-labels";
 import { ErrorMessage } from "@/components/ui/error-message";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "@/features/path/$path";
 import { useToast } from "@/components/ui/use-toast";
 import { setSourceMapsEnabled } from "process";
 
 type Props = {
   defaultValues?: Form;
-  onSubmit: (formValues: Form & { owner: string }) => Promise<void>;
+  mode: "create" | "edit";
 };
 
-export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
+export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
+  const params = useSearchParams();
+  const router = useRouter();
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const { data: labels, isLoading: loadingLabels } = useGetLabels();
   const { data: skills, isLoading: loadingSkills } = useGetSkills();
   const { data: fellows, isLoading: loadingFellows } = useGetFellows();
   const { data: relics, isLoading: loadingRelics } = useGetRelics();
-  const { username, createUsername } = useUsernameStore();
+  const { username } = useUsernameStore();
   const {
     handleSubmit,
     control,
@@ -97,14 +101,43 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
   }, [username]);
 
   const onSubmit_ = useCallback(
-    (formValues: Form) => {
+    async (formValues: Form) => {
       if (!username) {
         setOpen(true);
         return;
       }
-      onSubmit({ ...formValues, owner: username });
+
+      if (mode === "create") {
+        await createBuild({
+          ...formValues,
+          owner: username,
+          mask_relic: formValues.maskRelic,
+          fossil_relic: formValues.fossilRelic,
+          treasure_relic: formValues.treasureRelic,
+          book_relic: formValues.bookRelic,
+          statue_relic: formValues.statueRelic,
+          necklace_relic: formValues.necklaceRelic,
+        });
+      } else {
+        const id = params.get("id");
+        if (!id) return;
+
+        await updateBuild({
+          ...formValues,
+          id,
+          owner: username,
+          mask_relic: formValues.maskRelic,
+          fossil_relic: formValues.fossilRelic,
+          treasure_relic: formValues.treasureRelic,
+          book_relic: formValues.bookRelic,
+          statue_relic: formValues.statueRelic,
+          necklace_relic: formValues.necklaceRelic,
+        });
+      }
+      toast({ description: `ビルドを${mode === "create" ? "作成" : "編集"}しました`, duration: 2000 });
+      router.push(pagesPath.build.$url().pathname);
     },
-    [username, onSubmit],
+    [username, toast, mode, router, params],
   );
 
   return (
@@ -203,7 +236,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
         </div>
         <div className="flex justify-center">
           <Button type="submit" className="w-1/2 max-w-lg" disabled={isSubmitting}>
-            作成
+            {mode === "create" ? "作成" : "編集"}
           </Button>
         </div>
       </form>
