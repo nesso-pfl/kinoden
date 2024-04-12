@@ -61,8 +61,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
   const {
     handleSubmit,
     control,
-    watch,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Form>({
     defaultValues: {
       skills: new Array(5).fill({ delay: 0 }),
@@ -203,7 +202,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, onSubmit }) => {
           </div>
         </div>
         <div className="flex justify-center">
-          <Button type="submit" className="w-1/2 max-w-lg">
+          <Button type="submit" className="w-1/2 max-w-lg" disabled={isSubmitting}>
             作成
           </Button>
         </div>

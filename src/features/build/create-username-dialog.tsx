@@ -29,7 +29,7 @@ export const CreateUsernameDialog: React.FC<Props> = ({ open, onClose, onSubmit 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<Form>({ resolver: zodResolver(formSchema) });
 
   const onSubmit_ = useCallback(
@@ -57,7 +57,7 @@ export const CreateUsernameDialog: React.FC<Props> = ({ open, onClose, onSubmit 
           <ErrorMessage>{errors.username?.message}</ErrorMessage>
         </div>
         <div className="flex justify-center">
-          <Button type="submit" className="w-1/2">
+          <Button type="submit" className="w-1/2" disabled={isSubmitting}>
             名前を設定
           </Button>
         </div>
