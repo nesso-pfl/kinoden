@@ -142,55 +142,45 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
           </div>
           <div>
             <div className="text-xs font-bold mb-2">技能</div>
-            <div className="flex justify-between">
-              <div className="flex gap-4">
-                {[...Array(5).keys()].map((index) => (
-                  <Controller
-                    key={index.toString()}
-                    name={`skills.${+index}`}
-                    control={control}
-                    render={({ field }) => (
-                      <SkillInput
-                        allSkills={skills ?? []}
-                        selectedSkills={[]}
-                        value={field.value.skill}
-                        delayValue={field.value.delay}
-                        onChange={(value) => field.onChange({ skill: value, delay: field.value.delay })}
-                        onChangeDelayValue={(delay) => field.onChange({ ...field.value, delay })}
-                      />
-                    )}
-                  />
-                ))}
-              </div>
-              <Button variant="outline" size="icon">
-                <ArrowLeftRightIcon />
-              </Button>
+            <div className="flex gap-4">
+              {[...Array(5).keys()].map((index) => (
+                <Controller
+                  key={index.toString()}
+                  name={`skills.${+index}`}
+                  control={control}
+                  render={({ field }) => (
+                    <SkillInput
+                      allSkills={skills ?? []}
+                      selectedSkills={[]}
+                      value={field.value.skill}
+                      delayValue={field.value.delay}
+                      onChange={(value) => field.onChange({ skill: value, delay: field.value.delay })}
+                      onChangeDelayValue={(delay) => field.onChange({ ...field.value, delay })}
+                    />
+                  )}
+                />
+              ))}
             </div>
             <ErrorMessage>{skillsErrorMessage}</ErrorMessage>
           </div>
           <div>
             <div className="text-xs font-bold mb-2">仲間</div>
-            <div className="flex justify-between">
-              <div className="flex gap-4">
-                {[...Array(5).keys()].map((index) => (
-                  <Controller
-                    key={index.toString()}
-                    name={`fellows.${+index}`}
-                    control={control}
-                    render={({ field }) => (
-                      <FellowInput
-                        allFellows={fellows ?? []}
-                        selectedFellows={[]}
-                        value={field.value}
-                        onChange={field.onChange}
-                      />
-                    )}
-                  />
-                ))}
-              </div>
-              <Button variant="outline" size="icon">
-                <ArrowLeftRightIcon />
-              </Button>
+            <div className="flex gap-4">
+              {[...Array(5).keys()].map((index) => (
+                <Controller
+                  key={index.toString()}
+                  name={`fellows.${+index}`}
+                  control={control}
+                  render={({ field }) => (
+                    <FellowInput
+                      allFellows={fellows ?? []}
+                      selectedFellows={[]}
+                      value={field.value}
+                      onChange={field.onChange}
+                    />
+                  )}
+                />
+              ))}
             </div>
             <ErrorMessage>{fellowsErrorMessage}</ErrorMessage>
           </div>
