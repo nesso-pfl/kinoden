@@ -23,6 +23,8 @@ import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, ReceiptTextIcon } from "lucide-react";
+import Link from "next/link";
+import { pagesPath } from "@/features/path/$path";
 
 type Props = {
   build: Omit<
@@ -60,8 +62,10 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
         </div>
       </div>
       <div className="flex flex-col gap-2">
-        <Button variant="outline" size="icon" aria-label="詳細を見る">
-          <ReceiptTextIcon />
+        <Button asChild variant="outline" size="icon" aria-label="詳細を見る">
+          <Link href={pagesPath.build.detail.$url({ query: { id: build.id } })}>
+            <ReceiptTextIcon />
+          </Link>
         </Button>
         <Button variant="outline" size="icon" aria-label="編集">
           <PencilIcon />

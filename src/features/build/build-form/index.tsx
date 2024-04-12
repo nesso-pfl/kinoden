@@ -100,7 +100,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
     };
   }, [username]);
 
-  const onSubmit_ = useCallback(
+  const onSubmit = useCallback(
     async (formValues: Form) => {
       if (!username) {
         setOpen(true);
@@ -123,7 +123,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
 
   return (
     <>
-      <form onSubmit={handleSubmit(onSubmit_)}>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-4 mb-12">
           <div>
             <div className="text-xs font-bold mb-2">作成者</div>
