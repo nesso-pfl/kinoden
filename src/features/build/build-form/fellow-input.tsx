@@ -47,7 +47,7 @@ export const FellowInput: React.FC<Props> = ({ allFellows, selectedFellows, valu
   );
 
   return (
-    <div className="flex flex-col gap-1 items-center">
+    <>
       <button type="button" onClick={() => setOpen(true)} aria-label="仲間を選択">
         <Image
           src={value?.image_url ? value.image_url : staticPath.blank.blank_skill_png}
@@ -55,21 +55,24 @@ export const FellowInput: React.FC<Props> = ({ allFellows, selectedFellows, valu
           width={40}
           height={40}
         />
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <div className="flex flex-wrap gap-2">
-            {allFellows.map((fellow) => (
-              <button
-                type="button"
-                key={fellow.id}
-                disabled={selectedFellows.some((fellow_) => fellow_.id === fellow.id)}
-                onClick={handleClickFellow(fellow)}
-              >
-                <Image src={fellow.image_url} alt={fellow.name} width={40} height={40} />
-              </button>
-            ))}
-          </div>
-        </Dialog>
       </button>
-    </div>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <div className="flex flex-wrap gap-2">
+          {allFellows.map((fellow) => (
+            <button
+              type="button"
+              key={fellow.id}
+              className="disabled:opacity-30"
+              disabled={selectedFellows
+                .filter((fellow_) => fellow_.id !== value?.id)
+                .some((fellow_) => fellow_.id === fellow.id)}
+              onClick={handleClickFellow(fellow)}
+            >
+              <Image src={fellow.image_url} alt={fellow.name} width={40} height={40} />
+            </button>
+          ))}
+        </div>
+      </Dialog>
+    </>
   );
 };

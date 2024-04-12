@@ -71,23 +71,23 @@ export const LabelInput: React.FC<Props> = ({ allLabels, value, onChange }) => {
         aria-label="ラベルを追加"
       >
         <PlusIcon />
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <div className="flex flex-wrap gap-4">
-            {allLabels.map((label) => (
-              <div key={label.id} className="flex items-center gap-1">
-                <Checkbox
-                  id={label.id}
-                  checked={value?.some((v) => v.id === label.id)}
-                  onCheckedChange={handleClickFellow(label)}
-                />
-                <label className="text-sm" htmlFor={label.id}>
-                  {label.name}
-                </label>
-              </div>
-            ))}
-          </div>
-        </Dialog>
       </Button>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <div className="flex flex-wrap gap-4">
+          {allLabels.map((label) => (
+            <div key={label.id} className="flex items-center gap-1">
+              <Checkbox
+                id={label.id}
+                checked={value?.some((v) => v.id === label.id)}
+                onCheckedChange={handleClickFellow(label)}
+              />
+              <label className="text-sm" htmlFor={label.id}>
+                {label.name}
+              </label>
+            </div>
+          ))}
+        </div>
+      </Dialog>
     </div>
   );
 };

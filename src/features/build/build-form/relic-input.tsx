@@ -46,7 +46,7 @@ export const RelicInput: React.FC<Props> = ({ relicOptions, value, onChange }) =
   );
 
   return (
-    <div className="flex flex-col gap-1 items-center">
+    <>
       <button type="button" onClick={() => setOpen(true)} aria-label="遺物を選択">
         <Image
           src={value?.image_url ? value.image_url : staticPath.blank.blank_relic_png}
@@ -54,16 +54,16 @@ export const RelicInput: React.FC<Props> = ({ relicOptions, value, onChange }) =
           width={48}
           height={48}
         />
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <div className="flex flex-wrap gap-2">
-            {relicOptions.map((relic) => (
-              <button type="button" key={relic.id} onClick={handleClickRelic(relic)}>
-                <Image src={relic.image_url} alt={relic.name} width={48} height={48} />
-              </button>
-            ))}
-          </div>
-        </Dialog>
       </button>
-    </div>
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <div className="flex flex-wrap gap-2">
+          {relicOptions.map((relic) => (
+            <button type="button" key={relic.id} onClick={handleClickRelic(relic)}>
+              <Image src={relic.image_url} alt={relic.name} width={48} height={48} />
+            </button>
+          ))}
+        </div>
+      </Dialog>
+    </>
   );
 };
