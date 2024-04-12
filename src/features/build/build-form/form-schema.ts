@@ -47,12 +47,12 @@ export const formSchema = z.object({
       { required_error: "仲間を全て選択してください" },
     )
     .array(),
-  maskRelic: relicFormSchema,
-  fossilRelic: relicFormSchema,
-  treasureRelic: relicFormSchema,
-  bookRelic: relicFormSchema,
-  statueRelic: relicFormSchema,
-  necklaceRelic: relicFormSchema,
+  mask_relic: relicFormSchema,
+  fossil_relic: relicFormSchema,
+  treasure_relic: relicFormSchema,
+  book_relic: relicFormSchema,
+  statue_relic: relicFormSchema,
+  necklace_relic: relicFormSchema,
 });
 
 export type Form = z.infer<typeof formSchema>;

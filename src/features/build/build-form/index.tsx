@@ -80,12 +80,12 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   const fellowsErrorMessage = useMemo(() => errors.fellows?.find?.((fellow) => fellow?.message)?.message, [errors]);
   const relicsErrorMessage = useMemo(
     () =>
-      errors.maskRelic?.message ||
-      errors.fossilRelic?.message ||
-      errors.treasureRelic?.message ||
-      errors.bookRelic?.message ||
-      errors.statueRelic?.message ||
-      errors.necklaceRelic?.message,
+      errors.mask_relic?.message ||
+      errors.fossil_relic?.message ||
+      errors.treasure_relic?.message ||
+      errors.book_relic?.message ||
+      errors.statue_relic?.message ||
+      errors.necklace_relic?.message,
     [errors],
   );
 
@@ -108,31 +108,12 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
       }
 
       if (mode === "create") {
-        await createBuild({
-          ...formValues,
-          owner: username,
-          mask_relic: formValues.maskRelic,
-          fossil_relic: formValues.fossilRelic,
-          treasure_relic: formValues.treasureRelic,
-          book_relic: formValues.bookRelic,
-          statue_relic: formValues.statueRelic,
-          necklace_relic: formValues.necklaceRelic,
-        });
+        await createBuild({ ...formValues, owner: username });
       } else {
         const id = params.get("id");
         if (!id) return;
 
-        await updateBuild({
-          ...formValues,
-          id,
-          owner: username,
-          mask_relic: formValues.maskRelic,
-          fossil_relic: formValues.fossilRelic,
-          treasure_relic: formValues.treasureRelic,
-          book_relic: formValues.bookRelic,
-          statue_relic: formValues.statueRelic,
-          necklace_relic: formValues.necklaceRelic,
-        });
+        await updateBuild({ ...formValues, id, owner: username });
       }
       toast({ description: `ビルドを${mode === "create" ? "作成" : "編集"}しました`, duration: 2000 });
       router.push(pagesPath.build.$url().pathname);
@@ -219,7 +200,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
               {(["mask", "fossil", "treasure", "book", "statue", "necklace"] as const).map((relicName) => (
                 <Controller
                   key={relicName}
-                  name={`${relicName}Relic`}
+                  name={`${relicName}_relic`}
                   control={control}
                   render={({ field }) => (
                     <RelicInput
