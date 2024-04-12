@@ -31,21 +31,13 @@ import { staticPath } from "@/features/path/$path";
 
 type Props = {
   allSkills: Skill[];
-  selectedSkills: Skill[];
   value: Skill | undefined;
   delayValue: number;
   onChange: (skill: Skill) => void;
   onChangeDelayValue: (delay: number) => void;
 };
 
-export const SkillInput: React.FC<Props> = ({
-  allSkills,
-  selectedSkills,
-  value,
-  onChange,
-  delayValue,
-  onChangeDelayValue,
-}) => {
+export const SkillInput: React.FC<Props> = ({ allSkills, value, onChange, delayValue, onChangeDelayValue }) => {
   const [open, setOpen] = useState(false);
   const handleClickSkill = useCallback(
     (skill: Skill) => () => {
@@ -88,15 +80,7 @@ export const SkillInput: React.FC<Props> = ({
       <Dialog open={open} onClose={() => setOpen(false)}>
         <div className="flex flex-wrap gap-2">
           {allSkills.map((skill) => (
-            <button
-              type="button"
-              key={skill.id}
-              className="disabled:opacity-30"
-              disabled={selectedSkills
-                .filter((skill_) => skill_.id !== value?.id)
-                .some((skill_) => skill_.id === skill.id)}
-              onClick={handleClickSkill(skill)}
-            >
+            <button type="button" key={skill.id} onClick={handleClickSkill(skill)}>
               <Image src={skill.image_url} alt={skill.name} width={40} height={40} />
             </button>
           ))}

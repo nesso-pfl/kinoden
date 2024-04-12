@@ -65,7 +65,6 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   const {
     handleSubmit,
     control,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
     defaultValues: {
@@ -74,13 +73,15 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
     },
     resolver: zodResolver(formSchema),
   });
-  const selectedSkills = watch("skills");
-  const selectedFellows = watch("fellows");
+  console.log(errors);
   const skillsErrorMessage = useMemo(
-    () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message,
+    () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message || errors.skills?.root?.message,
     [errors],
   );
-  const fellowsErrorMessage = useMemo(() => errors.fellows?.find?.((fellow) => fellow?.message)?.message, [errors]);
+  const fellowsErrorMessage = useMemo(
+    () => errors.fellows?.find?.((fellow) => fellow?.message)?.message || errors.fellows?.root?.message,
+    [errors],
+  );
   const relicsErrorMessage = useMemo(
     () =>
       errors.mask_relic?.message ||
@@ -154,7 +155,6 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
                   render={({ field }) => (
                     <SkillInput
                       allSkills={skills ?? []}
-                      selectedSkills={selectedSkills.map((skill) => skill.skill)}
                       value={field.value.skill}
                       delayValue={field.value.delay}
                       onChange={(value) => field.onChange({ skill: value, delay: field.value.delay })}
@@ -175,12 +175,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
                   name={`fellows.${+index}`}
                   control={control}
                   render={({ field }) => (
-                    <FellowInput
-                      allFellows={fellows ?? []}
-                      selectedFellows={selectedFellows}
-                      value={field.value}
-                      onChange={field.onChange}
-                    />
+                    <FellowInput allFellows={fellows ?? []} value={field.value} onChange={field.onChange} />
                   )}
                 />
               ))}

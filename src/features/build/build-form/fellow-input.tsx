@@ -31,12 +31,11 @@ import { staticPath } from "@/features/path/$path";
 
 type Props = {
   allFellows: Fellow[];
-  selectedFellows: Fellow[];
   value: Fellow | undefined;
   onChange: (fellow: Fellow) => void;
 };
 
-export const FellowInput: React.FC<Props> = ({ allFellows, selectedFellows, value, onChange }) => {
+export const FellowInput: React.FC<Props> = ({ allFellows, value, onChange }) => {
   const [open, setOpen] = useState(false);
   const handleClickFellow = useCallback(
     (fellow: Fellow) => () => {
@@ -59,15 +58,7 @@ export const FellowInput: React.FC<Props> = ({ allFellows, selectedFellows, valu
       <Dialog open={open} onClose={() => setOpen(false)}>
         <div className="flex flex-wrap gap-2">
           {allFellows.map((fellow) => (
-            <button
-              type="button"
-              key={fellow.id}
-              className="disabled:opacity-30"
-              disabled={selectedFellows
-                .filter((fellow_) => fellow_.id !== value?.id)
-                .some((fellow_) => fellow_.id === fellow.id)}
-              onClick={handleClickFellow(fellow)}
-            >
+            <button type="button" key={fellow.id} onClick={handleClickFellow(fellow)}>
               <Image src={fellow.image_url} alt={fellow.name} width={40} height={40} />
             </button>
           ))}

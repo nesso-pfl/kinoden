@@ -35,7 +35,14 @@ export const formSchema = z.object({
       ),
       delay: z.number().min(0, "遅延は0以上の数値を入力してください").max(10, "遅延は10以下の数値を入力してください"),
     })
-    .array(),
+    .array()
+    .refine(
+      (value) => {
+        const skillIds = value.map((v) => v.skill.id);
+        return new Set(skillIds).size === skillIds.length;
+      },
+      { path: [], message: "重複した技能があります" },
+    ),
   fellows: z
     .object(
       {
@@ -46,7 +53,14 @@ export const formSchema = z.object({
       },
       { required_error: "仲間を全て選択してください" },
     )
-    .array(),
+    .array()
+    .refine(
+      (value) => {
+        const fellowId = value.map((v) => v.id);
+        return new Set(fellowId).size === fellowId.length;
+      },
+      { path: [], message: "重複した仲間があります" },
+    ),
   mask_relic: relicFormSchema,
   fossil_relic: relicFormSchema,
   treasure_relic: relicFormSchema,
