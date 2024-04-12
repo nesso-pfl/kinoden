@@ -7,6 +7,7 @@ export * from "./update-build";
 export * from "./use-build";
 export * from "./use-builds";
 export * from "./use-get-fellows";
+export * from "./use-get-labels";
 export * from "./use-get-relics";
 export * from "./use-get-skills";
 export * from "./use-username-store";
