@@ -5,6 +5,7 @@ import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
 import { EditButton } from "./edit-button";
 import { BuildDetail } from "./build-detail";
+import { DeleteButton } from "./delete-button";
 
 export type Query = {
   id: string;
@@ -21,7 +22,14 @@ export default function Page() {
         <h1 className="text-2xl">ビルド詳細</h1>
         <EditButton />
       </div>
-      <BuildDetail />
+      <div className="mb-20">
+        <BuildDetail />
+      </div>
+      <div className="flex justify-center">
+        <div className="w-1/2">
+          <DeleteButton />
+        </div>
+      </div>
     </div>
   );
 }
