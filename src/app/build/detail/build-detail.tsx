@@ -34,13 +34,9 @@ export const BuildDetail: React.FC<Props> = () => {
   return (
     build && (
       <div className="flex flex-col gap-4">
-        <div>
-          <div className="text-xs font-bold mb-2">作成者</div>
+        <div className="flex flex-wrap items-center gap-4">
           <div className="min-h-6">{build.owner}</div>
-        </div>
-        <div>
-          <div className="text-xs font-bold mb-2">ラベル</div>
-          <div className="flex gap-2">
+          <div className="flex gap-2 flex-wrap">
             {build.labels.map((label) => (
               <Badge key={label.id} variant="outline">
                 {label.name}
