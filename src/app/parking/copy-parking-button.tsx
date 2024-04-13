@@ -11,6 +11,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { HelpTooltip } from "@/components/ui/help-tooltip";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { CopyableText } from "./copyable-text";
+import { DialogForm } from "@/components/ui/dialog-form";
 
 type Props = {
   parkings: Parking[];
@@ -135,9 +136,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
         スケジュールをコピー
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)} title="スケジュールをコピー">
-        <div className="flex flex-col gap-6 my-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">奪取/防衛</div>
+        <DialogForm.Container>
+          <DialogForm.Field>
+            <DialogForm.Label>奪取/防衛</DialogForm.Label>
             <Controller
               control={control}
               name="battleFilter"
@@ -156,11 +157,11 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                 </RadioGroup>
               )}
             />
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">
+          </DialogForm.Field>
+          <DialogForm.Field>
+            <DialogForm.Label>
               <span className="inline-block w-1">{openWithinHour}</span>&ensp;時間以内に停戦終了のみ
-            </div>
+            </DialogForm.Label>
             <Controller
               control={control}
               name="openWithinHour"
@@ -170,9 +171,9 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                 </div>
               )}
             />
-          </div>
-          <div className="flex justify-between">
-            <span className="text-sm">サーバー</span>
+          </DialogForm.Field>
+          <DialogForm.Field>
+            <DialogForm.Label>サーバー</DialogForm.Label>
             <div className="flex gap-4">
               {parkingServers.map((parkingServer) => (
                 <Label key={parkingServer.id} className="flex items-center gap-2">
@@ -196,10 +197,10 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                 </Label>
               ))}
             </div>
-          </div>
-          <div className="flex items-start justify-between gap-4">
+          </DialogForm.Field>
+          <DialogForm.Field centered={false}>
             <div className="flex items-center gap-2">
-              <span className="text-sm whitespace-nowrap">出力</span>
+              <DialogForm.Label>出力</DialogForm.Label>
               <HelpTooltip>
                 <span className="grid grid-cols-[auto_1fr] mb-4">
                   <span className="font-bold text-right">デフォルト:&ensp;</span>
@@ -234,8 +235,8 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
                 </RadioGroup>
               )}
             />
-          </div>
-        </div>
+          </DialogForm.Field>
+        </DialogForm.Container>
         <div>
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
             {parkingTexts.length > 0 && parkingTexts.map((text) => <CopyableText key={text}>{text}</CopyableText>)}

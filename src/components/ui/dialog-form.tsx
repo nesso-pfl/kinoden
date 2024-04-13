@@ -1,3 +1,4 @@
+import { cn } from "@/lib/utils";
 import React from "react";
 
 type ContainerProps = {
@@ -9,19 +10,22 @@ const Container: React.FC<ContainerProps> = ({ children }) => {
 };
 
 type FieldProps = {
-  label: React.ReactNode;
+  centered?: boolean;
   children: React.ReactNode;
 };
-const Field: React.FC<FieldProps> = ({ label, children }) => {
-  return (
-    <div className="flex items-center justify-between gap-4">
-      <div className="text-sm">{label}</div>
-      <div className="flex items-end gap-2">{children}</div>
-    </div>
-  );
+const Field: React.FC<FieldProps> = ({ children, centered = true }) => {
+  return <div className={cn("flex justify-between gap-4", centered ? "items-center" : "items-start")}>{children}</div>;
+};
+
+type LabelProps = {
+  children: React.ReactNode;
+};
+const Label: React.FC<LabelProps> = ({ children }) => {
+  return <div className="text-sm whitespace-nowrap">{children}</div>;
 };
 
 export const DialogForm = {
   Container,
   Field,
+  Label,
 };

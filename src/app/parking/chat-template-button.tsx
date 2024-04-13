@@ -8,6 +8,7 @@ import { Dialog } from "@/components/ui/custom-dialog";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { CopyableText } from "./copyable-text";
+import { DialogForm } from "@/components/ui/dialog-form";
 
 type Props = {
   parkings: Parking[];
@@ -59,16 +60,16 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
         いつもの
       </Button>
       <Dialog open={open} onClose={() => setOpen(false)} title="よく見るアレをコピー">
-        <div className="flex flex-col gap-6 my-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">時間</div>
+        <DialogForm.Container>
+          <DialogForm.Field>
+            <DialogForm.Label>時間</DialogForm.Label>
             <div className="flex items-end gap-2">
               <Input type="number" className="w-16" {...register("time")} />
               <span className="text-sm whitespace-nowrap">分後</span>
             </div>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">サーバー</div>
+          </DialogForm.Field>
+          <DialogForm.Field>
+            <DialogForm.Label>サーバー</DialogForm.Label>
             <Controller
               control={control}
               name="parking"
@@ -89,8 +90,8 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
                 </Select>
               )}
             />
-          </div>
-        </div>
+          </DialogForm.Field>
+        </DialogForm.Container>
         <div className="flex flex-col gap-4 min-h-20 mb-4">
           <CopyableText>{chatTemplate}</CopyableText>
         </div>

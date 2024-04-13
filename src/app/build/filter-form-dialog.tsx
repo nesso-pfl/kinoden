@@ -13,6 +13,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label as FormLabel } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { DialogForm } from "@/components/ui/dialog-form";
 
 const removeUndefined = (value: object) => {
   return JSON.parse(JSON.stringify(value));
@@ -86,9 +87,9 @@ export const FilterFormDialog: React.FC<Props> = ({ open, onClose }) => {
   return (
     <Dialog open={open} onClose={onClose} title="絞り込みとソート">
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-6 my-4">
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">ソート</div>
+        <DialogForm.Container>
+          <DialogForm.Field>
+            <DialogForm.Label>ソート</DialogForm.Label>
             <div className="flex items-end gap-2">
               <Controller
                 control={control}
@@ -109,15 +110,15 @@ export const FilterFormDialog: React.FC<Props> = ({ open, onClose }) => {
                 )}
               />
             </div>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm">作成者</div>
+          </DialogForm.Field>
+          <DialogForm.Field>
+            <DialogForm.Label>作成者</DialogForm.Label>
             <div className="flex items-end gap-2">
               <Input {...register("owner")} />
             </div>
-          </div>
-          <div className="flex items-center justify-between gap-4">
-            <div className="text-sm whitespace-nowrap">ラベル</div>
+          </DialogForm.Field>
+          <DialogForm.Field centered={false}>
+            <DialogForm.Label>ラベル</DialogForm.Label>
             <div className="flex items-end gap-2">
               <Controller
                 control={control}
@@ -145,8 +146,8 @@ export const FilterFormDialog: React.FC<Props> = ({ open, onClose }) => {
                 )}
               />
             </div>
-          </div>
-        </div>
+          </DialogForm.Field>
+        </DialogForm.Container>
         <div className="flex justify-center w-full">
           <Button type="submit" className="w-1/2" disabled={isSubmitting}>
             絞り込む
