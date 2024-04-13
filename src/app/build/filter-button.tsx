@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useMemo, useState } from "react";
 import { Metadata } from "next";
 import { BuildSummaries } from "./build-summaries";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { Input } from "@/components/ui/input";
 import { CreateUsernameDialog, Label, getLabels, useGetLabels, useUsernameStore } from "@/features/build";
@@ -17,6 +17,7 @@ import { FilterIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label as FormLabel } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import { querySchema } from "./query";
 
 const removeUndefined = (value: object) => {
   return JSON.parse(JSON.stringify(value));
@@ -33,11 +34,16 @@ export type Form = z.infer<typeof formSchema>;
 type Sort = Form["sort"];
 
 const toQuery = (form: Form) => {
-  return removeUndefined({
+  const values = removeUndefined({
     sort: form.sort === "created_at_asc" ? form.sort : undefined,
     owner: form.owner || undefined,
     labels: form.labels && form.labels.length > 0 ? form.labels : undefined,
   });
+  const urlSearchParams = new URLSearchParams();
+  form.sort === "created_at_asc" && urlSearchParams.append("sort", values.sort);
+  form.owner && urlSearchParams.append("owner", values.owner);
+  form.labels && form.labels.map((label) => urlSearchParams.append("labels", label));
+  return urlSearchParams.toString();
 };
 
 const sortOptions: { value: NonNullable<Sort>; label: string }[] = [
@@ -49,7 +55,16 @@ type Props = {
   defaultValues?: Form;
 };
 
-export const FilterButton: React.FC<Props> = ({ defaultValues }) => {
+export const FilterButton: React.FC<Props> = () => {
+  const searchParams = useSearchParams();
+  const defaultValues = useMemo(() => {
+    const urlSearchParams = new URLSearchParams(searchParams.toString());
+    return formSchema.parse({
+      sort: urlSearchParams.get("sort") ?? "created_at_desc",
+      owner: urlSearchParams.get("owner") ?? undefined,
+      labels: urlSearchParams.getAll("labels") ?? undefined,
+    });
+  }, [searchParams]);
   const router = useRouter();
   const { data: allLabels } = useGetLabels();
   const [open, setOpen] = useState(false);
@@ -60,7 +75,6 @@ export const FilterButton: React.FC<Props> = ({ defaultValues }) => {
     formState: { isSubmitting },
   } = useForm<Form>({
     defaultValues: {
-      sort: defaultValues?.sort ?? "created_at_desc",
       ...defaultValues,
     },
     resolver: zodResolver(formSchema),
@@ -68,7 +82,7 @@ export const FilterButton: React.FC<Props> = ({ defaultValues }) => {
 
   const onSubmit = useCallback(
     (formValues: Form) => {
-      router.push(pagesPath.build.$url({ query: toQuery(formValues) }).path);
+      router.push(`${pagesPath.build.$url().path}?${toQuery(formValues)}`);
       setOpen(false);
     },
     [router],

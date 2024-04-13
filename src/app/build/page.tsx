@@ -6,12 +6,9 @@ import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
 import { CreateButton } from "./create-button";
 import { FilterButton } from "./filter-button";
+import { Query } from "./query";
 
-export type OptionalQuery = {
-  owner?: string;
-  labels?: string[];
-  sort?: "created_at_asc" | "created_at_desc";
-};
+export type OptionalQuery = Query;
 
 export const metadata: Metadata = {
   title: "ビルド一覧 | Kinoden Pfl",

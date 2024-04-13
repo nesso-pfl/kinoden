@@ -73,7 +73,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
     },
     resolver: zodResolver(formSchema),
   });
-  console.log(errors);
+
   const skillsErrorMessage = useMemo(
     () => errors.skills?.find?.((skill) => skill?.skill?.message)?.skill?.message || errors.skills?.root?.message,
     [errors],
