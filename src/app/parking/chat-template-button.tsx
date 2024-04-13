@@ -1,14 +1,9 @@
 import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Parking, ParkingServer } from "@/features/parking";
+import { Parking } from "@/features/parking";
 import dayjs from "dayjs";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Label } from "@/components/ui/label";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
-import { Slider } from "@/components/ui/slider";
-import { Checkbox } from "@/components/ui/checkbox";
-import { HelpTooltip } from "@/components/ui/help-tooltip";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { CheckIcon, CopyIcon } from "lucide-react";

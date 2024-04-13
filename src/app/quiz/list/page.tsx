@@ -1,4 +1,3 @@
-import Image from "next/image";
 import answerJson from "@/answer.json";
 import React from "react";
 import { QuizTable } from "./quiz-table";

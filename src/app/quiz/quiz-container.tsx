@@ -5,9 +5,7 @@ import { StudyModeSwitch } from "./study-mode-switch";
 import { QuizTypeButtons } from "./quiz-type-buttons";
 import { useStudyMode } from "@/features/quiz";
 
-type Props = {};
-
-export const QuizContainer: React.FC<Props> = () => {
+export const QuizContainer: React.FC = () => {
   const { studyMode, setStudyMode } = useStudyMode();
 
   return (

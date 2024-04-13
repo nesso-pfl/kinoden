@@ -1,25 +1,6 @@
-import React, { useState } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SortableItem } from "@/features/guid-battle/sortable-item";
-import { cn } from "@/lib/utils";
-import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
+import React from "react";
 import { Build } from "@/features/build/types";
 import Image from "next/image";
-import { Label } from "@/components/ui/label";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { PencilIcon, ReceiptTextIcon } from "lucide-react";

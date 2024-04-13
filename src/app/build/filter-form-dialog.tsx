@@ -1,23 +1,18 @@
 "use client";
 
-import React, { useCallback, useMemo, useState } from "react";
-import { Metadata } from "next";
-import { BuildSummaries } from "./build-summaries";
+import React, { useCallback, useMemo} from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { Input } from "@/components/ui/input";
-import { CreateUsernameDialog, Label, getLabels, useGetLabels, useUsernameStore } from "@/features/build";
+import { useGetLabels, } from "@/features/build";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { FilterIcon } from "lucide-react";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label as FormLabel } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
-import { querySchema } from "./query";
 
 const removeUndefined = (value: object) => {
   return JSON.parse(JSON.stringify(value));

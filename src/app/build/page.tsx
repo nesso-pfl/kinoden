@@ -1,9 +1,6 @@
 import React from "react";
 import { Metadata } from "next";
 import { BuildSummaries } from "./build-summaries";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { pagesPath } from "@/features/path/$path";
 import { CreateButton } from "./create-button";
 import { FilterButton } from "./filter-button";
 import { Query } from "./query";

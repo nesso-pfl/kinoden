@@ -30,9 +30,7 @@ const toForm = (parking: Parking) => {
   };
 };
 
-type Props = {};
-
-export const ParkingSummary: React.FC<Props> = () => {
+export const ParkingSummary: React.FC = () => {
   const [sort, setSort] = useState<"number" | "openDate">("number");
   const form = useForm<Form>({
     defaultValues: { parkings: [] },

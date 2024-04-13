@@ -7,9 +7,7 @@ import { pagesPath } from "@/features/path/$path";
 import { useSearchParams } from "next/navigation";
 import { useBuild, useUsernameStore } from "@/features/build";
 
-type Props = {};
-
-export const EditButton: React.FC<Props> = () => {
+export const EditButton: React.FC = () => {
   const params = useSearchParams();
   const id = useMemo(() => params.get("id"), [params]);
   const { data: build } = useBuild(id);

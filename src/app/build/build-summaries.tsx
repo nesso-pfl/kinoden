@@ -1,31 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SortableItem } from "@/features/guid-battle/sortable-item";
-import { cn } from "@/lib/utils";
-import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
+import React from "react";
 import { BuildSummaryItem } from "./build-summary-item";
-import { Build } from "@/features/build/types";
 import { useBuilds } from "@/features/build";
 
-type Props = {};
-
-export const BuildSummaries: React.FC<Props> = () => {
+export const BuildSummaries: React.FC = () => {
   const { data: builds } = useBuilds();
 
   return (

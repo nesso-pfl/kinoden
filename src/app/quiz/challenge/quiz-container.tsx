@@ -13,18 +13,17 @@ type Step = (typeof steps)[number];
 
 function shuffle<T>(array: T[]) {
   for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
+    const j = Math.floor(Math.random() * (i + 1));
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     [array[i], array[j]] = [array[j], array[i]];
   }
   return array;
 }
 
-type Props = {};
-
-export const QuizContainer: React.FC<Props> = () => {
+export const QuizContainer: React.FC = () => {
   const { quizType, studyMode } = useQuery();
-  const { quizzes: allQuizzes, toggleQuizChecked } = useQuizzes({ checkedOnly: quizType === "checked-only" });
+  const { quizzes: allQuizzes } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
   console.log({ quizzes, allQuizzes });
   const [showAnswers, setShowAnswers] = useState(false);

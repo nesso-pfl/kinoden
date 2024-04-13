@@ -1,8 +1,5 @@
 import React from "react";
 import { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import Link from "next/link";
-import { pagesPath } from "@/features/path/$path";
 import { EditButton } from "./edit-button";
 import { BuildDetail } from "./build-detail";
 import { DeleteButton } from "./delete-button";

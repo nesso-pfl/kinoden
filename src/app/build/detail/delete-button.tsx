@@ -2,18 +2,14 @@
 
 import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
-import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
 import { useSearchParams } from "next/navigation";
 import { deleteBuild, useBuild, useUsernameStore } from "@/features/build";
-import { setSourceMapsEnabled } from "process";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
 
-type Props = {};
-
-export const DeleteButton: React.FC<Props> = () => {
+export const DeleteButton: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const params = useSearchParams();

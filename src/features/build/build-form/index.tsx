@@ -34,10 +34,10 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   const router = useRouter();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const { data: labels, isLoading: loadingLabels } = useGetLabels();
-  const { data: skills, isLoading: loadingSkills } = useGetSkills();
-  const { data: fellows, isLoading: loadingFellows } = useGetFellows();
-  const { data: relics, isLoading: loadingRelics } = useGetRelics();
+  const { data: labels } = useGetLabels();
+  const { data: skills } = useGetSkills();
+  const { data: fellows } = useGetFellows();
+  const { data: relics } = useGetRelics();
   const { username } = useUsernameStore();
   const {
     handleSubmit,

@@ -1,33 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SortableItem } from "@/features/guid-battle/sortable-item";
-import { cn } from "@/lib/utils";
-import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
-import { Build } from "@/features/build/types";
-import { useBuild, useBuilds } from "@/features/build";
+import React from "react";
+import { useBuild } from "@/features/build";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 
-type Props = {};
-
-export const BuildDetail: React.FC<Props> = () => {
+export const BuildDetail: React.FC = () => {
   const params = useSearchParams();
   const { data: build } = useBuild(params.get("id"));
 
