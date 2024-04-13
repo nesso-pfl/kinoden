@@ -18,6 +18,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label as FormLabel } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
 import { querySchema } from "./query";
+import { FilterFormDialog } from "./filter-form-dialog";
 
 const removeUndefined = (value: object) => {
   return JSON.parse(JSON.stringify(value));
@@ -56,114 +57,13 @@ type Props = {
 };
 
 export const FilterButton: React.FC<Props> = () => {
-  const searchParams = useSearchParams();
-  const defaultValues = useMemo(() => {
-    const urlSearchParams = new URLSearchParams(searchParams.toString());
-    return formSchema.parse({
-      sort: urlSearchParams.get("sort") ?? "created_at_desc",
-      owner: urlSearchParams.get("owner") ?? undefined,
-      labels: urlSearchParams.getAll("labels") ?? undefined,
-    });
-  }, [searchParams]);
-  const router = useRouter();
-  const { data: allLabels } = useGetLabels();
   const [open, setOpen] = useState(false);
-  const {
-    register,
-    control,
-    handleSubmit,
-    formState: { isSubmitting },
-  } = useForm<Form>({
-    defaultValues: {
-      ...defaultValues,
-    },
-    resolver: zodResolver(formSchema),
-  });
-
-  const onSubmit = useCallback(
-    (formValues: Form) => {
-      router.push(`${pagesPath.build.$url().path}?${toQuery(formValues)}`);
-      setOpen(false);
-    },
-    [router],
-  );
-
   return (
     <>
       <Button variant="default" size="icon" className="rounded-full" onClick={() => setOpen(true)}>
         <FilterIcon />
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">絞り込みとソート</h2>
-        <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="flex flex-col gap-6 my-4">
-            <div className="flex items-center justify-between gap-4">
-              <div className="text-sm">ソート</div>
-              <div className="flex items-end gap-2">
-                <Controller
-                  control={control}
-                  name="sort"
-                  render={({ field }) => (
-                    <RadioGroup
-                      className="flex flex-wrap items-center justify-end gap-x-4"
-                      value={field.value}
-                      onValueChange={field.onChange}
-                    >
-                      {sortOptions.map((option) => (
-                        <div key={option.value} className="flex items-center space-x-2 my-1">
-                          <RadioGroupItem value={option.value} id={option.value} />
-                          <FormLabel htmlFor={option.value}>{option.label}</FormLabel>
-                        </div>
-                      ))}
-                    </RadioGroup>
-                  )}
-                />
-              </div>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="text-sm">作成者</div>
-              <div className="flex items-end gap-2">
-                <Input {...register("owner")} />
-              </div>
-            </div>
-            <div className="flex items-center justify-between gap-4">
-              <div className="text-sm whitespace-nowrap">ラベル</div>
-              <div className="flex items-end gap-2">
-                <Controller
-                  control={control}
-                  name="labels"
-                  render={({ field }) => (
-                    <div className="flex flex-wrap gap-4">
-                      {allLabels?.map((label) => (
-                        <div key={label.id} className="flex items-center gap-1">
-                          <Checkbox
-                            id={label.id}
-                            checked={field.value?.some((v) => v === label.id)}
-                            onCheckedChange={() => {
-                              const newValue = field.value?.some((v) => v === label.id)
-                                ? field.value.filter((value) => value !== label.id)
-                                : [...(field.value ?? []), label.id];
-                              field.onChange(newValue);
-                            }}
-                          />
-                          <label className="text-sm" htmlFor={label.id}>
-                            {label.name}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
-                  )}
-                />
-              </div>
-            </div>
-          </div>
-          <div className="flex justify-center w-full">
-            <Button type="submit" className="w-1/2" disabled={isSubmitting}>
-              絞り込む
-            </Button>
-          </div>
-        </form>
-      </Dialog>
+      {open && <FilterFormDialog open={open} onClose={() => setOpen(false)} />}
     </>
   );
 };
