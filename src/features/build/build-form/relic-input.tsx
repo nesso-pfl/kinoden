@@ -32,7 +32,7 @@ export const RelicInput: React.FC<Props> = ({ relicOptions, value, onChange }) =
           height={48}
         />
       </button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => setOpen(false)} title="遺物選択">
         <div className="flex flex-wrap gap-2">
           {relicOptions.map((relic) => (
             <button type="button" key={relic.id} onClick={handleClickRelic(relic)}>

@@ -41,8 +41,7 @@ export const CreateUsernameDialog: React.FC<Props> = ({ open, onClose, onSubmit 
   );
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">名前設定</h2>
+    <Dialog open={open} onClose={onClose} title="名前設定">
       <p>
         あなたの名前を教えてください。
         <br />

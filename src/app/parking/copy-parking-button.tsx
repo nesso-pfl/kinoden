@@ -151,10 +151,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
       <Button disabled={loading} onClick={() => setOpen(true)}>
         スケジュールをコピー
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
-        <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">
-          スケジュールをコピー
-        </h2>
+      <Dialog open={open} onClose={() => setOpen(false)} title="スケジュールをコピー">
         <div className="flex flex-col gap-6 my-4">
           <div className="flex items-center justify-between gap-4">
             <div className="text-sm">奪取/防衛</div>

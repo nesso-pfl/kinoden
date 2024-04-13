@@ -1,12 +1,12 @@
 "use client";
 
-import React, { useCallback, useMemo} from "react";
+import React, { useCallback, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { Input } from "@/components/ui/input";
-import { useGetLabels, } from "@/features/build";
+import { useGetLabels } from "@/features/build";
 import { Controller, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -84,8 +84,7 @@ export const FilterFormDialog: React.FC<Props> = ({ open, onClose }) => {
   );
 
   return (
-    <Dialog open={open} onClose={onClose}>
-      <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">絞り込みとソート</h2>
+    <Dialog open={open} onClose={onClose} title="絞り込みとソート">
       <form onSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-6 my-4">
           <div className="flex items-center justify-between gap-4">

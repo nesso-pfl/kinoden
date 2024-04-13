@@ -32,7 +32,7 @@ export const FellowInput: React.FC<Props> = ({ allFellows, value, onChange }) =>
           height={40}
         />
       </button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => setOpen(false)} title="仲間選択">
         <div className="flex flex-wrap gap-2">
           {allFellows.map((fellow) => (
             <button type="button" key={fellow.id} onClick={handleClickFellow(fellow)}>

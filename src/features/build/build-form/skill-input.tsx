@@ -55,7 +55,7 @@ export const SkillInput: React.FC<Props> = ({ allSkills, value, onChange, delayV
           aria-label="遅延時間"
         />
       </div>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => setOpen(false)} title="技能選択">
         <div className="flex flex-wrap gap-2">
           {allSkills.map((skill) => (
             <button type="button" key={skill.id} onClick={handleClickSkill(skill)}>

@@ -47,7 +47,7 @@ export const LabelInput: React.FC<Props> = ({ allLabels, value, onChange }) => {
       >
         <PlusIcon />
       </Button>
-      <Dialog open={open} onClose={() => setOpen(false)}>
+      <Dialog open={open} onClose={() => setOpen(false)} title="ラベル選択">
         <div className="flex flex-wrap gap-4">
           {allLabels.map((label) => (
             <div key={label.id} className="flex items-center gap-1">

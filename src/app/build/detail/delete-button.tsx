@@ -35,8 +35,7 @@ export const DeleteButton: React.FC = () => {
         <Button variant="destructive" className="w-full" onClick={() => setOpen(true)}>
           削除
         </Button>
-        <Dialog open={open} onClose={() => setOpen(false)}>
-          <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">ビルドを削除</h2>
+        <Dialog open={open} onClose={() => setOpen(false)} title="ビルドを削除">
           <p className="mb-8">ビルドを削除しますか？</p>
           <div className="flex justify-center w-full">
             <Button variant="destructive" className="w-1/2" onClick={handleClickDelete(id)}>
