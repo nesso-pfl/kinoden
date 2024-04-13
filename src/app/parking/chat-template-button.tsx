@@ -1,14 +1,13 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Parking } from "@/features/parking";
 import dayjs from "dayjs";
 import { z } from "zod";
 import { useForm, Controller } from "react-hook-form";
 import { Dialog } from "@/components/ui/custom-dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { CheckIcon, CopyIcon } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { CopyableText } from "./copyable-text";
 
 type Props = {
   parkings: Parking[];
@@ -47,28 +46,12 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
   });
   const time = watch("time");
   const parking = watch("parking");
-  const { toast: copyToast } = useToast();
   const chatTemplate = useMemo(() => {
     const targetParking = parkings.find((parking_) => parking_.id === parking);
     if (!targetParking) return "";
 
     return `${time}分後、${targetParking.owner.name}${showNumberMap[targetParking.number]}オープンです。ご武運を👊`;
   }, [time, parkings, parking]);
-
-  const handleClickCopy = useCallback(
-    (parkingText: string) => () => {
-      window.navigator.clipboard.writeText(parkingText);
-      copyToast({
-        description: (
-          <div className="flex gap-2">
-            <CheckIcon className="text-green-400" /> コピーしました
-          </div>
-        ),
-        duration: 1000,
-      });
-    },
-    [copyToast],
-  );
 
   return (
     <>
@@ -109,12 +92,7 @@ export const ChatTemplateButton: React.FC<Props> = ({ parkings, loading }) => {
           </div>
         </div>
         <div className="flex flex-col gap-4 min-h-20 mb-4">
-          <pre className="flex justify-between gap-1 border border-gray-400 rounded-md p-2 whitespace-normal break-all">
-            {chatTemplate}
-            <Button className="min-w-8 w-8 h-8" size="icon" variant="outline" onClick={handleClickCopy(chatTemplate)}>
-              <CopyIcon />
-            </Button>
-          </pre>
+          <CopyableText>{chatTemplate}</CopyableText>
         </div>
       </Dialog>
     </>

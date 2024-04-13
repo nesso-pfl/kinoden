@@ -1,4 +1,4 @@
-import React, { useCallback, useMemo, useState } from "react";
+import React, { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Parking, ParkingServer } from "@/features/parking";
 import dayjs from "dayjs";
@@ -10,8 +10,7 @@ import { Slider } from "@/components/ui/slider";
 import { Checkbox } from "@/components/ui/checkbox";
 import { HelpTooltip } from "@/components/ui/help-tooltip";
 import { Dialog } from "@/components/ui/custom-dialog";
-import { useToast } from "@/components/ui/use-toast";
-import { CheckIcon, CopyIcon } from "lucide-react";
+import { CopyableText } from "./copyable-text";
 
 type Props = {
   parkings: Parking[];
@@ -119,7 +118,6 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
   const openWithinHour = watch("openWithinHour");
   const format = watch("format");
   const servers = watch("servers");
-  const { toast: copyToast } = useToast();
 
   const parkingTexts = useMemo(
     () =>
@@ -129,21 +127,6 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
         { battleFilter, openWithinHour, format },
       ),
     [parkings, parkingServers, servers, battleFilter, openWithinHour, format],
-  );
-
-  const handleClickCopy = useCallback(
-    (parkingText: string) => () => {
-      window.navigator.clipboard.writeText(parkingText);
-      copyToast({
-        description: (
-          <div className="flex gap-2">
-            <CheckIcon className="text-green-400" /> コピーしました
-          </div>
-        ),
-        duration: 1000,
-      });
-    },
-    [copyToast],
   );
 
   return (
@@ -255,18 +238,7 @@ export const CopyParkingButton: React.FC<Props> = ({ parkings, parkingServers, l
         </div>
         <div>
           <div className="flex flex-col gap-4 min-h-[182px] mb-4">
-            {parkingTexts.length > 0 &&
-              parkingTexts.map((text) => (
-                <pre
-                  key={text}
-                  className="flex justify-between gap-1 border border-gray-400 rounded-md p-2 whitespace-normal break-all"
-                >
-                  {text}
-                  <Button className="min-w-8 w-8 h-8" size="icon" variant="outline" onClick={handleClickCopy(text)}>
-                    <CopyIcon />
-                  </Button>
-                </pre>
-              ))}
+            {parkingTexts.length > 0 && parkingTexts.map((text) => <CopyableText key={text}>{text}</CopyableText>)}
           </div>
         </div>
       </Dialog>
