@@ -36,14 +36,12 @@ export const DeleteButton: React.FC = () => {
           削除
         </Button>
         <Dialog open={open} onClose={() => setOpen(false)}>
-          <div className="flex flex-col items-center">
-            <h2 className="text-lg">ビルドを削除</h2>
-            <p>ビルドを削除しますか？</p>
-            <div className="flex mt-4">
-              <Button className="mr-4" onClick={handleClickDelete(id)}>
-                削除
-              </Button>
-            </div>
+          <h2 className="text-lg font-semibold leading-none tracking-tight text-center md:text-left">ビルドを削除</h2>
+          <p className="mb-8">ビルドを削除しますか？</p>
+          <div className="flex justify-center w-full">
+            <Button variant="destructive" className="w-1/2" onClick={handleClickDelete(id)}>
+              削除
+            </Button>
           </div>
         </Dialog>
       </>
