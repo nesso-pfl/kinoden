@@ -1,4 +1,4 @@
-import { Build, Skill } from ".";
+import { Build } from ".";
 import { supabase } from "../supabase";
 import useSWR from "swr";
 

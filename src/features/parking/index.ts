@@ -1,7 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { supabase } from "../supabase";
-import { REALTIME_SUBSCRIBE_STATES } from "@supabase/supabase-js";
-import { setErrorMap } from "zod";
 
 export type ParkingServer = {
   id: string;

@@ -1,31 +1,8 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { Relic, useGetFellows, useGetRelics, useGetSkills } from "@/features/build";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SortableItem } from "@/features/guid-battle/sortable-item";
-import { cn } from "@/lib/utils";
-import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
-import { Build } from "@/features/build";
-import { Controller, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { type Form, formSchema } from "./form-schema";
+import { Relic } from "@/features/build";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { staticPath } from "@/features/path/$path";
 

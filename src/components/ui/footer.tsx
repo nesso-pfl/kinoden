@@ -1,4 +1,3 @@
-import { pagesPath } from "@/features/path/$path";
 import Link from "next/link";
 import React from "react";
 

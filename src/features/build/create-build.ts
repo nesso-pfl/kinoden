@@ -21,7 +21,7 @@ export const createBuild = async (build: CreateBuild) => {
 
   await Promise.all([
     await supabase.from("build_labels").insert(
-      build.labels.map((label, index) => ({
+      build.labels.map((label) => ({
         build: newBuild.id,
         label: label.id,
       })),

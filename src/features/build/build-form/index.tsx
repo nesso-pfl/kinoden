@@ -10,34 +10,12 @@ import {
   useGetSkills,
   useUsernameStore,
 } from "@/features/build";
-import {
-  DndContext,
-  closestCenter,
-  KeyboardSensor,
-  PointerSensor,
-  useSensor,
-  useSensors,
-  DragEndEvent,
-} from "@dnd-kit/core";
-import {
-  arrayMove,
-  SortableContext,
-  sortableKeyboardCoordinates,
-  verticalListSortingStrategy,
-} from "@dnd-kit/sortable";
-import { SortableItem } from "@/features/guid-battle/sortable-item";
-import { cn } from "@/lib/utils";
-import { GuildBattlePlayer, PlayerType } from "@/features/guid-battle";
-import { Build } from "@/features/build";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type Form, formSchema } from "./form-schema";
-import Image from "next/image";
-import { Input } from "@/components/ui/input";
 import { SkillInput } from "./skill-input";
 import { FellowInput } from "./fellow-input";
 import { Button } from "@/components/ui/button";
-import { ArrowLeftRightIcon } from "lucide-react";
 import { RelicInput } from "./relic-input";
 import { LabelInput } from "./label-input";
 import { useGetLabels } from "@/features/build/use-get-labels";
@@ -45,7 +23,6 @@ import { ErrorMessage } from "@/components/ui/error-message";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "@/features/path/$path";
 import { useToast } from "@/components/ui/use-toast";
-import { setSourceMapsEnabled } from "process";
 
 type Props = {
   defaultValues?: Form;
