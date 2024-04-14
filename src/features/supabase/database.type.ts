@@ -158,6 +158,7 @@ export type Database = {
           owner: string
           statue_relic: string
           tresure_relic: string
+          updated_at: string | null
         }
         Insert: {
           book_relic: string
@@ -169,6 +170,7 @@ export type Database = {
           owner: string
           statue_relic: string
           tresure_relic: string
+          updated_at?: string | null
         }
         Update: {
           book_relic?: string
@@ -180,6 +182,7 @@ export type Database = {
           owner?: string
           statue_relic?: string
           tresure_relic?: string
+          updated_at?: string | null
         }
         Relationships: [
           {
@@ -464,6 +467,7 @@ export type Database = {
           owner: string
           statue_relic: string
           tresure_relic: string
+          updated_at: string | null
         }[]
       }
     }

@@ -21,8 +21,8 @@ export const DeleteButton: React.FC = () => {
   const handleClickDelete = useCallback(
     (id: string) => async () => {
       await deleteBuild(id);
-      toast({ description: "ビルドを削除しました" });
       router.replace(pagesPath.build.$url().pathname);
+      toast({ description: "ビルドを削除しました", duration: 2000 });
     },
     [router, toast],
   );
