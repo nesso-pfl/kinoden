@@ -10,7 +10,7 @@ type UserInfo = {
 };
 
 export const useUser = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo>({ inited: true, user: undefined });
+  const [userInfo, setUserInfo] = useState<UserInfo>({ inited: false, user: undefined });
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_, session) => {
       setUserInfo({ inited: true, user: session?.user ?? undefined });
