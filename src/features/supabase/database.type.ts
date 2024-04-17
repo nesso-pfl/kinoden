@@ -224,7 +224,7 @@ export type Database = {
             foreignKeyName: "public_builds_tresure_relic_fkey"
             columns: ["tresure_relic"]
             isOneToOne: false
-            referencedRelation: "tresure_relics"
+            referencedRelation: "treasure_relics"
             referencedColumns: ["id"]
           },
         ]
@@ -429,7 +429,7 @@ export type Database = {
         }
         Relationships: []
       }
-      tresure_relics: {
+      treasure_relics: {
         Row: {
           created_at: string
           id: string
