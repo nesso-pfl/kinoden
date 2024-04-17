@@ -28,11 +28,11 @@ export const CopyableText: React.FC<Props> = ({ children }) => {
   );
 
   return (
-    <pre className="flex justify-between gap-1 border border-gray-400 rounded-md p-2 whitespace-normal break-all">
+    <div className="flex justify-between gap-1 border border-gray-400 rounded-md p-2 whitespace-normal break-all">
       {children}
       <Button className="min-w-8 w-8 h-8" size="icon" variant="ghost" onClick={handleClickCopy(children)}>
         <CopyIcon />
       </Button>
-    </pre>
+    </div>
   );
 };
