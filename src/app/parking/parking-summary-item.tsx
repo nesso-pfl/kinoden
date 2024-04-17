@@ -31,7 +31,7 @@ export const ParkingSummaryItem: React.FC<Props> = ({ id, number, owner, open_at
   useEffect(() => {
     const intervalId = setInterval(() => {
       setOpened(dayjs(open_at).isBefore(dayjs()));
-    }, 1000);
+    }, 300);
 
     return () => {
       clearInterval(intervalId);
