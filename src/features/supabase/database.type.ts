@@ -157,7 +157,7 @@ export type Database = {
           necklace_relic: string
           owner: string
           statue_relic: string
-          tresure_relic: string
+          treasure_relic: string
           updated_at: string | null
         }
         Insert: {
@@ -169,7 +169,7 @@ export type Database = {
           necklace_relic: string
           owner: string
           statue_relic: string
-          tresure_relic: string
+          treasure_relic: string
           updated_at?: string | null
         }
         Update: {
@@ -181,7 +181,7 @@ export type Database = {
           necklace_relic?: string
           owner?: string
           statue_relic?: string
-          tresure_relic?: string
+          treasure_relic?: string
           updated_at?: string | null
         }
         Relationships: [
@@ -222,7 +222,7 @@ export type Database = {
           },
           {
             foreignKeyName: "public_builds_tresure_relic_fkey"
-            columns: ["tresure_relic"]
+            columns: ["treasure_relic"]
             isOneToOne: false
             referencedRelation: "treasure_relics"
             referencedColumns: ["id"]
@@ -466,7 +466,7 @@ export type Database = {
           necklace_relic: string
           owner: string
           statue_relic: string
-          tresure_relic: string
+          treasure_relic: string
           updated_at: string | null
         }[]
       }
