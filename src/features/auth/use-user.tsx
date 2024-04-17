@@ -1,21 +1,29 @@
 "use client";
 
 import { supabase } from "../supabase";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo } from "react";
 import { User } from "@supabase/supabase-js";
+import { create } from "zustand";
 
-type UserInfo = {
+type UserStore = {
   inited: boolean;
   user: User | undefined;
+  updateUser: (user: User | undefined, inited: boolean) => unknown;
 };
 
+export const useUserStore = create<UserStore>()((set) => ({
+  inited: false,
+  user: undefined,
+  updateUser: (user, inited) => set({ inited, user }),
+}));
+
 export const useUser = () => {
-  const [userInfo, setUserInfo] = useState<UserInfo>({ inited: false, user: undefined });
-  const signedIn = useMemo(() => userInfo.inited && !userInfo.user, [userInfo]);
+  const { inited, user, updateUser } = useUserStore();
+  const signedIn = useMemo(() => user !== undefined, [user]);
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_, session) => {
-      setUserInfo({ inited: true, user: session?.user ?? undefined });
+      updateUser(session?.user ?? undefined, true);
     });
 
     return () => {
@@ -23,5 +31,5 @@ export const useUser = () => {
     };
   });
 
-  return { ...userInfo, signedIn };
+  return { user, inited, signedIn };
 };
