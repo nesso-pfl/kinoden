@@ -58,12 +58,12 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
           <SheetTrigger className="md:hidden ml-auto">
             <MenuIcon />
           </SheetTrigger>
-          <SheetContent>
+          <SheetContent className="flex flex-col gap-0">
             <SheetHeader>
               <SheetTitle>メニュー</SheetTitle>
             </SheetHeader>
             <Separator className="my-4" />
-            <ul>
+            <ul className="flex-1">
               {menus.map((menu) => (
                 <li key={menu.name} className="">
                   <Link className="flex items-center gap-2 w-full py-2" href={menu.href}>
