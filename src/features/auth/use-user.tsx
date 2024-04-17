@@ -29,7 +29,7 @@ export const useUser = () => {
     return () => {
       data.subscription.unsubscribe();
     };
-  });
+  }, [updateUser]);
 
   return { user, inited, signedIn };
 };
