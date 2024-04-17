@@ -12,7 +12,7 @@ type MenuItem = {
 };
 
 const menus: MenuItem[] = [
-  { name: "クイズ", href: pagesPath.quiz.$url().pathname, authed: true },
+  // { name: "クイズ", href: pagesPath.quiz.$url().pathname, authed: true },
   { name: "ビルド", href: pagesPath.parking.$url().pathname, authed: true },
   { name: "越域駐騎場", href: pagesPath.parking.$url().pathname, authed: false },
 ];
