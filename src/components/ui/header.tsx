@@ -7,6 +7,7 @@ import Link from "next/link";
 import React from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "./separator";
+import { Button } from "./button";
 
 type MenuItem = {
   name: string;
@@ -23,9 +24,10 @@ const menus: MenuItem[] = [
 
 type HeaderPresentationProps = {
   menus: MenuItem[];
+  signedIn: boolean;
 };
 
-const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus }) => {
+const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn }) => {
   return (
     <header className="flex justify-center bg-primary">
       <div className="flex items-center  h-10 w-full max-w-7xl text-white px-4">
@@ -41,6 +43,17 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus }) => {
             ))}
           </ul>
         </nav>
+        <div className="hidden md:block ml-auto">
+          {signedIn ? (
+            <Button size="sm" className="h-8" variant="destructive">
+              ログアウト
+            </Button>
+          ) : (
+            <Button size="sm" className="h-8" asChild>
+              <Link href={pagesPath.sign_in.$url().pathname}>ログイン</Link>
+            </Button>
+          )}
+        </div>
         <Sheet>
           <SheetTrigger className="md:hidden ml-auto">
             <MenuIcon />
@@ -49,7 +62,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus }) => {
             <SheetHeader>
               <SheetTitle>メニュー</SheetTitle>
             </SheetHeader>
-            <Separator className="my-2" />
+            <Separator className="my-4" />
             <ul>
               {menus.map((menu) => (
                 <li key={menu.name} className="">
@@ -60,6 +73,14 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus }) => {
                 </li>
               ))}
             </ul>
+            <Separator className="my-4" />
+            {signedIn ? (
+              <Button variant="destructive">ログアウト</Button>
+            ) : (
+              <Button asChild>
+                <Link href={pagesPath.sign_in.$url().pathname}>ログイン</Link>
+              </Button>
+            )}
           </SheetContent>
         </Sheet>
       </div>
@@ -71,5 +92,5 @@ export const Header: React.FC = () => {
   const { signedIn } = useUser();
   const filteredMenus = menus.filter((menu) => signedIn || !menu.authed);
 
-  return <HeaderPresentation menus={filteredMenus} />;
+  return <HeaderPresentation menus={filteredMenus} signedIn={signedIn} />;
 };
