@@ -5,7 +5,7 @@ const getRelics = async () => {
   const [maskRelics, fossilRelics, treasureRelics, bookRelics, statueRelics, necklaceRelics] = await Promise.all([
     supabase.from("mask_relics").select("*"),
     supabase.from("fossil_relics").select("*"),
-    supabase.from("tresure_relics").select("*"),
+    supabase.from("treasure_relics").select("*"),
     supabase.from("book_relics").select("*"),
     supabase.from("statue_relics").select("*"),
     supabase.from("necklace_relics").select("*"),

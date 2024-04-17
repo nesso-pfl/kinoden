@@ -9,7 +9,7 @@ export const createBuild = async (build: CreateBuild) => {
         owner: build.owner,
         mask_relic: build.mask_relic.id,
         fossil_relic: build.fossil_relic.id,
-        tresure_relic: build.treasure_relic.id,
+        treasure_relic: build.treasure_relic.id,
         book_relic: build.book_relic.id,
         statue_relic: build.statue_relic.id,
         necklace_relic: build.necklace_relic.id,

@@ -13,7 +13,7 @@ export const getBuild = async (id: string): Promise<Build> => {
        build_fellows( *, fellows( * ) ),
        mask_relics( * ),
        fossil_relics( * ),
-       tresure_relics( * ),
+       treasure_relics( * ),
        book_relics( * ),
        statue_relics( * ),
        necklace_relics( * )
@@ -42,7 +42,7 @@ export const getBuild = async (id: string): Promise<Build> => {
       .filter((skill): skill is typeof skill & { skill: Exclude<typeof skill.skill, null> } => !!skill.skill),
     mask_relic: build.mask_relics!,
     fossil_relic: build.fossil_relics!,
-    treasure_relic: build.tresure_relics!,
+    treasure_relic: build.treasure_relics!,
     book_relic: build.book_relics!,
     statue_relic: build.statue_relics!,
     necklace_relic: build.necklace_relics!,
