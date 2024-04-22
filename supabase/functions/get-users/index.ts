@@ -1,18 +1,28 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.5";
 
-Deno.serve(async () => {
+Deno.serve(async (req) => {
+  console.log(req);
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   if (!supabaseUrl || !supabaseServiceRoleKey)
     throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set");
 
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey);
-  const { data: users } = await supabase.auth.admin.listUsers();
+  const {
+    data: { users },
+  } = await supabase.auth.admin.listUsers();
   const data = {
     users,
   };
+  console.log(users);
 
-  return new Response(JSON.stringify(data), { headers: { "Content-Type": "application/json" } });
+  return new Response(JSON.stringify(data), {
+    headers: {
+      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+      "Content-Type": "application/json",
+    },
+  });
 });
 
 /* To invoke locally:
