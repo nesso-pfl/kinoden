@@ -2,8 +2,8 @@
 
 import { supabase } from "../supabase";
 import { useEffect, useMemo } from "react";
-import { User } from "@supabase/supabase-js";
 import { create } from "zustand";
+import { User } from "./user";
 
 type UserStore = {
   inited: boolean;
@@ -23,7 +23,19 @@ export const useUser = () => {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange((_, session) => {
-      updateUser(session?.user ?? undefined, true);
+      updateUser(
+        session
+          ? {
+              ...session.user,
+              user_metadata: {
+                ...session.user.user_metadata,
+                name: session.user.user_metadata.name,
+                email: session.user.user_metadata.email,
+              },
+            }
+          : undefined,
+        true,
+      );
     });
 
     return () => {
