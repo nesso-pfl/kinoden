@@ -1,7 +1,20 @@
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.5";
 
 Deno.serve(async (req) => {
+  const origin = req.headers.get("origin")?.includes("http://localhost:3000")
+    ? "http://localhost:3000"
+    : "https://kinoden-pfl.nesso-pfl.click";
   console.log(req);
+  if (req.method === "OPTIONS") {
+    return new Response("ok", {
+      headers: {
+        "Access-Control-Allow-Origin": origin,
+        "Access-Control-Allow-Methods": "GET",
+        "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+      },
+    });
+  }
+
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const authorization = req.headers.get("Authorization");
@@ -14,6 +27,7 @@ Deno.serve(async (req) => {
     },
   });
   const user = await supabase.auth.getUser();
+  console.log(user);
   if (user.data.user?.user_metadata.userRole !== "admin") {
     return new Response(undefined, {
       status: 401,
@@ -30,7 +44,7 @@ Deno.serve(async (req) => {
 
   return new Response(JSON.stringify(data), {
     headers: {
-      "Access-Control-Allow-Origin": "*",
+      "Access-Control-Allow-Origin": origin,
       "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
       "Content-Type": "application/json",
     },
