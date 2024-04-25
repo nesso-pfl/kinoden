@@ -2,6 +2,17 @@ import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.5";
 
 Deno.serve(async (req) => {
   console.log(req);
+  if (req.method === "OPTIONS") {
+    return new Response("ok", {
+      headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "PUT",
+        "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
+      },
+    });
+  }
+
+  console.log(req);
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const authorization = req.headers.get("Authorization");
@@ -20,13 +31,13 @@ Deno.serve(async (req) => {
     });
   }
 
-  const {
-    data: { users },
-  } = await supabase.auth.admin.listUsers();
-  const data = {
-    users,
-  };
-  console.log(users);
+  const { id, userRole } = await req.json();
+  const { data } = await supabase.auth.admin.updateUserById(id, {
+    user_metadata: {
+      userRole,
+    },
+  });
+  console.log(data);
 
   return new Response(JSON.stringify(data), {
     headers: {
