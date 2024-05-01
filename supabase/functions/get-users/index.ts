@@ -9,7 +9,6 @@ Deno.serve(async (req) => {
     return new Response("ok", {
       headers: {
         "Access-Control-Allow-Origin": origin,
-        "Access-Control-Allow-Methods": "GET",
         "Access-Control-Allow-Headers": "authorization, x-client-info, apikey, content-type",
       },
     });
@@ -22,12 +21,12 @@ Deno.serve(async (req) => {
     throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set");
 
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-    global: {
-      headers: { Authorization: authorization },
+    auth: {
+      persistSession: false,
     },
   });
-  const user = await supabase.auth.getUser();
-  console.log(user);
+  const jwt = authorization.split(" ")[1];
+  const user = await supabase.auth.getUser(jwt);
   if (user.data.user?.user_metadata.userRole !== "admin") {
     return new Response(undefined, {
       status: 401,
@@ -36,11 +35,12 @@ Deno.serve(async (req) => {
 
   const {
     data: { users },
+    error,
   } = await supabase.auth.admin.listUsers();
   const data = {
     users,
   };
-  console.log(users);
+  console.log(users, error);
 
   return new Response(JSON.stringify(data), {
     headers: {

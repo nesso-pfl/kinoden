@@ -19,6 +19,7 @@ Deno.serve(async (req) => {
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const authorization = req.headers.get("Authorization");
+  console.log(authorization);
   if (!supabaseUrl || !supabaseServiceRoleKey || !authorization)
     throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set");
 
@@ -27,6 +28,8 @@ Deno.serve(async (req) => {
       headers: { Authorization: authorization },
     },
   });
+  const session = await supabase.auth.refreshSession();
+  console.log(session);
   const user = await supabase.auth.getUser();
   console.log(user);
   if (user.data.user?.user_metadata.userRole !== "admin") {
