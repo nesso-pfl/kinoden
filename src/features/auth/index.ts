@@ -1,3 +1,4 @@
+export * from "./auth-check";
 export * from "./set-auth-session";
 export * from "./sign-out";
 export * from "./update-user-role";

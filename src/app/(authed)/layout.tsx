@@ -1,4 +1,4 @@
-import { AuthCheck } from "./auth-check";
+import { AuthCheck } from "@/features/auth";
 
 export default function AuthedLayout({
   children,
