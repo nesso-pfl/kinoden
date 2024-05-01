@@ -15,23 +15,19 @@ Deno.serve(async (req) => {
     });
   }
 
-  console.log(req);
   const supabaseUrl = Deno.env.get("SUPABASE_URL");
   const supabaseServiceRoleKey = Deno.env.get("SUPABASE_SERVICE_ROLE_KEY");
   const authorization = req.headers.get("Authorization");
-  console.log(authorization);
   if (!supabaseUrl || !supabaseServiceRoleKey || !authorization)
     throw new Error("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY must be set");
 
   const supabase = createClient(supabaseUrl, supabaseServiceRoleKey, {
-    global: {
-      headers: { Authorization: authorization },
+    auth: {
+      persistSession: false,
     },
   });
-  const session = await supabase.auth.refreshSession();
-  console.log(session);
-  const user = await supabase.auth.getUser();
-  console.log(user);
+  const jwt = authorization.split(" ")[1];
+  const user = await supabase.auth.getUser(jwt);
   if (user.data.user?.user_metadata.userRole !== "admin") {
     return new Response(undefined, {
       status: 401,
@@ -39,12 +35,12 @@ Deno.serve(async (req) => {
   }
 
   const { id, userRole } = await req.json();
-  const { data } = await supabase.auth.admin.updateUserById(id, {
+  const { data, error } = await supabase.auth.admin.updateUserById(id, {
     user_metadata: {
       userRole,
     },
   });
-  console.log(data);
+  console.log(data, error);
 
   return new Response(JSON.stringify(data), {
     headers: {
