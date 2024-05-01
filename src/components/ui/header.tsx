@@ -63,7 +63,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
             </Button>
           )}
         </div>
-        <Sheet open={open}>
+        <Sheet open={open} onOpenChange={(open) => setOpen(open)}>
           <SheetTrigger className="md:hidden ml-auto" onClick={() => setOpen(true)}>
             <MenuIcon />
           </SheetTrigger>
