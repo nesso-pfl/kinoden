@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { Users } from "./users";
 
 export const metadata: Metadata = {
-  title: "ロール申請 | Kinoden Pfl",
+  title: "ユーザー管理 | Kinoden Pfl",
 };
 
 export type Query = {
