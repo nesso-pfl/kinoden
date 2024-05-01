@@ -13,7 +13,7 @@ export type Query = {
 export default function Page() {
   return (
     <div className="flex flex-col w-full h-full">
-      <h1 className="text-2xl mb-8">ロール一覧</h1>
+      <h1 className="text-2xl mb-8">ユーザー管理</h1>
       <Users />
     </div>
   );
