@@ -6,7 +6,6 @@ import { UserItem } from "./user-item";
 
 export const Users: React.FC = () => {
   const { data } = useUsers();
-  console.log(data);
 
   return (
     <ul className="flex flex-col gap-4">

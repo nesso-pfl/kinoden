@@ -22,7 +22,6 @@ type Props = {
 export const AuthCheck: React.FC<Props> = ({ children, requiredUserRole }) => {
   const router = useRouter();
   const { inited, user } = useUser();
-  console.log(user);
 
   useEffect(() => {
     const shouldRedirect = inited && !checkRole(requiredUserRole, user?.user_metadata.userRole);
