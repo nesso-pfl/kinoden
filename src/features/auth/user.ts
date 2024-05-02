@@ -9,5 +9,6 @@ export type User = SupabaseUser & {
     name: string;
     userRole?: UserRole;
     email: string;
+    avatar_url?: string;
   };
 };

@@ -2,12 +2,12 @@
 
 import React, { useCallback, useState } from "react";
 import { useUser } from "@/features/auth";
-import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Input } from "@/components/ui/input";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { AvatarForm } from "./avatar-form";
 
 export const User: React.FC = () => {
   const { user } = useUser();
@@ -16,23 +16,20 @@ export const User: React.FC = () => {
   const onSubmit = useCallback(() => {}, []);
   console.log(user);
 
+  if (!user) return null;
+
   return (
     <div>
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-2">
-          <span className="text-sm font-bold">アバター</span>
-          <Avatar size="lg">
-            <AvatarImage src={user?.user_metadata.avatar_url} />
-          </Avatar>
-        </div>
+        <AvatarForm userId={user.id} avatarUrl={user.user_metadata.avatar_url} />
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">名前</span>
           <Input />
         </div>
         <div className="flex flex-col gap-2">
           <span className="text-sm font-bold">権限</span>
-          <span>{user?.user_metadata.userRole ?? "なし"}</span>
-          {!user?.user_metadata.userRole && (
+          <span>{user.user_metadata.userRole ?? "なし"}</span>
+          {!user.user_metadata.userRole && (
             <span className="text-sm text-red-500">
               権限をリクエストしてください。
               <br />
