@@ -3,6 +3,7 @@ export * from "./set-auth-session";
 export * from "./sign-out";
 export * from "./update-avatar";
 export * from "./update-user-role";
+export * from "./update-username";
 export * from "./use-user";
 export * from "./use-users";
 export * from "./user";
