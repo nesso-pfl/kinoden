@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useCallback } from "react";
+import React, { useCallback, useRef } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { updateAvatar } from "@/features/auth";
 import { useToast } from "@/components/ui/use-toast";
+import { Edit3Icon } from "lucide-react";
 
 type Props = {
   userId: string;
@@ -11,13 +12,14 @@ type Props = {
 };
 
 export const AvatarForm: React.FC<Props> = ({ userId, avatarUrl }) => {
+  const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const handleChange = useCallback(
     async (event: React.ChangeEvent<HTMLInputElement>) => {
       const file = event.target.files?.[0];
       if (!file) return;
       await updateAvatar(userId, file);
-      toast({ description: "アバターを更新しました。" });
+      toast({ description: "アバターを更新しました。", duration: 1000 });
     },
     [userId, toast],
   );
@@ -25,12 +27,15 @@ export const AvatarForm: React.FC<Props> = ({ userId, avatarUrl }) => {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-sm font-bold">アバター</span>
-      <div className="flex gap-2">
-        <Avatar size="lg">
-          <AvatarImage src={avatarUrl} />
-        </Avatar>
-        <input type="file" onChange={handleChange} />
+      <div>
+        <button className="relative" aria-label="アバターを編集" onClick={() => inputRef.current?.click()}>
+          <Avatar size="lg">
+            <AvatarImage src={avatarUrl} />
+          </Avatar>
+          <Edit3Icon className="bg-white/70 rounded-full absolute right-0 bottom-0" />
+        </button>
       </div>
+      <input ref={inputRef} type="file" className="hidden" onChange={handleChange} />
     </div>
   );
 };
