@@ -387,6 +387,56 @@ export type Database = {
           },
         ]
       }
+      role_requests: {
+        Row: {
+          comment: string | null
+          created_at: string
+          id: string
+          user_id: string
+          username: string
+        }
+        Insert: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          user_id: string
+          username: string
+        }
+        Update: {
+          comment?: string | null
+          created_at?: string
+          id?: string
+          user_id?: string
+          username?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_role_requests_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      roles: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+        }
+        Relationships: []
+      }
       skills: {
         Row: {
           created_at: string
@@ -449,6 +499,42 @@ export type Database = {
           name?: string
         }
         Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: number
+          role: string
+          user: string
+        }
+        Insert: {
+          created_at?: string
+          id?: number
+          role: string
+          user: string
+        }
+        Update: {
+          created_at?: string
+          id?: number
+          role?: string
+          user?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "public_user_roles_role_fkey"
+            columns: ["role"]
+            isOneToOne: false
+            referencedRelation: "roles"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "public_user_roles_user_fkey"
+            columns: ["user"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
       }
     }
     Views: {
