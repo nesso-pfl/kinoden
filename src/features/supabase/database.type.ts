@@ -539,19 +539,19 @@ export type Database = {
         Row: {
           created_at: string
           id: number
-          role: Database["public"]["Enums"]["role_request_status"]
+          role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          role: Database["public"]["Enums"]["role_request_status"]
+          role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Update: {
           created_at?: string
           id?: number
-          role?: Database["public"]["Enums"]["role_request_status"]
+          role?: Database["public"]["Enums"]["user_role"]
           user_id?: string
         }
         Relationships: [
@@ -594,6 +594,7 @@ export type Database = {
     }
     Enums: {
       role_request_status: "pending" | "accepted" | "rejected"
+      user_role: "admin" | "guildMember" | "member"
     }
     CompositeTypes: {
       [_ in never]: never
