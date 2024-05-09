@@ -392,6 +392,7 @@ export type Database = {
           comment: string | null
           created_at: string
           id: string
+          status: Database["public"]["Enums"]["role_request_status"]
           user_id: string
           username: string
         }
@@ -399,6 +400,7 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
+          status?: Database["public"]["Enums"]["role_request_status"]
           user_id: string
           username: string
         }
@@ -406,6 +408,7 @@ export type Database = {
           comment?: string | null
           created_at?: string
           id?: string
+          status?: Database["public"]["Enums"]["role_request_status"]
           user_id?: string
           username?: string
         }
@@ -558,7 +561,7 @@ export type Database = {
       }
     }
     Enums: {
-      [_ in never]: never
+      role_request_status: "pending" | "accepted" | "rejected"
     }
     CompositeTypes: {
       [_ in never]: never
