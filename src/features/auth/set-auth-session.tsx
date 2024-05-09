@@ -13,7 +13,7 @@ const getCurrentSession = (): { access_token: string; refresh_token: string } =>
   if ("access_token" in sessionObj && "refresh_token" in sessionObj) {
     return sessionObj;
   } else {
-    throw new Error("No session found");
+    return { access_token: "", refresh_token: "" };
   }
 };
 

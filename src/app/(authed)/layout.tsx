@@ -5,5 +5,5 @@ export default function AuthedLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return <AuthCheck requiredUserRole="guild-member">{children}</AuthCheck>;
+  return <AuthCheck requiredUserRole="anything">{children}</AuthCheck>;
 }

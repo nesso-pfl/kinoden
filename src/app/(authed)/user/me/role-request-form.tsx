@@ -23,7 +23,7 @@ export const RoleRequestForm: React.FC = () => {
         <span className="text-sm text-red-500">
           権限をリクエストしてください。
           <br />
-          駐騎場の管理や、ビルドの閲覧や作成などには権限が必要です。
+          菌族メンバー向けの機能の利用や、越域駐騎場の管理などには権限が必要です。
         </span>
       )}
       <Button onClick={() => setOpen(true)}>権限をリクエスト</Button>
