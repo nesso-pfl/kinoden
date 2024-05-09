@@ -1,17 +1,42 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { useUser } from "@/features/auth";
+import { sendRoleRequest, useUser } from "@/features/auth";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import { z } from "zod";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useToast } from "@/components/ui/use-toast";
+
+const formSchema = z.object({
+  comment: z.string(),
+});
+
+type Form = z.infer<typeof formSchema>;
 
 export const RoleRequestForm: React.FC = () => {
   const { user } = useUser();
+  const { toast } = useToast();
   const [open, setOpen] = useState(false);
-  const roleRequestForm = useForm();
-  const onSubmit = useCallback(() => {}, []);
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+  } = useForm<Form>({
+    resolver: zodResolver(formSchema),
+  });
+  const onSubmit = useCallback(
+    async (formValues: Form) => {
+      if (!user) return;
+      await sendRoleRequest({ ...formValues, user_id: user.id, username: user.user_metadata.name });
+
+      setOpen(false);
+      toast({ description: "権限リクエストを送信しました。", duration: 2000 });
+    },
+    [user, toast],
+  );
 
   if (!user) return null;
 
@@ -28,15 +53,19 @@ export const RoleRequestForm: React.FC = () => {
       )}
       <Button onClick={() => setOpen(true)}>権限をリクエスト</Button>
       <Dialog open={open} onClose={() => setOpen(false)} title="権限リクエスト">
-        <form onSubmit={roleRequestForm.handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <span className="inline-block text-xs text-gray-500 mb-2">
             プレイヤーが特定でき本人だとそれとなくわかるような内容を記載するか、
             <br />
             または権限リクエストを送信後あも宛に個チャも送ってもらえると助かります。
           </span>
-          <Textarea className="mb-8" placeholder="〇〇です。本名と住所と年齢が菌族メンバーにバレています。" />
+          <Textarea
+            className="mb-8"
+            placeholder="〇〇です。本名と住所と年齢が菌族メンバーにバレています。"
+            {...register("comment")}
+          />
           <div className="flex justify-center w-full">
-            <Button type="submit" className="w-1/2" disabled={roleRequestForm.formState.isSubmitting}>
+            <Button type="submit" className="w-1/2" disabled={isSubmitting}>
               権限リクエストを送信
             </Button>
           </div>
