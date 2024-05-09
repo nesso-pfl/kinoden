@@ -503,36 +503,61 @@ export type Database = {
         }
         Relationships: []
       }
+      user_profiles: {
+        Row: {
+          avatar_url: string
+          created_at: string
+          id: number
+          name: string
+          user_id: string
+        }
+        Insert: {
+          avatar_url: string
+          created_at?: string
+          id?: number
+          name: string
+          user_id: string
+        }
+        Update: {
+          avatar_url?: string
+          created_at?: string
+          id?: number
+          name?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "user_profiles_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "users"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       user_roles: {
         Row: {
           created_at: string
           id: number
-          role: string
-          user: string
+          role: Database["public"]["Enums"]["role_request_status"]
+          user_id: string
         }
         Insert: {
           created_at?: string
           id?: number
-          role: string
-          user: string
+          role: Database["public"]["Enums"]["role_request_status"]
+          user_id?: string
         }
         Update: {
           created_at?: string
           id?: number
-          role?: string
-          user?: string
+          role?: Database["public"]["Enums"]["role_request_status"]
+          user_id?: string
         }
         Relationships: [
           {
-            foreignKeyName: "public_user_roles_role_fkey"
-            columns: ["role"]
-            isOneToOne: false
-            referencedRelation: "roles"
-            referencedColumns: ["id"]
-          },
-          {
-            foreignKeyName: "public_user_roles_user_fkey"
-            columns: ["user"]
+            foreignKeyName: "user_roles_user_id_fkey"
+            columns: ["user_id"]
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
