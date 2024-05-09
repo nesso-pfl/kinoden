@@ -546,7 +546,7 @@ export type Database = {
           created_at?: string
           id?: number
           role: Database["public"]["Enums"]["role_request_status"]
-          user_id?: string
+          user_id: string
         }
         Update: {
           created_at?: string
@@ -561,6 +561,13 @@ export type Database = {
             isOneToOne: true
             referencedRelation: "users"
             referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "user_roles_user_id_fkey1"
+            columns: ["user_id"]
+            isOneToOne: true
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
           },
         ]
       }
