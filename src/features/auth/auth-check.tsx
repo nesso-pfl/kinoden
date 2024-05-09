@@ -12,8 +12,8 @@ const checkRole = (
 ) => {
   return (
     currentUserRole === "admin" ||
-    (currentUserRole === "guild-member" && requiredUserRole !== "admin") ||
-    (currentUserRole === "member" && requiredUserRole !== "admin" && requiredUserRole !== "guild-member") ||
+    (currentUserRole === "guildMember" && requiredUserRole !== "admin") ||
+    (currentUserRole === "member" && requiredUserRole !== "admin" && requiredUserRole !== "guildMember") ||
     (requiredUserRole === "anything" && signedIn) ||
     currentUserRole
   );

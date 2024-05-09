@@ -5,6 +5,21 @@ import { useEffect, useMemo } from "react";
 import { create } from "zustand";
 import { User } from "./user";
 
+const getUserProfile = async (userId: string) => {
+  const response = await supabase
+    .from("user_profiles")
+    .select(
+      `
+  *,
+  user_roles(role)
+`,
+    )
+    .eq("id", userId)
+    .single();
+
+  return response;
+};
+
 type UserStore = {
   inited: boolean;
   user: User | undefined;
@@ -22,20 +37,14 @@ export const useUser = () => {
   const signedIn = useMemo(() => user !== undefined, [user]);
 
   useEffect(() => {
-    const { data } = supabase.auth.onAuthStateChange((_, session) => {
-      updateUser(
-        session
-          ? {
-              ...session.user,
-              user_metadata: {
-                ...session.user.user_metadata,
-                name: session.user.user_metadata.name,
-                email: session.user.user_metadata.email,
-              },
-            }
-          : undefined,
-        true,
-      );
+    const { data } = supabase.auth.onAuthStateChange(async (_, session) => {
+      if (!session) return;
+      const response = await getUserProfile(session.user.id);
+      if (response.error) {
+        updateUser(undefined, true);
+      } else {
+        updateUser({ ...response.data, role: response.data.user_roles?.role }, true);
+      }
     });
 
     return () => {
