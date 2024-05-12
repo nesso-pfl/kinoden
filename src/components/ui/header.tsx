@@ -1,6 +1,6 @@
 "use client";
 
-import { useUser } from "@/features/auth";
+import { useUser, useUserUpdate } from "@/features/auth";
 import { pagesPath } from "@/features/path/$path";
 import { CarTaxiFrontIcon, MenuIcon, SnailIcon } from "lucide-react";
 import Link from "next/link";
@@ -103,6 +103,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
 
 export const Header: React.FC = () => {
   const { signedIn } = useUser();
+  useUserUpdate();
   const filteredMenus = menus.filter((menu) => signedIn || !menu.authed);
 
   return <HeaderPresentation menus={filteredMenus} signedIn={signedIn} />;

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import { supabase } from "../supabase";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "../path/$path";
@@ -19,30 +19,26 @@ const getCurrentSession = (): { access_token: string; refresh_token: string } =>
 
 const useSetAuthSession = () => {
   const searchParams = useSearchParams();
+  const { inited, user, signedIn } = useUser();
   const router = useRouter();
-  const { user } = useUser();
-  const [loading, setLoading] = useState(true);
   const emitted = useRef(false);
 
   useEffect(() => {
     const { access_token, refresh_token } = getCurrentSession();
 
-    if (emitted.current || !access_token || !refresh_token) return;
+    if (emitted.current || !access_token || !refresh_token) {
+      const redirectTo =
+        inited && !user && signedIn ? pagesPath.user.me.$url().pathname : pagesPath.parking.$url().pathname;
+      router.replace(redirectTo);
+    }
 
     emitted.current = true;
     const fn = async () => {
       await supabase.auth.setSession({ access_token, refresh_token });
-      setLoading(false);
-      const redirectTo = user?.user_metadata.userRole
-        ? pagesPath.parking.$url().pathname
-        : pagesPath.user.me.$url().pathname;
-      router.replace(redirectTo);
     };
 
     fn();
-  }, [searchParams, router, user]);
-
-  return { loading };
+  }, [searchParams, router, inited, user, signedIn]);
 };
 
 export const SetAuthSession: React.FC = () => {

@@ -1,11 +1,12 @@
 "use client";
 
 import { supabase } from "../supabase";
-import { useEffect, useMemo } from "react";
+import { useEffect } from "react";
 import { create } from "zustand";
 import { User } from "./user";
 
 const getUserProfile = async (userId: string) => {
+  console.log("getUserProfile");
   const response = await supabase
     .from("user_profiles")
     .select(
@@ -14,43 +15,68 @@ const getUserProfile = async (userId: string) => {
   user_roles(role)
 `,
     )
-    .eq("id", userId)
+    .eq("user_id", userId)
     .single();
 
+  console.log(response);
   return response;
 };
 
 type UserStore = {
   inited: boolean;
+  authenticated: boolean;
   user: User | undefined;
-  updateUser: (user: User | undefined, inited: boolean) => unknown;
+  updateUser: (args: { user: User | undefined; authenticated: boolean; inited: boolean }) => unknown;
 };
 
 export const useUserStore = create<UserStore>()((set) => ({
   inited: false,
+  authenticated: false,
   user: undefined,
-  updateUser: (user, inited) => set({ inited, user }),
+  updateUser: (params) => set(params),
 }));
 
 export const useUser = () => {
-  const { inited, user, updateUser } = useUserStore();
-  const signedIn = useMemo(() => user !== undefined, [user]);
+  const { inited, authenticated, user } = useUserStore();
+
+  console.log(user, inited, authenticated);
+
+  return { user, inited, signedIn: authenticated };
+};
+
+export const useUserUpdate = () => {
+  const { updateUser } = useUserStore();
 
   useEffect(() => {
+    console.log("subscribe");
     const { data } = supabase.auth.onAuthStateChange(async (_, session) => {
-      if (!session) return;
+      console.log(location);
+      if (!session) {
+        console.log({ user: undefined, authenticated: false, inited: true });
+        updateUser({ user: undefined, authenticated: false, inited: true });
+        return;
+      }
       const response = await getUserProfile(session.user.id);
       if (response.error) {
-        updateUser(undefined, true);
+        console.log({ user: undefined, authenticated: true, inited: true });
+        updateUser({ user: undefined, authenticated: true, inited: true });
       } else {
-        updateUser({ ...response.data, role: response.data.user_roles?.role }, true);
+        console.log({
+          user: { ...response.data, role: response.data.user_roles?.role },
+          authenticated: true,
+          inited: true,
+        });
+        updateUser({
+          user: { ...response.data, role: response.data.user_roles?.role },
+          authenticated: true,
+          inited: true,
+        });
       }
     });
 
     return () => {
+      console.log("unsubscribe");
       data.subscription.unsubscribe();
     };
   }, [updateUser]);
-
-  return { user, inited, signedIn };
 };

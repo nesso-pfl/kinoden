@@ -29,7 +29,7 @@ export const AuthCheck: React.FC<Props> = ({ children, requiredUserRole }) => {
   const { inited, user } = useUser();
 
   useEffect(() => {
-    const shouldRedirect = inited && !checkRole(requiredUserRole, !!user, user?.user_metadata.userRole);
+    const shouldRedirect = inited && !checkRole(requiredUserRole, !!user, user?.role);
 
     if (shouldRedirect) {
       router.replace(pagesPath.sign_in.$url().pathname);
