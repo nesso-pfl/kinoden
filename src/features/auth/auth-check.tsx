@@ -26,15 +26,15 @@ type Props = {
 
 export const AuthCheck: React.FC<Props> = ({ children, requiredUserRole }) => {
   const router = useRouter();
-  const { inited, user } = useUser();
+  const { isLoading, signedIn, data } = useUser();
 
   useEffect(() => {
-    const shouldRedirect = inited && !checkRole(requiredUserRole, !!user, user?.role);
+    const shouldRedirect = !isLoading && !checkRole(requiredUserRole, signedIn, data?.data?.user_roles?.role);
 
     if (shouldRedirect) {
       router.replace(pagesPath.sign_in.$url().pathname);
     }
-  }, [inited, user, router, requiredUserRole]);
+  }, [isLoading, data, router, requiredUserRole, signedIn]);
 
-  return inited && user && children;
+  return !isLoading && data?.data && children;
 };

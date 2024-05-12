@@ -19,7 +19,7 @@ const getCurrentSession = (): { access_token: string; refresh_token: string } =>
 
 const useSetAuthSession = () => {
   const searchParams = useSearchParams();
-  const { inited, user, signedIn } = useUser();
+  const { isLoading, data, signedIn } = useUser();
   const router = useRouter();
   const emitted = useRef(false);
 
@@ -28,7 +28,7 @@ const useSetAuthSession = () => {
 
     if (emitted.current || !access_token || !refresh_token) {
       const redirectTo =
-        inited && !user && signedIn ? pagesPath.user.me.$url().pathname : pagesPath.parking.$url().pathname;
+        !isLoading && !data?.data && signedIn ? pagesPath.user.me.$url().pathname : pagesPath.parking.$url().pathname;
       router.replace(redirectTo);
     }
 
@@ -38,7 +38,7 @@ const useSetAuthSession = () => {
     };
 
     fn();
-  }, [searchParams, router, inited, user, signedIn]);
+  }, [searchParams, router, isLoading, data, signedIn]);
 };
 
 export const SetAuthSession: React.FC = () => {

@@ -3,7 +3,15 @@
 import { supabase } from "../supabase";
 import { useEffect } from "react";
 import { create } from "zustand";
-import { User } from "./user";
+import useSWR from "swr";
+
+type SupabaseUser = {
+  id: string;
+  user_metadata: {
+    name?: string;
+    avatar_url?: string;
+  };
+};
 
 const getUserProfile = async (userId: string) => {
   const response = await supabase
@@ -21,23 +29,22 @@ const getUserProfile = async (userId: string) => {
 };
 
 type UserStore = {
-  inited: boolean;
-  authenticated: boolean;
-  user: User | undefined;
-  updateUser: (args: { user: User | undefined; authenticated: boolean; inited: boolean }) => unknown;
+  supabaseInited: boolean;
+  supabaseUser: SupabaseUser | undefined;
+  updateUser: (args: { supabaseUser: SupabaseUser | undefined; supabaseInited: boolean }) => unknown;
 };
 
 export const useUserStore = create<UserStore>()((set) => ({
-  inited: false,
-  authenticated: false,
-  user: undefined,
+  supabaseInited: false,
+  supabaseUser: undefined,
   updateUser: (params) => set(params),
 }));
 
 export const useUser = () => {
-  const { inited, authenticated, user } = useUserStore();
+  const { supabaseInited, supabaseUser } = useUserStore();
+  const data = useSWR(supabaseUser?.id && "user", () => getUserProfile(supabaseUser?.id ?? ""));
 
-  return { user, inited, signedIn: authenticated };
+  return { ...data, signedIn: !!supabaseUser, isLoading: data.isLoading || !supabaseInited };
 };
 
 export const useUserUpdate = () => {
@@ -45,20 +52,7 @@ export const useUserUpdate = () => {
 
   useEffect(() => {
     const { data } = supabase.auth.onAuthStateChange(async (_, session) => {
-      if (!session) {
-        updateUser({ user: undefined, authenticated: false, inited: true });
-        return;
-      }
-      const response = await getUserProfile(session.user.id);
-      if (response.error) {
-        updateUser({ user: undefined, authenticated: true, inited: true });
-      } else {
-        updateUser({
-          user: { ...response.data, role: response.data.user_roles?.role },
-          authenticated: true,
-          inited: true,
-        });
-      }
+      updateUser({ supabaseUser: session?.user, supabaseInited: true });
     });
 
     return () => {
