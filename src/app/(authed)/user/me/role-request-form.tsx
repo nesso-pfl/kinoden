@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useCallback, useState } from "react";
-import { sendRoleRequest, useUser } from "@/features/auth";
+import { sendRoleRequest } from "@/features/auth";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useForm } from "react-hook-form";
 import { Textarea } from "@/components/ui/textarea";
@@ -9,6 +9,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
+import { useUser } from "@/features/user-profile";
 
 const formSchema = z.object({
   comment: z.string(),
@@ -17,7 +18,7 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>;
 
 export const RoleRequestForm: React.FC = () => {
-  const { user } = useUser();
+  const { data } = useUser();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const {
@@ -29,22 +30,22 @@ export const RoleRequestForm: React.FC = () => {
   });
   const onSubmit = useCallback(
     async (formValues: Form) => {
-      if (!user) return;
-      await sendRoleRequest({ ...formValues, user_id: user.id, username: user.user_metadata.name });
+      if (!data?.data || !data.data.name) return;
+      await sendRoleRequest({ ...formValues, user_id: data.data.user_id, username: data.data.name });
 
       setOpen(false);
       toast({ description: "権限リクエストを送信しました。", duration: 2000 });
     },
-    [user, toast],
+    [data, toast],
   );
 
-  if (!user) return null;
+  if (!data) return null;
 
   return (
     <div className="flex flex-col gap-2">
       <span className="text-sm font-bold">権限</span>
-      <span>{user.user_metadata.userRole ?? "なし"}</span>
-      {!user.user_metadata.userRole && (
+      <span>{data.data?.user_roles?.role ?? "なし"}</span>
+      {!data.data?.user_roles?.role && (
         <span className="text-sm text-red-500">
           権限をリクエストしてください。
           <br />

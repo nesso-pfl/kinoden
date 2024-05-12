@@ -1,9 +1,10 @@
 "use client";
 
-import { UserRole, useUser } from "@/features/auth";
+import { UserRole } from "@/features/auth";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
+import { useUser } from "../user-profile";
 
 const checkRole = (
   requiredUserRole: UserRole | "anything",

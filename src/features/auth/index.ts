@@ -7,6 +7,6 @@ export * from "./update-avatar";
 export * from "./update-user-role";
 export * from "./update-username";
 export * from "./use-role-requests";
-export * from "./use-user";
+export * from "./use-supabase-user-store";
 export * from "./use-users";
 export * from "./user";

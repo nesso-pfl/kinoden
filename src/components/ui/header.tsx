@@ -1,6 +1,5 @@
 "use client";
 
-import { useUser, useUserUpdate } from "@/features/auth";
 import { pagesPath } from "@/features/path/$path";
 import { CarTaxiFrontIcon, MenuIcon, SnailIcon } from "lucide-react";
 import Link from "next/link";
@@ -9,6 +8,8 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/co
 import { Separator } from "./separator";
 import { Button } from "./button";
 import { signOut } from "@/features/auth/sign-out";
+import { useUpdateSupabaseUser } from "@/features/auth";
+import { useUser } from "@/features/user-profile";
 
 type MenuItem = {
   name: string;
@@ -103,7 +104,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
 
 export const Header: React.FC = () => {
   const { signedIn } = useUser();
-  useUserUpdate();
+  useUpdateSupabaseUser();
   const filteredMenus = menus.filter((menu) => signedIn || !menu.authed);
 
   return <HeaderPresentation menus={filteredMenus} signedIn={signedIn} />;
