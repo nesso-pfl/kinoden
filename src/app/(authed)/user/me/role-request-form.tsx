@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useToast } from "@/components/ui/use-toast";
-import { useUser } from "@/features/user-profile";
+import { useUserProfile } from "@/features/user-profile";
 
 const formSchema = z.object({
   comment: z.string(),
@@ -18,7 +18,7 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>;
 
 export const RoleRequestForm: React.FC = () => {
-  const { data } = useUser();
+  const { data } = useUserProfile();
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const {
@@ -30,8 +30,8 @@ export const RoleRequestForm: React.FC = () => {
   });
   const onSubmit = useCallback(
     async (formValues: Form) => {
-      if (!data?.data || !data.data.name) return;
-      await sendRoleRequest({ ...formValues, user_id: data.data.user_id, username: data.data.name });
+      if (!data?.name) return;
+      await sendRoleRequest({ ...formValues, user_id: data.user_id, username: data.name });
 
       setOpen(false);
       toast({ description: "権限リクエストを送信しました。", duration: 2000 });
@@ -44,8 +44,8 @@ export const RoleRequestForm: React.FC = () => {
   return (
     <div className="flex flex-col gap-2">
       <span className="text-sm font-bold">権限</span>
-      <span>{data.data?.user_roles?.role ?? "なし"}</span>
-      {!data.data?.user_roles?.role && (
+      <span>{data.user_roles?.role ?? "なし"}</span>
+      {!data.user_roles?.role && (
         <span className="text-sm text-red-500">
           権限をリクエストしてください。
           <br />

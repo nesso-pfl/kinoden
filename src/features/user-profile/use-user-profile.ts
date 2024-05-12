@@ -1,8 +1,8 @@
-import { useEffect } from "react";
 import { supabase } from "../supabase";
 import useSWR from "swr";
 import { createUserProfile } from "./create-user-profile";
-import { useSupabaseUserStore } from "../auth";
+import { User, useSupabaseUserStore } from "../auth";
+import { PostgrestError } from "@supabase/supabase-js";
 
 const getUserProfile = async (userId: string) => {
   const response = await supabase
@@ -16,23 +16,33 @@ const getUserProfile = async (userId: string) => {
     .eq("user_id", userId)
     .single();
 
-  return response;
+  if (response.error) {
+    throw response.error;
+  }
+
+  return response.data;
 };
 
-export const useUser = (userId?: string) => {
-  const data = useSWR(userId && "user", () => getUserProfile(userId!));
-  const { supabaseUser, supabaseInited } = useSupabaseUserStore();
+type UseUserProfileParams = {
+  onSuccess: (userProfile: User) => Promise<unknown>;
+};
 
-  useEffect(() => {
-    const fn = async () => {
-      if (supabaseUser && data?.error?.code === "PGRST116") {
-        await createUserProfile({ ...supabaseUser, user_id: supabaseUser.id });
+export const useUserProfile = (params?: UseUserProfileParams) => {
+  const { supabaseUser, supabaseInited } = useSupabaseUserStore();
+  const data = useSWR(supabaseUser?.id && "user", async () => await getUserProfile(supabaseUser?.id ?? ""), {
+    onSuccess: params?.onSuccess,
+    onError: async (error: PostgrestError) => {
+      if (supabaseUser && error?.code === "PGRST116") {
+        console.log("create");
+        await createUserProfile({
+          user_id: supabaseUser.id,
+          name: supabaseUser.user_metadata.name,
+          avatar_url: supabaseUser.user_metadata.avatar_url,
+        });
         await data.mutate();
       }
-    };
-
-    fn();
-  }, [supabaseUser, data]);
+    },
+  });
 
   return { ...data, isLoading: data.isLoading || !supabaseInited, signedIn: !!supabaseUser };
 };

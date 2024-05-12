@@ -9,7 +9,7 @@ import { Separator } from "./separator";
 import { Button } from "./button";
 import { signOut } from "@/features/auth/sign-out";
 import { useUpdateSupabaseUser } from "@/features/auth";
-import { useUser } from "@/features/user-profile";
+import { useUserProfile } from "@/features/user-profile";
 
 type MenuItem = {
   name: string;
@@ -103,7 +103,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
 };
 
 export const Header: React.FC = () => {
-  const { signedIn } = useUser();
+  const { signedIn } = useUserProfile();
   useUpdateSupabaseUser();
   const filteredMenus = menus.filter((menu) => signedIn || !menu.authed);
 

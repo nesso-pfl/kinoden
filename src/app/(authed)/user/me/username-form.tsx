@@ -5,7 +5,7 @@ import { ErrorMessage } from "@/components/ui/error-message";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/components/ui/use-toast";
 import { updateUsername } from "@/features/auth";
-import { useUser } from "@/features/user-profile";
+import { useUserProfile } from "@/features/user-profile";
 import { zodResolver } from "@hookform/resolvers/zod";
 import React, { useCallback } from "react";
 import { useForm } from "react-hook-form";
@@ -22,13 +22,13 @@ const formSchema = z.object({
 type Form = z.infer<typeof formSchema>;
 
 export const UsernameForm: React.FC = () => {
-  const { data } = useUser();
+  const { data } = useUserProfile();
   const {
     register,
     handleSubmit,
     formState: { isSubmitting, errors },
   } = useForm<Form>({
-    defaultValues: { username: data?.data?.name ?? undefined },
+    defaultValues: { username: data?.name ?? undefined },
     resolver: zodResolver(formSchema),
   });
   const { toast } = useToast();

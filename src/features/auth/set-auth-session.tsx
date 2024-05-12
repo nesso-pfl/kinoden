@@ -4,7 +4,7 @@ import React, { useEffect, useRef } from "react";
 import { supabase } from "../supabase";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "../path/$path";
-import { useUser } from "../user-profile";
+import { useUserProfile } from "../user-profile";
 
 const getCurrentSession = (): { access_token: string; refresh_token: string } => {
   const hash = typeof window !== "undefined" ? decodeURIComponent(window.location.hash.replace("#", "")) : undefined;
@@ -19,7 +19,7 @@ const getCurrentSession = (): { access_token: string; refresh_token: string } =>
 
 const useSetAuthSession = () => {
   const searchParams = useSearchParams();
-  const { isLoading, data, signedIn } = useUser();
+  const { isLoading, data, signedIn } = useUserProfile();
   const router = useRouter();
   const emitted = useRef(false);
 
