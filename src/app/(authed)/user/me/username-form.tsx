@@ -35,10 +35,12 @@ export const UsernameForm: React.FC = () => {
 
   const onSubmit = useCallback(
     async (formValues: Form) => {
-      await updateUsername(formValues.username);
+      if (!data?.id) return;
+
+      await updateUsername(data.id, formValues.username);
       toast({ description: "名前を更新しました。", duration: 1000 });
     },
-    [toast],
+    [toast, data],
   );
 
   return (
