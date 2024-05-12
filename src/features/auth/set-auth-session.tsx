@@ -27,6 +27,7 @@ const useSetAuthSession = () => {
     const { access_token, refresh_token } = getCurrentSession();
 
     if (emitted.current || !access_token || !refresh_token) {
+      if (isLoading) return;
       const redirectTo =
         !isLoading && !data?.data && signedIn ? pagesPath.user.me.$url().pathname : pagesPath.parking.$url().pathname;
       router.replace(redirectTo);
