@@ -21,7 +21,7 @@ const removeUndefined = (value: object) => {
 
 const formSchema = z
   .object({
-    sort: z.enum(["created_at_asc", "created_at_desc"]),
+    sort: z.enum(["updated_at_asc", "updated_at_desc"]),
     owner: z.string(),
     labels: z.string().array(),
   })
@@ -31,20 +31,20 @@ type Sort = Form["sort"];
 
 const toQuery = (form: Form) => {
   const values = removeUndefined({
-    sort: form.sort === "created_at_asc" ? form.sort : undefined,
+    sort: form.sort === "updated_at_asc" ? form.sort : undefined,
     owner: form.owner || undefined,
     labels: form.labels && form.labels.length > 0 ? form.labels : undefined,
   });
   const urlSearchParams = new URLSearchParams();
-  form.sort === "created_at_asc" && urlSearchParams.append("sort", values.sort);
+  form.sort === "updated_at_asc" && urlSearchParams.append("sort", values.sort);
   form.owner && urlSearchParams.append("owner", values.owner);
   form.labels && form.labels.map((label) => urlSearchParams.append("labels", label));
   return urlSearchParams.toString();
 };
 
 const sortOptions: { value: NonNullable<Sort>; label: string }[] = [
-  { value: "created_at_desc", label: "新しい順" },
-  { value: "created_at_asc", label: "古い順" },
+  { value: "updated_at_desc", label: "新しい順" },
+  { value: "updated_at_asc", label: "古い順" },
 ] as const;
 
 type Props = {
@@ -57,7 +57,7 @@ export const FilterFormDialog: React.FC<Props> = ({ open, onClose }) => {
   const defaultValues = useMemo(() => {
     const urlSearchParams = new URLSearchParams(searchParams.toString());
     return formSchema.parse({
-      sort: urlSearchParams.get("sort") ?? "created_at_desc",
+      sort: urlSearchParams.get("sort") ?? "updated_at_desc",
       owner: urlSearchParams.get("owner") ?? undefined,
       labels: urlSearchParams.getAll("labels") ?? undefined,
     });
