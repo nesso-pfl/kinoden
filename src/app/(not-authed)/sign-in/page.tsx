@@ -16,7 +16,7 @@ export default function Page() {
           <br /> */}
           ログイン後権限リクエストをすることで、菌族メンバー向けの機能の利用や、越域駐騎場の管理ができるようになります。
           <br />
-          Discord か、捨てアドでの Google ログインがおすすめです。
+          捨てアカでの Google ログインか、Discord ログインがお勧めです。
         </p>
         <SignInButtons />
       </div>
