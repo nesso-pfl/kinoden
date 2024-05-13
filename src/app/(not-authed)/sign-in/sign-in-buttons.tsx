@@ -9,7 +9,7 @@ export const SignInButtons = () => {
   return (
     <Auth
       supabaseClient={supabase}
-      providers={["discord", "twitter", "google"]}
+      providers={["discord", "google", "twitter"]}
       redirectTo={envValues.authCallbackUrl}
       appearance={{
         extend: false,
