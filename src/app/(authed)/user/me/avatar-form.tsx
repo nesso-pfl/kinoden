@@ -2,10 +2,9 @@
 
 import React, { useCallback, useRef } from "react";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { updateAvatar } from "@/features/auth";
 import { useToast } from "@/components/ui/use-toast";
 import { Edit3Icon } from "lucide-react";
-import { useUserProfile } from "@/features/user-profile";
+import { updateAvatar, useUserProfile } from "@/features/user-profile";
 
 export const AvatarForm: React.FC = () => {
   const { data, mutate } = useUserProfile();

@@ -2,7 +2,8 @@
 
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { User, UserRole, updateUserRole, userRoles } from "@/features/auth";
+import { User, UserRole, userRoles } from "@/features/auth";
+import { updateUserRole } from "@/features/user-profile";
 import React, { useCallback } from "react";
 
 type Props = {
