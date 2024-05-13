@@ -59,10 +59,14 @@ export const RoleRequestForm: React.FC = () => {
             プレイヤーが特定でき本人だとそれとなくわかるような内容を記載するか、
             <br />
             または権限リクエストを送信後あも宛に個チャも送ってもらえると助かります。
+            <br />
+            <span className="text-red-500">
+              権限リクエストの前に、画像と名前に問題がないか確認することをお勧めします。
+            </span>
           </span>
           <Textarea
-            className="mb-8"
-            placeholder="〇〇です。本名と住所と年齢が菌族メンバーにバレています。"
+            className="mb-8 h-40"
+            placeholder="〇〇です。本名と年齢と声と住所が菌族メンバーにバレています。"
             {...register("comment")}
           />
           <div className="flex justify-center w-full">
