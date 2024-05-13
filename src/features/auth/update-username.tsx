@@ -2,11 +2,11 @@
 
 import { supabase } from "../supabase";
 
-export const updateUsername = async (userId: number, username: string) => {
+export const updateUsername = async (userId: string, username: string) => {
   await supabase
     .from("user_profiles")
     .update({
       name: username,
     })
-    .eq("id", userId);
+    .eq("user_id", userId);
 };
