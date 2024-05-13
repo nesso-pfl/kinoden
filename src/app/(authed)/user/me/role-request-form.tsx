@@ -34,7 +34,16 @@ export const RoleRequestForm: React.FC = () => {
       await sendRoleRequest({ ...formValues, user_id: data.user_id, username: data.name });
 
       setOpen(false);
-      toast({ description: "権限リクエストを送信しました。", duration: 2000 });
+      toast({
+        description: (
+          <span>
+            権限リクエストを送信しました。
+            <br />
+            あもの承認をお待ちください。
+          </span>
+        ),
+        duration: 5000,
+      });
     },
     [data, toast],
   );
