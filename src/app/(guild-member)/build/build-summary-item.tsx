@@ -3,9 +3,10 @@ import { Build } from "@/features/build/types";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { PencilIcon, ReceiptTextIcon } from "lucide-react";
+import { ReceiptTextIcon } from "lucide-react";
 import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 type Props = {
   build: Omit<
@@ -18,8 +19,11 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
   return (
     <div className="flex gap-2">
       <div className="flex-1">
-        <div className="flex items-start gap-2 mb-2">
-          <div className="whitespace-nowrap">{build.owner}</div>
+        <div className="flex items-center gap-2 mb-2">
+          <Avatar>
+            <AvatarImage src={build.user_profiles.avatar_url ?? ""} />
+          </Avatar>
+          <div className="whitespace-nowrap">{build.user_profiles.name ?? "未設定"}</div>
           <div className="flex items-center flex-wrap gap-2">
             {build.labels.map((label) => (
               <Badge key={label.id} variant="outline">
@@ -47,9 +51,6 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
           <Link href={pagesPath.build.detail.$url({ query: { id: build.id } })}>
             <ReceiptTextIcon />
           </Link>
-        </Button>
-        <Button variant="outline" size="icon" aria-label="編集">
-          <PencilIcon />
         </Button>
       </div>
     </div>

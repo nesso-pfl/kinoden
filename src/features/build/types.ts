@@ -40,6 +40,7 @@ export type Build = {
   user_profiles: {
     user_id: string;
     name: string | null;
+    avatar_url: string | null;
   };
   skills: BuildSkill[];
   fellows: Fellow[];
