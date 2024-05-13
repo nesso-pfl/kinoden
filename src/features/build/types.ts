@@ -41,7 +41,7 @@ export type Build = {
     user_id: string;
     name: string | null;
     avatar_url: string | null;
-  };
+  } | null;
   skills: BuildSkill[];
   fellows: Fellow[];
   mask_relic: Relic;

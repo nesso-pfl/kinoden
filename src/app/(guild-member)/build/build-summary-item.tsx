@@ -21,9 +21,9 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
       <div className="flex-1">
         <div className="flex items-center gap-2 mb-2">
           <Avatar>
-            <AvatarImage src={build.user_profiles.avatar_url ?? ""} />
+            <AvatarImage src={build.user_profiles?.avatar_url ?? ""} />
           </Avatar>
-          <div className="whitespace-nowrap">{build.user_profiles.name ?? "未設定"}</div>
+          <div className="whitespace-nowrap">{build.user_profiles?.name ?? "未設定"}</div>
           <div className="flex items-center flex-wrap gap-2">
             {build.labels.map((label) => (
               <Badge key={label.id} variant="outline">

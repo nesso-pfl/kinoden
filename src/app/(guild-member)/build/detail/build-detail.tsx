@@ -5,6 +5,7 @@ import { useBuild } from "@/features/build";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 
 export const BuildDetail: React.FC = () => {
   const params = useSearchParams();
@@ -14,7 +15,12 @@ export const BuildDetail: React.FC = () => {
     build && (
       <div className="flex flex-col gap-4">
         <div className="flex flex-wrap items-center gap-4">
-          <div className="min-h-6">{build.owner}</div>
+          <div className="flex gap-2 items-center">
+            <Avatar>
+              <AvatarImage src={build.user_profiles?.avatar_url ?? ""} />
+            </Avatar>
+            <div className="min-h-6">{build.user_profiles?.name ?? "未設定"}</div>
+          </div>
           <div className="flex gap-2 flex-wrap">
             {build.labels.map((label) => (
               <Badge key={label.id} variant="outline">

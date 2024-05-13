@@ -4,19 +4,20 @@ import React, { useCallback, useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { pagesPath } from "@/features/path/$path";
 import { useSearchParams } from "next/navigation";
-import { deleteBuild, useBuild, useUsernameStore } from "@/features/build";
+import { deleteBuild, useBuild } from "@/features/build";
 import { Dialog } from "@/components/ui/custom-dialog";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/components/ui/use-toast";
+import { useUserProfile } from "@/features/user-profile";
 
 export const DeleteButton: React.FC = () => {
   const router = useRouter();
   const { toast } = useToast();
   const params = useSearchParams();
+  const { data: userProfile } = useUserProfile();
   const [open, setOpen] = useState(false);
   const id = useMemo(() => params.get("id"), [params]);
   const { data: build } = useBuild(id);
-  const { username } = useUsernameStore();
 
   const handleClickDelete = useCallback(
     (id: string) => async () => {
@@ -29,8 +30,8 @@ export const DeleteButton: React.FC = () => {
 
   return (
     id &&
-    username &&
-    build?.owner === username && (
+    build?.user_profiles?.user_id &&
+    build?.user_profiles.user_id === userProfile?.user_id && (
       <>
         <Button variant="destructive" className="w-full" onClick={() => setOpen(true)}>
           削除

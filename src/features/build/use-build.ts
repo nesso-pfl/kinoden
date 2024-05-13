@@ -8,6 +8,7 @@ export const getBuild = async (id: string): Promise<Build> => {
     .select(
       `
        *,
+       user_profiles(*),
        build_labels( *, labels( * ) ),
        build_skills( *, skills( * ) ),
        build_fellows( *, fellows( * ) ),
