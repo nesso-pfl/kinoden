@@ -3,7 +3,7 @@
 import { UserRole } from "@/features/auth";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useUserProfile } from "../user-profile";
 
 const checkRole = (
@@ -15,8 +15,7 @@ const checkRole = (
     currentUserRole === "admin" ||
     (currentUserRole === "guildMember" && requiredUserRole !== "admin") ||
     (currentUserRole === "member" && requiredUserRole !== "admin" && requiredUserRole !== "guildMember") ||
-    (requiredUserRole === "anything" && signedIn) ||
-    currentUserRole
+    (requiredUserRole === "anything" && signedIn)
   );
 };
 
@@ -28,14 +27,16 @@ type Props = {
 export const AuthCheck: React.FC<Props> = ({ children, requiredUserRole }) => {
   const router = useRouter();
   const { isLoading, signedIn, data } = useUserProfile();
+  const shouldRedirect = useMemo(
+    () => !isLoading && !checkRole(requiredUserRole, signedIn, data?.user_roles?.role),
+    [isLoading, requiredUserRole, signedIn, data],
+  );
 
   useEffect(() => {
-    const shouldRedirect = !isLoading && !checkRole(requiredUserRole, signedIn, data?.user_roles?.role);
-
     if (shouldRedirect) {
       router.replace(pagesPath.sign_in.$url().pathname);
     }
-  }, [isLoading, data, router, requiredUserRole, signedIn]);
+  }, [shouldRedirect, router]);
 
-  return !isLoading && data && children;
+  return !isLoading && !shouldRedirect && children;
 };
