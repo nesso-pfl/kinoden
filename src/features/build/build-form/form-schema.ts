@@ -22,6 +22,7 @@ export const formSchema = z.object({
     )
     .array()
     .min(1, "ラベルを1つ以上選択してください"),
+  description: z.string().optional(),
   skills: z
     .object({
       skill: z.object(

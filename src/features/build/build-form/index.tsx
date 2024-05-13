@@ -23,6 +23,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "@/features/path/$path";
 import { useToast } from "@/components/ui/use-toast";
 import { useUserProfile } from "@/features/user-profile";
+import { Textarea } from "@/components/ui/textarea";
 
 type Props = {
   defaultValues?: Form;
@@ -41,6 +42,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   const { data: userProfile } = useUserProfile();
   const {
     handleSubmit,
+    register,
     control,
     formState: { errors, isSubmitting },
   } = useForm<Form>({
@@ -89,12 +91,17 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
       }
 
       if (mode === "create") {
-        await createBuild({ ...formValues, user_id: userProfile.user_id });
+        await createBuild({ ...formValues, description: formValues.description ?? null, user_id: userProfile.user_id });
       } else {
         const id = params.get("id");
         if (!id) return;
 
-        await updateBuild({ ...formValues, id, user_id: userProfile.user_id });
+        await updateBuild({
+          ...formValues,
+          description: formValues.description ?? null,
+          id,
+          user_id: userProfile.user_id,
+        });
       }
       toast({ description: `ビルドを${mode === "create" ? "作成" : "編集"}しました`, duration: 2000 });
       router.push(pagesPath.build.$url().pathname);
@@ -120,6 +127,10 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
               )}
             />
             <ErrorMessage>{errors.labels?.message}</ErrorMessage>
+          </div>
+          <div>
+            <div className="text-xs font-bold mb-2">説明</div>
+            <Textarea {...register("description")} />
           </div>
           <div>
             <div className="text-xs font-bold mb-2">技能</div>

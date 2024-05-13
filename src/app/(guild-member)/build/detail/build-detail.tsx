@@ -29,6 +29,7 @@ export const BuildDetail: React.FC = () => {
             ))}
           </div>
         </div>
+        {build.description && <div className="text-sm whitespace-pre-wrap">{build.description}</div>}
         <div>
           <div className="text-xs font-bold mb-2">技能</div>
           <div className="flex gap-4">

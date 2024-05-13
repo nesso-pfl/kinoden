@@ -5,7 +5,8 @@ export const updateBuild = async (build: UpdateBuild) => {
   const response = await supabase
     .from("builds")
     .update({
-      owner: build.owner,
+      user_id: build.user_id,
+      description: build.description,
       mask_relic: build.mask_relic.id,
       fossil_relic: build.fossil_relic.id,
       treasure_relic: build.treasure_relic.id,

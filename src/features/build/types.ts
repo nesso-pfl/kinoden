@@ -42,6 +42,7 @@ export type Build = {
     name: string | null;
     avatar_url: string | null;
   } | null;
+  description: string | null;
   skills: BuildSkill[];
   fellows: Fellow[];
   mask_relic: Relic;
