@@ -14,7 +14,7 @@ import { useUserProfile } from "@/features/user-profile";
 type MenuItem = {
   name: string;
   href: string;
-  requiredUserRole: UserRole | "anything";
+  requiredUserRole: UserRole | "anything" | "notSignedIn";
   icon: React.ReactNode;
 };
 
@@ -24,7 +24,7 @@ const menus: MenuItem[] = [
   {
     name: "越域駐騎場",
     href: pagesPath.parking.$url().pathname,
-    requiredUserRole: "anything",
+    requiredUserRole: "notSignedIn",
     icon: <CarTaxiFrontIcon />,
   },
   { name: "ユーザー設定", href: pagesPath.user.me.$url().pathname, requiredUserRole: "anything", icon: <CatIcon /> },
@@ -112,7 +112,10 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
 export const Header: React.FC = () => {
   const { signedIn, data } = useUserProfile();
   useUpdateSupabaseUser();
-  const filteredMenus = menus.filter((menu) => checkRole(menu.requiredUserRole, signedIn, data?.user_roles?.role));
+  const filteredMenus = menus.filter(
+    (menu) =>
+      menu.requiredUserRole === "notSignedIn" || checkRole(menu.requiredUserRole, signedIn, data?.user_roles?.role),
+  );
 
   return <HeaderPresentation menus={filteredMenus} signedIn={signedIn} />;
 };

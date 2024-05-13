@@ -155,10 +155,10 @@ export type Database = {
           id: string
           mask_relic: string
           necklace_relic: string
-          owner: string
           statue_relic: string
           treasure_relic: string
           updated_at: string | null
+          user_id: string | null
         }
         Insert: {
           book_relic: string
@@ -167,10 +167,10 @@ export type Database = {
           id?: string
           mask_relic: string
           necklace_relic: string
-          owner: string
           statue_relic: string
           treasure_relic: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Update: {
           book_relic?: string
@@ -179,12 +179,19 @@ export type Database = {
           id?: string
           mask_relic?: string
           necklace_relic?: string
-          owner?: string
           statue_relic?: string
           treasure_relic?: string
           updated_at?: string | null
+          user_id?: string | null
         }
         Relationships: [
+          {
+            foreignKeyName: "builds_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "user_profiles"
+            referencedColumns: ["user_id"]
+          },
           {
             foreignKeyName: "public_builds_book_relic_fkey"
             columns: ["book_relic"]
@@ -507,21 +514,21 @@ export type Database = {
         Row: {
           avatar_url: string | null
           created_at: string
-          id: number
+          id: string | null
           name: string | null
           user_id: string
         }
         Insert: {
           avatar_url?: string | null
           created_at?: string
-          id?: number
+          id?: string | null
           name?: string | null
           user_id: string
         }
         Update: {
           avatar_url?: string | null
           created_at?: string
-          id?: number
+          id?: string | null
           name?: string | null
           user_id?: string
         }
@@ -538,19 +545,19 @@ export type Database = {
       user_roles: {
         Row: {
           created_at: string
-          id: number
+          id: string
           role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Insert: {
           created_at?: string
-          id?: number
+          id?: string
           role: Database["public"]["Enums"]["user_role"]
           user_id: string
         }
         Update: {
           created_at?: string
-          id?: number
+          id?: string
           role?: Database["public"]["Enums"]["user_role"]
           user_id?: string
         }
@@ -585,10 +592,10 @@ export type Database = {
           id: string
           mask_relic: string
           necklace_relic: string
-          owner: string
           statue_relic: string
           treasure_relic: string
           updated_at: string | null
+          user_id: string | null
         }[]
       }
     }
