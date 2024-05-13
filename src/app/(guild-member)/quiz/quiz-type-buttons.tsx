@@ -2,7 +2,7 @@
 
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { HelpTooltip } from "../../components/ui/help-tooltip";
+import { HelpTooltip } from "../../../components/ui/help-tooltip";
 import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
 

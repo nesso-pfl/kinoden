@@ -17,7 +17,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useState } from "react";
-import { HelpTooltip } from "../../../components/ui/help-tooltip";
+import { HelpTooltip } from "../../../../components/ui/help-tooltip";
 
 const columns: ColumnDef<Quiz>[] = [
   {
