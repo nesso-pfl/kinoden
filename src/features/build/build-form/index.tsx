@@ -92,6 +92,8 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
 
       if (mode === "create") {
         await createBuild({ ...formValues, description: formValues.description ?? null, user_id: userProfile.user_id });
+        toast({ description: `ビルドを作成しました`, duration: 2000 });
+        router.push(pagesPath.build.$url().pathname);
       } else {
         const id = params.get("id");
         if (!id) return;
@@ -102,9 +104,9 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
           id,
           user_id: userProfile.user_id,
         });
+        toast({ description: `ビルドを編集しました`, duration: 2000 });
+        router.push(pagesPath.build.detail.$url({ query: { id } }).pathname);
       }
-      toast({ description: `ビルドを${mode === "create" ? "作成" : "編集"}しました`, duration: 2000 });
-      router.push(pagesPath.build.$url().pathname);
     },
     [userProfile, toast, mode, router, params],
   );

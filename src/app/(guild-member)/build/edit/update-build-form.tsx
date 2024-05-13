@@ -8,5 +8,5 @@ export const UpdateBuildForm: React.FC = () => {
   const params = useSearchParams();
   const { data: build } = useBuild(params.get("id"));
 
-  return build && <BuildForm mode="edit" defaultValues={build} />;
+  return build && <BuildForm mode="edit" defaultValues={{ ...build, description: build.description ?? undefined }} />;
 };
