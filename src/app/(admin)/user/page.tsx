@@ -7,10 +7,6 @@ export const metadata: Metadata = {
   title: "ユーザー管理 | Kinoden Pfl",
 };
 
-export type Query = {
-  id: string;
-};
-
 export default function Page() {
   return (
     <div className="flex flex-col w-full h-full">

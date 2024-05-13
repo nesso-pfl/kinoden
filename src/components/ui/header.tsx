@@ -1,27 +1,34 @@
 "use client";
 
 import { pagesPath } from "@/features/path/$path";
-import { CarTaxiFrontIcon, MenuIcon, SnailIcon } from "lucide-react";
+import { CarTaxiFrontIcon, CatIcon, KeyRoundIcon, MenuIcon, SnailIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "./separator";
 import { Button } from "./button";
 import { signOut } from "@/features/auth/sign-out";
-import { useUpdateSupabaseUser } from "@/features/auth";
+import { UserRole, checkRole, useUpdateSupabaseUser } from "@/features/auth";
 import { useUserProfile } from "@/features/user-profile";
 
 type MenuItem = {
   name: string;
   href: string;
-  authed: boolean;
+  requiredUserRole: UserRole | "anything";
   icon: React.ReactNode;
 };
 
 const menus: MenuItem[] = [
-  // { name: "クイズ", href: pagesPath.quiz.$url().pathname, authed: true, icon: <GraduationCapIcon /> },
-  { name: "ビルド", href: pagesPath.build.$url().pathname, authed: true, icon: <SnailIcon /> },
-  { name: "越域駐騎場", href: pagesPath.parking.$url().pathname, authed: false, icon: <CarTaxiFrontIcon /> },
+  // { name: "クイズ", href: pagesPath.quiz.$url().pathname, requiredUserRole: 'guildMember', icon: <GraduationCapIcon /> },
+  { name: "ビルド", href: pagesPath.build.$url().pathname, requiredUserRole: "guildMember", icon: <SnailIcon /> },
+  {
+    name: "越域駐騎場",
+    href: pagesPath.parking.$url().pathname,
+    requiredUserRole: "anything",
+    icon: <CarTaxiFrontIcon />,
+  },
+  { name: "ユーザー設定", href: pagesPath.user.me.$url().pathname, requiredUserRole: "anything", icon: <CatIcon /> },
+  { name: "ユーザー管理", href: pagesPath.user.$url().pathname, requiredUserRole: "admin", icon: <KeyRoundIcon /> },
 ];
 
 type HeaderPresentationProps = {
@@ -103,9 +110,9 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
 };
 
 export const Header: React.FC = () => {
-  const { signedIn } = useUserProfile();
+  const { signedIn, data } = useUserProfile();
   useUpdateSupabaseUser();
-  const filteredMenus = menus.filter((menu) => signedIn || !menu.authed);
+  const filteredMenus = menus.filter((menu) => checkRole(menu.requiredUserRole, signedIn, data?.user_roles?.role));
 
   return <HeaderPresentation menus={filteredMenus} signedIn={signedIn} />;
 };

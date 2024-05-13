@@ -1,23 +1,10 @@
 "use client";
 
-import { UserRole } from "@/features/auth";
+import { UserRole, checkRole } from "@/features/auth";
 import { pagesPath } from "@/features/path/$path";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useMemo } from "react";
 import { useUserProfile } from "../user-profile";
-
-const checkRole = (
-  requiredUserRole: UserRole | "anything",
-  signedIn: boolean,
-  currentUserRole: UserRole | undefined,
-) => {
-  return (
-    currentUserRole === "admin" ||
-    (currentUserRole === "guildMember" && requiredUserRole !== "admin") ||
-    (currentUserRole === "member" && requiredUserRole !== "admin" && requiredUserRole !== "guildMember") ||
-    (requiredUserRole === "anything" && signedIn)
-  );
-};
 
 type Props = {
   requiredUserRole: UserRole | "anything";

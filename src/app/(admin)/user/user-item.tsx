@@ -19,7 +19,7 @@ export const UserItem: React.FC<Props> = ({ user }) => {
 
   return (
     <div className="grid col-span-5 grid-cols-subgrid">
-      <div>{user.id}</div>
+      <div>{user.user_id}</div>
       <div>{user.name}</div>
       <Avatar>
         <AvatarImage src={user.avatar_url ?? ""} />
