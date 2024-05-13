@@ -37,7 +37,10 @@ export type Label = {
 
 export type Build = {
   id: string;
-  owner: string;
+  user_profiles: {
+    user_id: string;
+    name: string | null;
+  };
   skills: BuildSkill[];
   fellows: Fellow[];
   mask_relic: Relic;

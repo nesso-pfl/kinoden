@@ -8,6 +8,7 @@ export const getBuilds = async (): Promise<
   const response = await supabase.from("builds").select(
     `
        *,
+       user_profiles(*),
        build_labels( *, labels( * ) ),
        build_skills( *, skills( * ) ),
        build_fellows( *, fellows( * ) )
@@ -16,6 +17,7 @@ export const getBuilds = async (): Promise<
   return (
     response.data?.map((build) => ({
       ...build,
+      user_profiles: build.user_profiles!,
       fellows: build.build_fellows
         .toSorted((f1, f2) => f1.fellow_order - f2.fellow_order)
         .map((build_fellow) => build_fellow.fellows)
