@@ -8,7 +8,7 @@ import { Edit3Icon } from "lucide-react";
 import { useUserProfile } from "@/features/user-profile";
 
 export const AvatarForm: React.FC = () => {
-  const { data } = useUserProfile();
+  const { data, mutate } = useUserProfile();
   const inputRef = useRef<HTMLInputElement>(null);
   const { toast } = useToast();
   const handleChange = useCallback(
@@ -17,10 +17,11 @@ export const AvatarForm: React.FC = () => {
 
       const file = event.target.files?.[0];
       if (!file) return;
-      await updateAvatar(data.user_id, file);
+      await updateAvatar(data.user_id, file, data.avatar_url);
+      await mutate();
       toast({ description: "アバターを更新しました。", duration: 1000 });
     },
-    [data, toast],
+    [data, toast, mutate],
   );
 
   return (
