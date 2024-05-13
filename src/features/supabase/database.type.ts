@@ -151,6 +151,7 @@ export type Database = {
         Row: {
           book_relic: string
           created_at: string
+          description: string | null
           fossil_relic: string
           id: string
           mask_relic: string
@@ -163,6 +164,7 @@ export type Database = {
         Insert: {
           book_relic: string
           created_at?: string
+          description?: string | null
           fossil_relic: string
           id?: string
           mask_relic: string
@@ -175,6 +177,7 @@ export type Database = {
         Update: {
           book_relic?: string
           created_at?: string
+          description?: string | null
           fossil_relic?: string
           id?: string
           mask_relic?: string
@@ -588,6 +591,7 @@ export type Database = {
         Returns: {
           book_relic: string
           created_at: string
+          description: string | null
           fossil_relic: string
           id: string
           mask_relic: string
