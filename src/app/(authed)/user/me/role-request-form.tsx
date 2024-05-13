@@ -61,7 +61,7 @@ export const RoleRequestForm: React.FC = () => {
             または権限リクエストを送信後あも宛に個チャも送ってもらえると助かります。
             <br />
             <span className="text-red-500">
-              権限リクエストの前に、画像と名前に問題がないか確認することをお勧めします。
+              権限リクエストの前に、アバターと名前に問題がないか確認することをお勧めします。
             </span>
           </span>
           <Textarea
