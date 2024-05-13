@@ -105,7 +105,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
           user_id: userProfile.user_id,
         });
         toast({ description: `ビルドを編集しました`, duration: 2000 });
-        router.push(pagesPath.build.detail.$url({ query: { id } }).pathname);
+        router.push(pagesPath.build.detail.$url({ query: { id } }).path);
       }
     },
     [userProfile, toast, mode, router, params],
