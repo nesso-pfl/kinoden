@@ -158,7 +158,7 @@ export type Database = {
           statue_relic: string
           treasure_relic: string
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }
         Insert: {
           book_relic: string
@@ -170,7 +170,7 @@ export type Database = {
           statue_relic: string
           treasure_relic: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id: string
         }
         Update: {
           book_relic?: string
@@ -182,7 +182,7 @@ export type Database = {
           statue_relic?: string
           treasure_relic?: string
           updated_at?: string | null
-          user_id?: string | null
+          user_id?: string
         }
         Relationships: [
           {
@@ -595,7 +595,7 @@ export type Database = {
           statue_relic: string
           treasure_relic: string
           updated_at: string | null
-          user_id: string | null
+          user_id: string
         }[]
       }
     }
