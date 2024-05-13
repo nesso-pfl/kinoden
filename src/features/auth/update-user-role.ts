@@ -1,9 +1,16 @@
 import { supabase } from "../supabase";
 import { User } from ".";
 
-export const updateUserRole = (id: string, userRole: NonNullable<User["user_metadata"]["userRole"]>) => {
-  return supabase.functions.invoke("update-user-role", {
-    method: "PUT",
-    body: { id, userRole },
-  });
+export const updateUserRole = (id: string, userRole: NonNullable<NonNullable<User["user_roles"]>["role"]>) => {
+  return supabase.from("user_roles").upsert(
+    [
+      {
+        user_id: id,
+        role: userRole,
+      },
+    ],
+    {
+      onConflict: "user_id",
+    },
+  );
 };

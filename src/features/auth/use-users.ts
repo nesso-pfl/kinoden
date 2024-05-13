@@ -3,11 +3,12 @@ import { supabase } from "../supabase";
 import { User } from "./";
 
 const getUsers = async (): Promise<{ users: User[] }> => {
-  const response = await supabase.functions.invoke("get-users", {
-    method: "GET",
-  });
+  const response = await supabase.from("user_profiles").select(`
+  *,
+  user_roles (role)
+  `);
 
-  return response.data ?? [];
+  return { users: response.data ?? [] };
 };
 
 export const useUsers = () => {

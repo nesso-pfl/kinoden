@@ -1,5 +1,6 @@
 "use client";
 
+import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { User, UserRole, updateUserRole, userRoles } from "@/features/auth";
 import React, { useCallback } from "react";
@@ -11,7 +12,7 @@ type Props = {
 export const UserItem: React.FC<Props> = ({ user }) => {
   const handleChange = useCallback(
     async (value: UserRole) => {
-      await updateUserRole(user.id, value);
+      await updateUserRole(user.user_id, value);
     },
     [user],
   );
@@ -19,9 +20,11 @@ export const UserItem: React.FC<Props> = ({ user }) => {
   return (
     <div className="grid col-span-5 grid-cols-subgrid">
       <div>{user.id}</div>
-      <div>{user.user_metadata.name}</div>
-      <div>{user.user_metadata.email}</div>
-      <Select defaultValue={user.user_metadata.userRole} onValueChange={handleChange}>
+      <div>{user.name}</div>
+      <Avatar>
+        <AvatarImage src={user.avatar_url ?? ""} />
+      </Avatar>
+      <Select defaultValue={user.user_roles?.role ?? undefined} onValueChange={handleChange}>
         <SelectTrigger>
           <SelectValue />
         </SelectTrigger>
