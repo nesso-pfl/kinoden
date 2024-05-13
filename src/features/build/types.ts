@@ -54,5 +54,11 @@ export type Build = {
   created_at: string;
 };
 
-export type CreateBuild = Omit<Build, "id" | "created_at" | "skills"> & { skills: CreateBuildSkill[] };
-export type UpdateBuild = Omit<Build, "created_at" | "skills"> & { skills: UpdateBuildSkill[] };
+export type CreateBuild = Omit<Build, "id" | "created_at" | "skills" | "user_profiles"> & {
+  skills: CreateBuildSkill[];
+  user_id: string;
+};
+export type UpdateBuild = Omit<Build, "created_at" | "skills" | "user_profiles"> & {
+  skills: UpdateBuildSkill[];
+  user_id: string;
+};

@@ -8,7 +8,6 @@ import {
   useGetFellows,
   useGetRelics,
   useGetSkills,
-  useUsernameStore,
 } from "@/features/build";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,6 +22,7 @@ import { ErrorMessage } from "@/components/ui/error-message";
 import { useRouter, useSearchParams } from "next/navigation";
 import { pagesPath } from "@/features/path/$path";
 import { useToast } from "@/components/ui/use-toast";
+import { useUserProfile } from "@/features/user-profile";
 
 type Props = {
   defaultValues?: Form;
@@ -38,7 +38,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   const { data: skills } = useGetSkills();
   const { data: fellows } = useGetFellows();
   const { data: relics } = useGetRelics();
-  const { username } = useUsernameStore();
+  const { data: userProfile } = useUserProfile();
   const {
     handleSubmit,
     control,
@@ -71,7 +71,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
   );
 
   useEffect(() => {
-    if (username) return;
+    if (userProfile?.name) return;
 
     const openCreateUsernameDialog = () => setOpen(true);
     const timeoutId = setTimeout(openCreateUsernameDialog, 200);
@@ -79,27 +79,27 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [username]);
+  }, [userProfile]);
 
   const onSubmit = useCallback(
     async (formValues: Form) => {
-      if (!username) {
+      if (!userProfile?.name) {
         setOpen(true);
         return;
       }
 
       if (mode === "create") {
-        await createBuild({ ...formValues, owner: username });
+        await createBuild({ ...formValues, user_id: userProfile.user_id });
       } else {
         const id = params.get("id");
         if (!id) return;
 
-        await updateBuild({ ...formValues, id, owner: username });
+        await updateBuild({ ...formValues, id, user_id: userProfile.user_id });
       }
       toast({ description: `ビルドを${mode === "create" ? "作成" : "編集"}しました`, duration: 2000 });
       router.push(pagesPath.build.$url().pathname);
     },
-    [username, toast, mode, router, params],
+    [userProfile, toast, mode, router, params],
   );
 
   return (
@@ -108,7 +108,7 @@ export const BuildForm: React.FC<Props> = ({ defaultValues, mode }) => {
         <div className="flex flex-col gap-4 mb-12">
           <div>
             <div className="text-xs font-bold mb-2">作成者</div>
-            <div className="min-h-6">{username}</div>
+            <div className="min-h-6">{userProfile?.name ?? "未設定"}</div>
           </div>
           <div>
             <div className="text-xs font-bold mb-2">ラベル</div>

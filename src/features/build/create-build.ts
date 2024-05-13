@@ -6,7 +6,7 @@ export const createBuild = async (build: CreateBuild) => {
     .from("builds")
     .insert([
       {
-        owner: build.owner,
+        user_id: build.user_id,
         mask_relic: build.mask_relic.id,
         fossil_relic: build.fossil_relic.id,
         treasure_relic: build.treasure_relic.id,
