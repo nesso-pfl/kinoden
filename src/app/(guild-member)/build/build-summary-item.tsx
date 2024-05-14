@@ -32,18 +32,27 @@ export const BuildSummaryItem: React.FC<Props> = ({ build }) => {
             ))}
           </div>
         </div>
-        <div className="flex gap-2">
-          {build.skills.map((skill) => (
-            <div key={skill.id} className="flex flex-col items-center gap-1">
-              <Image src={skill.skill.image_url} width="40" height="40" alt={skill.skill.name} />
-              <span className="text-sm">{skill.delay}s</span>
-            </div>
-          ))}
-        </div>
-        <div className="flex gap-2">
-          {build.fellows.map((fellow) => (
-            <Image key={fellow.id} src={fellow.image_url} width="40" height="40" alt={fellow.name} />
-          ))}
+        <div className="flex flex-wrap gap-y-2 gap-x-8">
+          <div className="flex gap-2">
+            {build.skills.map((skill) => (
+              <div key={skill.id} className="flex flex-col items-center gap-1">
+                <Image src={skill.skill.image_url} width="40" height="40" alt={skill.skill.name} />
+                <span className="text-sm">{skill.delay}s</span>
+              </div>
+            ))}
+          </div>
+          <div className="flex gap-2">
+            {build.fellows.map((fellow) => (
+              <Image
+                className="w-10 h-10"
+                key={fellow.id}
+                src={fellow.image_url}
+                width="40"
+                height="40"
+                alt={fellow.name}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <div className="flex flex-col gap-2">
