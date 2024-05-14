@@ -49,10 +49,10 @@ export const updateParkingOpenAt = async (id: string, open_at: Date) => {
   await supabase.from("parkings").update({ open_at: open_at.toISOString() }).match({ id });
 };
 
-type UseParkingParams = {
+type UseParkingParams = Partial<{
   onInitParkings: (parkings: Parking[]) => unknown;
   onUpdateParking: (newParking: Parking) => unknown;
-};
+}>;
 export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams) => {
   const [parkingServers, setParkingServers] = useState<ParkingServer[]>([]);
   const [parkings, setParkings] = useState<Parking[]>([]);
@@ -63,7 +63,7 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
     await Promise.all([
       getParkings((parking) => {
         setParkings(parking);
-        onInitParkings(parking);
+        onInitParkings?.(parking);
       }),
       getParkingServers(setParkingServers),
     ]);
@@ -104,7 +104,10 @@ export const useParking = ({ onInitParkings, onUpdateParking }: UseParkingParams
             if (!newOwner) throw new Error("Owner not found");
             return [...prev.slice(0, index), { ...payload.new, owner: newOwner }, ...prev.slice(index + 1)];
           });
-          onUpdateParking({ ...payload.new, owner: parkingServers.find((server) => server.id === payload.new.owner)! });
+          onUpdateParking?.({
+            ...payload.new,
+            owner: parkingServers.find((server) => server.id === payload.new.owner)!,
+          });
         },
       )
       .subscribe();
