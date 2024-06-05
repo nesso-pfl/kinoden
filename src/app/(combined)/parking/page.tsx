@@ -10,7 +10,9 @@ export default function Page() {
   return (
     <div>
       <h1 className="text-2xl mb-8">越域駐騎場</h1>
-      <Parkings />
+      <div className="md:flex md:justify-center">
+        <Parkings />
+      </div>
     </div>
   );
 }
