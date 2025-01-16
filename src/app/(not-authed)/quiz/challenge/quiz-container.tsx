@@ -113,7 +113,9 @@ export const QuizContainer: React.FC = () => {
             {currentQuiz && currentQuiz.answers.length > 1 && <>（{currentQuiz?.answers.slice(1).join("、")}）</>}
           </div>
           {!studyMode && (
-            <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
+            <div className="grid place-items-center">
+              {currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}
+            </div>
           )}
         </div>
       )}
