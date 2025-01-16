@@ -47,7 +47,7 @@ export const QuizContainer: React.FC = () => {
     if (step === "answered") {
       const newCurrentQuizIndex =
         quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : currentQuizIndex + 1;
-      setStep(quizType !== "endless" && newCurrentQuizIndex + 1 >= quizzes.length ? "finish" : "answering");
+      setStep(quizType !== "endless" && newCurrentQuizIndex >= quizzes.length ? "finish" : "answering");
       setCurrentQuizIndex(newCurrentQuizIndex);
       setAnswer("");
     }
