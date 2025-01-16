@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useQuizzes } from "@/features/quiz";
 import { useQuery } from "./query";
 import { Input } from "@/components/ui/input";
@@ -22,6 +22,7 @@ function shuffle<T>(array: T[]) {
 }
 
 export const QuizContainer: React.FC = () => {
+  const displayRef = useRef<HTMLDivElement>(null);
   const { quizType, studyMode } = useQuery();
   const { quizzes: allQuizzes } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
@@ -53,6 +54,7 @@ export const QuizContainer: React.FC = () => {
   const handleSubmitAnswer = useCallback((event: React.FormEvent) => {
     event.preventDefault();
     setShowAnswers(true);
+    displayRef.current?.focus();
   }, []);
 
   return (
@@ -60,7 +62,9 @@ export const QuizContainer: React.FC = () => {
       <div
         role={clickable ? "button" : undefined}
         className={cn("select-none w-full h-full")}
+        onKeyDown={(event) => clickable && (event.key === "Enter" || event.key === " ") && handleClickDisplay()}
         onClick={handleClickDisplay}
+        ref={displayRef}
       >
         {quizType !== "endless" && (
           <div className="mb-2">
@@ -71,7 +75,9 @@ export const QuizContainer: React.FC = () => {
         {!studyMode && (
           <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
             <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
-            <Button disabled={showAnswers || !answer}>解答</Button>
+            <Button type="submit" disabled={showAnswers || !answer}>
+              解答
+            </Button>
           </form>
         )}
         {showAnswers && (
