@@ -153,7 +153,7 @@ export const QuizTable: React.FC<Props> = () => {
           ) : (
             <TableRow>
               <TableCell colSpan={columns.length} className="h-24 text-center">
-                No results.
+                絞り込みにマッチする問題がありません
               </TableCell>
             </TableRow>
           )}
