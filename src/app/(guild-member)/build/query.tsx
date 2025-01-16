@@ -6,4 +6,8 @@ export const querySchema = z.object({
   sort: z.enum(["updated_at_asc", "updated_at_desc"]).optional(),
 });
 
-export type Query = z.infer<typeof querySchema>;
+export type Query = {
+  owner?: string;
+  labels?: string;
+  sort?: "updated_at_asc" | "updated_at_desc";
+};

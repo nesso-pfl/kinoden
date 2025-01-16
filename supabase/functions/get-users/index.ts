@@ -1,3 +1,4 @@
+/*
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2.42.5";
 
 Deno.serve(async (req) => {
@@ -50,6 +51,7 @@ Deno.serve(async (req) => {
     },
   });
 });
+*/
 
 /* To invoke locally:
 

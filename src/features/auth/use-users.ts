@@ -7,14 +7,7 @@ const getUsers = async (): Promise<{ users: User[] }> => {
   *,
   user_roles (role)
   `);
-  const users = response.data
-    ?.filter((item): item is Exclude<typeof item, null> => item !== null)
-    .map((item) => ({
-      ...item,
-      id: item.id!,
-    }));
-
-  return { users: users ?? [] };
+  return { users: response.data ?? [] };
 };
 
 export const useUsers = () => {
