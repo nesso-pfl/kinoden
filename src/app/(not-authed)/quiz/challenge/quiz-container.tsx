@@ -119,7 +119,11 @@ export const QuizContainer: React.FC = () => {
       <div className="text-xl">問題：{currentQuiz?.question}</div>
       {!studyMode && (
         <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
-          <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
+          <Input
+            className="max-w-sm text-base xl:text-sm"
+            value={answer}
+            onChange={(event) => setAnswer(event.target.value)}
+          />
           <Button type="submit" disabled={step !== "answering" || !answer}>
             解答
           </Button>

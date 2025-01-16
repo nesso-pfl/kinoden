@@ -90,7 +90,7 @@ export const QuizTable: React.FC<Props> = () => {
             placeholder="アカトマトガエル"
             value={(table.getColumn("query")?.getFilterValue() as string) ?? ""}
             onChange={(event) => table.getColumn("query")?.setFilterValue(event.target.value)}
-            className="max-w-sm"
+            className="max-w-sm text-base xl:text-sm"
           />
         </div>
         <div className="flex gap-4">
