@@ -33,7 +33,7 @@ export const QuizTypeButtons: React.FC<Props> = ({ studyMode }) => {
         </Link>
       </Button>
       <HelpTooltip>
-        全ての問題からランダムに出題します。
+        永遠に全ての問題からランダムに出題します。
         <br />
         同じ問題が連続で出題されることがあります。
       </HelpTooltip>
