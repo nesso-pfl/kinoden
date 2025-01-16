@@ -50,7 +50,8 @@ export const QuizContainer: React.FC = () => {
     }
   }, [studyMode, showAnswers, currentQuizIndex, quizType, quizzes]);
 
-  const handleClickAnswer = useCallback(() => {
+  const handleSubmitAnswer = useCallback((event: React.FormEvent) => {
+    event.preventDefault();
     setShowAnswers(true);
   }, []);
 
@@ -68,11 +69,9 @@ export const QuizContainer: React.FC = () => {
         )}
         <div className="text-xl">問題：{currentQuiz?.question}</div>
         {!studyMode && (
-          <form className="flex gap-4 mt-8">
+          <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
             <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
-            <Button disabled={showAnswers || !answer} onClick={handleClickAnswer}>
-              解答
-            </Button>
+            <Button disabled={showAnswers || !answer}>解答</Button>
           </form>
         )}
         {showAnswers && (
