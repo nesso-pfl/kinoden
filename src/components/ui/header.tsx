@@ -1,7 +1,7 @@
 "use client";
 
 import { pagesPath } from "@/features/path/$path";
-import { CarTaxiFrontIcon, CatIcon, KeyRoundIcon, MenuIcon, SnailIcon } from "lucide-react";
+import { CatIcon, GraduationCapIcon, KeyRoundIcon, MenuIcon, SnailIcon } from "lucide-react";
 import Link from "next/link";
 import React, { useCallback, useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
@@ -19,14 +19,21 @@ type MenuItem = {
 };
 
 const menus: MenuItem[] = [
-  // { name: "クイズ", href: pagesPath.quiz.$url().pathname, requiredUserRole: 'guildMember', icon: <GraduationCapIcon /> },
+  {
+    name: "クイズ",
+    href: pagesPath.quiz.$url().pathname,
+    requiredUserRole: "notSignedIn",
+    icon: <GraduationCapIcon />,
+  },
   { name: "ビルド", href: pagesPath.build.$url().pathname, requiredUserRole: "guildMember", icon: <SnailIcon /> },
+  /*
   {
     name: "越域駐騎場",
     href: pagesPath.parking.$url().pathname,
     requiredUserRole: "notSignedIn",
     icon: <CarTaxiFrontIcon />,
   },
+  */
   { name: "ユーザー設定", href: pagesPath.user.me.$url().pathname, requiredUserRole: "anything", icon: <CatIcon /> },
   { name: "ユーザー管理", href: pagesPath.user.$url().pathname, requiredUserRole: "admin", icon: <KeyRoundIcon /> },
 ];

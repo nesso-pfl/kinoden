@@ -25,7 +25,6 @@ export const QuizContainer: React.FC = () => {
   const { quizType, studyMode } = useQuery();
   const { quizzes: allQuizzes } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
-  console.log({ quizzes, allQuizzes });
   const [showAnswers, setShowAnswers] = useState(false);
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
