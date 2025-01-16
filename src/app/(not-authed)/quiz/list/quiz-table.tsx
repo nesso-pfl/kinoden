@@ -83,7 +83,7 @@ export const QuizTable: React.FC<Props> = () => {
 
   return (
     <div>
-      <div className="flex gap-8 items-center">
+      <div className="flex gap-x-8 items-center flex-wrap">
         <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
           <Label>問題絞り込み</Label>
           <Input
