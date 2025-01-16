@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils";
 import { CheckIcon, XIcon } from "lucide-react";
 import Link from "next/link";
 import { pagesPath } from "@/features/path/$path";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const steps = ["loading", "answering", "answered", "finish"] as const;
 type Step = (typeof steps)[number];
@@ -26,7 +27,7 @@ function shuffle<T>(array: T[]) {
 export const QuizContainer: React.FC = () => {
   const displayRef = useRef<HTMLDivElement>(null);
   const { quizType, studyMode } = useQuery();
-  const { quizzes: allQuizzes } = useQuizzes({ checkedOnly: quizType === "checked-only" });
+  const { quizzes: allQuizzes, toggleQuizChecked } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
@@ -35,7 +36,10 @@ export const QuizContainer: React.FC = () => {
   const clickable = useMemo(() => studyMode || step === "answered", [studyMode, step]);
   const currentQuiz = quizzes[currentQuizIndex];
 
+  const inited = useRef(false);
   useEffect(() => {
+    if (inited.current) return;
+    inited.current = true;
     setQuizzes(shuffle(allQuizzes));
     setStep("answering");
   }, [allQuizzes]);
@@ -80,6 +84,18 @@ export const QuizContainer: React.FC = () => {
           {currentQuizIndex + 1}/{quizzes.length}
         </div>
       )}
+      <Checkbox
+        checked={currentQuiz?.checked}
+        onClick={(event) => event.stopPropagation()}
+        onCheckedChange={() => {
+          currentQuiz?.question && toggleQuizChecked(currentQuiz.question);
+          setQuizzes(
+            quizzes.map((quiz) =>
+              quiz.question === currentQuiz?.question ? { ...quiz, checked: !quiz.checked } : quiz,
+            ),
+          );
+        }}
+      />
       <div className="text-xl">問題：{currentQuiz?.question}</div>
       {!studyMode && (
         <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
