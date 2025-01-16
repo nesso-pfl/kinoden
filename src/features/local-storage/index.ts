@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 type LocalStorageCodec<T> = {
   encode: (value: T) => string;
@@ -8,21 +8,14 @@ type LocalStorageCodec<T> = {
 type UseLocalStorageOption<T> = LocalStorageCodec<T>;
 
 export const useLocalStorage = <T>(key: string, { encode, decode }: UseLocalStorageOption<T>) => {
-  const [value, setValue] = useState<T>();
-  const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (typeof window === "undefined") return;
-
-    const localStorageValue = window.localStorage.getItem(key);
-    setValue(localStorageValue ? decode(localStorageValue) : undefined);
-    setIsLoading(false);
-  }, [key, decode]);
+  const [value, setValue] = useState<T | undefined>(() => {
+    if (typeof localStorage === "undefined") return;
+    const localStorageValue = localStorage.getItem(key);
+    return localStorageValue ? decode(localStorageValue) : undefined;
+  });
 
   const update = useCallback(
     (newValue: T) => {
-      if (typeof window === "undefined") return;
-
       localStorage.setItem(key, encode(newValue));
       setValue(newValue);
     },
@@ -32,7 +25,6 @@ export const useLocalStorage = <T>(key: string, { encode, decode }: UseLocalStor
   return {
     value,
     setValue: update,
-    isLoading,
   } as const;
 };
 

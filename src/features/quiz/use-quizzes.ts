@@ -5,11 +5,10 @@ import { useLocalStorage } from "../local-storage";
 const localStorageKey = "kinoden-pfl:checkedQuizzes";
 
 export const useQuizzes = (opts = { checkedOnly: false }) => {
-  const {
-    value: checkedQuizzes,
-    setValue: setCheckedQuizzes,
-    isLoading,
-  } = useLocalStorage<string[]>(localStorageKey, { encode: JSON.stringify, decode: JSON.parse });
+  const { value: checkedQuizzes, setValue: setCheckedQuizzes } = useLocalStorage<string[]>(localStorageKey, {
+    encode: JSON.stringify,
+    decode: JSON.parse,
+  });
   const quizzes = useMemo(() => {
     const allQuizzes = answerJson.quizzes.map((quiz) => ({
       ...quiz,
@@ -34,7 +33,6 @@ export const useQuizzes = (opts = { checkedOnly: false }) => {
 
   return {
     quizzes,
-    isLoading,
     toggleQuizChecked,
   };
 };
