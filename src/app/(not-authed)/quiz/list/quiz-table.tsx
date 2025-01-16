@@ -83,9 +83,9 @@ export const QuizTable: React.FC<Props> = () => {
 
   return (
     <div>
-      <div className="flex gap-x-8 items-center flex-wrap">
-        <div className="grid w-full max-w-sm items-center gap-1.5 mb-4">
-          <Label>問題絞り込み</Label>
+      <Label>問題絞り込み</Label>
+      <div className="flex gap-x-8 gap-y-2 items-center flex-wrap mb-8">
+        <div className="grid w-full max-w-sm items-center gap-1.5">
           <Input
             placeholder="アカトマトガエル"
             value={(table.getColumn("query")?.getFilterValue() as string) ?? ""}
