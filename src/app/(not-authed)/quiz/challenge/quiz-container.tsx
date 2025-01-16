@@ -8,7 +8,7 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon, XIcon } from "lucide-react";
 
-const steps = ["loading", "quiz", "finish"] as const;
+const steps = ["loading", "answering", "answered", "finish"] as const;
 type Step = (typeof steps)[number];
 
 function shuffle<T>(array: T[]) {
@@ -26,34 +26,34 @@ export const QuizContainer: React.FC = () => {
   const { quizType, studyMode } = useQuery();
   const { quizzes: allQuizzes } = useQuizzes({ checkedOnly: quizType === "checked-only" });
   const [quizzes, setQuizzes] = useState(allQuizzes);
-  const [showAnswers, setShowAnswers] = useState(false);
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [step, setStep] = useState<Step>("loading");
-  const clickable = useMemo(() => studyMode || showAnswers, [studyMode, showAnswers]);
+
   useEffect(() => {
-    setCurrentQuizIndex(quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : 0);
     setQuizzes(shuffle(allQuizzes));
-    setStep("quiz");
+    setStep("answering");
   }, [allQuizzes, quizType, quizzes]);
+
+  const clickable = useMemo(() => studyMode || step === "answered", [studyMode, step]);
   const currentQuiz = useMemo(() => quizzes[currentQuizIndex], [quizzes, currentQuizIndex]);
 
   const handleClickDisplay = useCallback(() => {
-    if (studyMode || showAnswers) setShowAnswers((prev) => !prev);
-    if (showAnswers) {
+    if (studyMode && step === "answering") {
+      setStep("answered");
+    }
+    if (step === "answered") {
       const newCurrentQuizIndex =
         quizType === "endless" ? Math.trunc(Math.random() * quizzes.length) : currentQuizIndex + 1;
-      if (newCurrentQuizIndex + 1 >= quizzes.length) {
-        setStep("finish");
-      }
+      setStep(quizType !== "endless" && newCurrentQuizIndex + 1 >= quizzes.length ? "finish" : "answering");
       setCurrentQuizIndex(newCurrentQuizIndex);
       setAnswer("");
     }
-  }, [studyMode, showAnswers, currentQuizIndex, quizType, quizzes]);
+  }, [studyMode, currentQuizIndex, quizType, quizzes, step]);
 
   const handleSubmitAnswer = useCallback((event: React.FormEvent) => {
     event.preventDefault();
-    setShowAnswers(true);
+    setStep("answered");
     displayRef.current?.focus();
   }, []);
 
@@ -75,19 +75,21 @@ export const QuizContainer: React.FC = () => {
         {!studyMode && (
           <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
             <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
-            <Button type="submit" disabled={showAnswers || !answer}>
+            <Button type="submit" disabled={step !== "answering" || !answer}>
               解答
             </Button>
           </form>
         )}
-        {showAnswers && (
+        {step === "answered" && (
           <div className="flex gap-4 text-xl mt-8">
             <div>答え：</div>
             <div>
               {currentQuiz?.answers[0]}
               {currentQuiz && currentQuiz.answers.length > 1 && <>（{currentQuiz?.answers.slice(1).join("、")}）</>}
             </div>
-            <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
+            {!studyMode && (
+              <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
+            )}
           </div>
         )}
       </div>
