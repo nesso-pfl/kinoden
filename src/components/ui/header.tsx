@@ -97,6 +97,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
                 </li>
               ))}
             </ul>
+            {/* 
             <Separator className="my-4" />
             {signedIn ? (
               <Button variant="destructive" onClick={handleClickSignOut}>
@@ -109,6 +110,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
                 </Link>
               </Button>
             )}
+            */}
           </SheetContent>
         </Sheet>
       </div>
