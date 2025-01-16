@@ -32,6 +32,12 @@ export const QuizContainer: React.FC = () => {
   const [answer, setAnswer] = useState("");
   const [currentQuizIndex, setCurrentQuizIndex] = useState<number>(0);
   const [step, setStep] = useState<Step>("loading");
+  const [correctAnswerNum, setCorrectAnswerNum] = useState<number>(0);
+  const [answerNum, setAnswerNum] = useState<number>(0);
+  const correctAnswersRate = useMemo(() => {
+    const value = ((correctAnswerNum / answerNum) * 100).toFixed(2);
+    return value.endsWith(".00") ? value.slice(0, -3) : value;
+  }, [correctAnswerNum, answerNum]);
 
   const clickable = useMemo(() => studyMode || step === "answered", [studyMode, step]);
   const currentQuiz = quizzes[currentQuizIndex];
@@ -57,15 +63,22 @@ export const QuizContainer: React.FC = () => {
     }
   }, [studyMode, currentQuizIndex, quizType, quizzes, step]);
 
-  const handleSubmitAnswer = useCallback((event: React.FormEvent) => {
-    event.preventDefault();
-    setStep("answered");
-    displayRef.current?.focus();
-  }, []);
+  const handleSubmitAnswer = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      setAnswerNum((prev) => prev + 1);
+      setCorrectAnswerNum((prev) => (currentQuiz?.answers.includes(answer) ? prev + 1 : prev));
+      setStep("answered");
+      displayRef.current?.focus();
+    },
+    [currentQuiz, answer],
+  );
 
   return step === "loading" ? undefined : step === "finish" ? (
     <div className="flex flex-col items-center">
       <p className="text-3xl mb-8">終了</p>
+      <p className="mb-2">正答数: {correctAnswerNum}</p>
+      <p className="mb-8">正答率: {correctAnswersRate}％</p>
       <p className="mb-2">おつかれさまでした！</p>
       <Link className="underline hover:opacity-60" href={pagesPath.quiz.$url()}>
         クイズトップへ戻る
@@ -80,8 +93,15 @@ export const QuizContainer: React.FC = () => {
       ref={displayRef}
     >
       {quizType !== "endless" && (
-        <div className="mb-2">
-          {currentQuizIndex + 1}/{quizzes.length}
+        <div className="flex gap-4 mb-2">
+          <div>
+            {currentQuizIndex + 1}/{quizzes.length}
+          </div>
+          {!studyMode && answerNum > 0 && (
+            <div>
+              正答数：{correctAnswerNum}（{correctAnswersRate}％）
+            </div>
+          )}
         </div>
       )}
       <Checkbox
