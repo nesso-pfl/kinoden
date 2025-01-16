@@ -66,6 +66,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
           </ul>
         </nav>
         <div className="hidden md:block ml-auto">
+          {/* 
           {signedIn ? (
             <Button size="sm" className="h-8" variant="destructive" onClick={handleClickSignOut}>
               ログアウト
@@ -77,6 +78,7 @@ const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn
               </Link>
             </Button>
           )}
+          */}
         </div>
         <Sheet open={open} onOpenChange={(open) => setOpen(open)}>
           <SheetTrigger className="md:hidden ml-auto" onClick={() => setOpen(true)}>
