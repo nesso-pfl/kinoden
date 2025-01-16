@@ -31,12 +31,12 @@ export const QuizContainer: React.FC = () => {
   const [step, setStep] = useState<Step>("loading");
 
   const clickable = useMemo(() => studyMode || step === "answered", [studyMode, step]);
-  const currentQuiz = useMemo(() => quizzes[currentQuizIndex], [quizzes, currentQuizIndex]);
+  const currentQuiz = quizzes[currentQuizIndex];
 
   useEffect(() => {
-    setQuizzes(shuffle(allQuizzes));
     setStep("answering");
-  }, [allQuizzes, quizType, quizzes]);
+    setQuizzes(shuffle(allQuizzes));
+  }, [allQuizzes]);
 
   const handleClickDisplay = useCallback(() => {
     if (studyMode && step === "answering") {
