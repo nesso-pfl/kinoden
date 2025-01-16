@@ -3,11 +3,10 @@
 import { pagesPath } from "@/features/path/$path";
 import { CatIcon, GraduationCapIcon, KeyRoundIcon, MenuIcon, SnailIcon } from "lucide-react";
 import Link from "next/link";
-import React, { useCallback, useState } from "react";
+import React, { /* useCallback, */ useState } from "react";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "./separator";
-import { Button } from "./button";
-import { signOut } from "@/features/auth/sign-out";
+// import { signOut } from "@/features/auth/sign-out";
 import { UserRole, checkRole, useUpdateSupabaseUser } from "@/features/auth";
 import { useUserProfile } from "@/features/user-profile";
 
@@ -43,12 +42,14 @@ type HeaderPresentationProps = {
   signedIn: boolean;
 };
 
-const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus, signedIn }) => {
+const HeaderPresentation: React.FC<HeaderPresentationProps> = ({ menus /* signedIn */ }) => {
   const [open, setOpen] = useState(false);
+  /*
   const handleClickSignOut = useCallback(async () => {
     await signOut();
     setOpen(false);
   }, []);
+  */
 
   return (
     <header className="flex justify-center bg-primary">
