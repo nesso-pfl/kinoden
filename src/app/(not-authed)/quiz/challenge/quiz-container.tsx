@@ -7,6 +7,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { CheckIcon, XIcon } from "lucide-react";
+import Link from "next/link";
+import { pagesPath } from "@/features/path/$path";
 
 const steps = ["loading", "answering", "answered", "finish"] as const;
 type Step = (typeof steps)[number];
@@ -34,8 +36,8 @@ export const QuizContainer: React.FC = () => {
   const currentQuiz = quizzes[currentQuizIndex];
 
   useEffect(() => {
-    setStep("answering");
     setQuizzes(shuffle(allQuizzes));
+    setStep("answering");
   }, [allQuizzes]);
 
   const handleClickDisplay = useCallback(() => {
@@ -57,42 +59,48 @@ export const QuizContainer: React.FC = () => {
     displayRef.current?.focus();
   }, []);
 
-  return (
-    step !== "loading" && (
-      <div
-        role={clickable ? "button" : undefined}
-        className={cn("select-none w-full h-full")}
-        onKeyDown={(event) => clickable && (event.key === "Enter" || event.key === " ") && handleClickDisplay()}
-        onClick={handleClickDisplay}
-        ref={displayRef}
-      >
-        {quizType !== "endless" && (
-          <div className="mb-2">
-            {currentQuizIndex + 1}/{quizzes.length}
+  return step === "loading" ? undefined : step === "finish" ? (
+    <div className="flex flex-col items-center">
+      <p className="text-3xl mb-8">終了</p>
+      <p className="mb-2">おつかれさまでした！</p>
+      <Link className="underline hover:opacity-60" href={pagesPath.quiz.$url()}>
+        クイズトップへ戻る
+      </Link>
+    </div>
+  ) : (
+    <div
+      role={clickable ? "button" : undefined}
+      className={cn("select-none w-full h-full")}
+      onKeyDown={(event) => clickable && (event.key === "Enter" || event.key === " ") && handleClickDisplay()}
+      onClick={handleClickDisplay}
+      ref={displayRef}
+    >
+      {quizType !== "endless" && (
+        <div className="mb-2">
+          {currentQuizIndex + 1}/{quizzes.length}
+        </div>
+      )}
+      <div className="text-xl">問題：{currentQuiz?.question}</div>
+      {!studyMode && (
+        <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
+          <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
+          <Button type="submit" disabled={step !== "answering" || !answer}>
+            解答
+          </Button>
+        </form>
+      )}
+      {step === "answered" && (
+        <div className="flex gap-4 text-xl mt-8">
+          <div>答え：</div>
+          <div>
+            {currentQuiz?.answers[0]}
+            {currentQuiz && currentQuiz.answers.length > 1 && <>（{currentQuiz?.answers.slice(1).join("、")}）</>}
           </div>
-        )}
-        <div className="text-xl">問題：{currentQuiz?.question}</div>
-        {!studyMode && (
-          <form className="flex gap-4 mt-8" onSubmit={handleSubmitAnswer}>
-            <Input value={answer} onChange={(event) => setAnswer(event.target.value)} />
-            <Button type="submit" disabled={step !== "answering" || !answer}>
-              解答
-            </Button>
-          </form>
-        )}
-        {step === "answered" && (
-          <div className="flex gap-4 text-xl mt-8">
-            <div>答え：</div>
-            <div>
-              {currentQuiz?.answers[0]}
-              {currentQuiz && currentQuiz.answers.length > 1 && <>（{currentQuiz?.answers.slice(1).join("、")}）</>}
-            </div>
-            {!studyMode && (
-              <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
-            )}
-          </div>
-        )}
-      </div>
-    )
+          {!studyMode && (
+            <div>{currentQuiz?.answers.includes(answer) ? <CheckIcon color="green" /> : <XIcon color="red" />}</div>
+          )}
+        </div>
+      )}
+    </div>
   );
 };
