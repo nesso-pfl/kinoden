@@ -77,8 +77,12 @@ export const QuizContainer: React.FC = () => {
   return step === "loading" ? undefined : step === "finish" ? (
     <div className="flex flex-col items-center">
       <p className="text-3xl mb-8">終了</p>
-      <p className="mb-2">正答数: {correctAnswerNum}</p>
-      <p className="mb-8">正答率: {correctAnswersRate}％</p>
+      {!studyMode && (
+        <div>
+          <p className="mb-2">正答数: {correctAnswerNum}</p>
+          <p className="mb-8">正答率: {correctAnswersRate}％</p>
+        </div>
+      )}
       <p className="mb-2">おつかれさまでした！</p>
       <Link className="underline hover:opacity-60" href={pagesPath.quiz.$url()}>
         クイズトップへ戻る
